@@ -1,16 +1,16 @@
 {
-  "name": "claude-code-zh",
+  "name": "claude-code-zh-cn",
   "version": "1.10.0",
   "description": "Claude Code CLI 中文汉化版 — 支持界面语言切换（中文/英文/自动），覆盖欢迎界面、命令菜单、快捷键提示、引导流程等所有 UI 文字 | Claude Code CLI with Chinese UI localization",
   "type": "module",
-  "author": "claude-code-best <claude-code-best@proton.me>",
+  "author": "Oublie-le",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/claude-code-best/claude-code.git"
+    "url": "git+https://github.com/Oublie-le/claude-code-chinese.git"
   },
-  "homepage": "https://github.com/claude-code-best/claude-code#readme",
+  "homepage": "https://github.com/Oublie-le/claude-code-chinese#readme",
   "bugs": {
-    "url": "https://github.com/claude-code-best/claude-code/issues"
+    "url": "https://github.com/Oublie-le/claude-code-chinese/issues"
   },
   "keywords": [
     "claude",
@@ -25,9 +25,8 @@
     "bun": ">=1.2.0"
   },
   "bin": {
-    "ccb": "dist/cli-node.js",
-    "ccb-bun": "dist/cli-bun.js",
-    "claude-code-best": "dist/cli-node.js"
+    "claude-code-zh": "dist/cli-node.js",
+    "claude-code-zh-bun": "dist/cli-bun.js"
   },
   "workspaces": [
     "packages/*",
