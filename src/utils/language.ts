@@ -139,6 +139,43 @@ const UI_STRINGS = {
     en: 'Try "{cmd}"',
     zh: '试试"{cmd}"',
   },
+  // PromptInputFooterLeftSide
+  'shortcuts.hint': {
+    en: '? for shortcuts',
+    zh: '? 查看快捷键',
+  },
+  // feedConfigs footers
+  'feed.resume.footer': {
+    en: '/resume for more',
+    zh: '/resume 查看更多',
+  },
+  'feed.releaseNotes.footer': {
+    en: '/release-notes for more',
+    zh: '/release-notes 查看更多',
+  },
+  // PromptInputHelpMenu
+  'help.bash': { en: '! for bash mode', zh: '! 进入 bash 模式' },
+  'help.commands': { en: '/ for commands', zh: '/ 输入命令' },
+  'help.filePaths': { en: '@ for file paths', zh: '@ 引用文件路径' },
+  'help.background': { en: '& for background', zh: '& 后台运行' },
+  'help.btw': { en: '/btw for side question', zh: '/btw 追问' },
+  'help.clearInput': { en: 'double tap esc to clear input', zh: '双击 esc 清空输入' },
+  'help.cycleMode': { en: 'to cycle modes', zh: '切换模式' },
+  'help.autoAccept': { en: 'to auto-accept edits', zh: '自动接受编辑' },
+  'help.verboseOutput': { en: 'for verbose output', zh: '详细输出' },
+  'help.toggleTasks': { en: 'to toggle tasks', zh: '切换任务面板' },
+  'help.terminal': { en: 'for terminal', zh: '打开终端' },
+  'help.newlineShift': { en: 'shift + ⏎ for newline', zh: 'shift + ⏎ 换行' },
+  'help.newlineBackslash': { en: '\\⏎ for newline', zh: '\\⏎ 换行' },
+  'help.newlineBackslashFull': { en: 'backslash (\\) + return (⏎) for newline', zh: '反斜杠 (\\) + 回车 (⏎) 换行' },
+  'help.undo': { en: 'to undo', zh: '撤销' },
+  'help.suspend': { en: 'ctrl + z to suspend', zh: 'ctrl + z 挂起' },
+  'help.pasteImages': { en: 'to paste images', zh: '粘贴图片' },
+  'help.switchModel': { en: 'to switch model', zh: '切换模型' },
+  'help.toggleFastMode': { en: 'to toggle fast mode', zh: '切换快速模式' },
+  'help.stashPrompt': { en: 'to stash prompt', zh: '暂存输入' },
+  'help.editInEditor': { en: 'to edit in $EDITOR', zh: '在编辑器中编辑' },
+  'help.customizeKeybindings': { en: '/keybindings to customize', zh: '/keybindings 自定义快捷键' },
 } as const satisfies Record<string, Record<ResolvedLanguage, string>>
 
 export type TranslationKey = keyof typeof UI_STRINGS

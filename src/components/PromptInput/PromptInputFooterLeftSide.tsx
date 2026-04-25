@@ -50,6 +50,7 @@ import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js'
 import { isXtermJs, useHasSelection, useSelection } from '@anthropic/ink'
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js'
 import { getPlatform } from '../../utils/platform.js'
+import { t } from '../../utils/language.js'
 import { PrBadge } from '../PrBadge.js'
 
 // Dead code elimination: conditional import for proactive mode
@@ -521,7 +522,7 @@ function ModeIndicator({
   if (parts.length === 0 && !tasksPart && !modePart && showHint) {
     parts.push(
       <Text dimColor key="shortcuts-hint">
-        ? for shortcuts
+        {t('shortcuts.hint')}
       </Text>,
     )
   }

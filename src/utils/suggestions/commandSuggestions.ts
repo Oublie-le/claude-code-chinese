@@ -16,6 +16,8 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   'Add a new working directory': '添加新的工作目录',
   'Ask a quick side question without interrupting the main conversation': '不打断主对话快速提问',
   'Attach to a sub Claude CLI instance via named pipe': '通过命名管道连接子 Claude CLI',
+  'Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Requires site-level permissions before executing (configured in the extension).':
+    '自动化 Chrome 浏览器操作网页：点击元素、填写表单、截图、读取控制台日志和导航。在现有 Chrome 会话中新标签页打开，需先在扩展中配置站点权限',
   // b
   'Hatch a coding companion · pet, off': '孵化编程伙伴 · pet, off',
   'Build apps with the Claude API or Anthropic SDK.\nTRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`/`claude_agent_sdk`, or user asks to use Claude API, Anthropic SDKs, or Agent SDK.\nDO NOT TRIGGER when: code imports `openai`/other AI SDK, general programming, or ML/data-science tasks.':
@@ -27,6 +29,8 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   'Change the theme': '更改主题',
   'Claim main role for this machine (overrides current main machine)': '声明此机器为主机（覆盖当前主机）',
   'Clear conversation history and free up context': '清除对话历史并释放上下文',
+  'Clear conversation history but keep a summary in context. Optional: /compact [instructions for summarization]':
+    '清除对话历史但保留摘要。可选：/compact [摘要指令]',
   'Claude in Chrome (Beta) settings': 'Chrome 中的 Claude（Beta）设置',
   'Commit, push, and open a PR': '提交、推送并创建 PR',
   'Complete a security review of the pending changes on the current branch': '对当前分支的待更改内容进行安全审查',
@@ -36,6 +40,7 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   'Connect this terminal for remote-control sessions': '连接此终端用于远程控制会话',
   'Continue the current session in Claude Desktop': '在 Claude Desktop 中继续当前会话',
   'Control automatic skill matching during conversations': '控制对话中的自动技能匹配',
+  'Copy Claude\'s last response to clipboard (or /copy N for the Nth-latest)': '复制 Claude 最近的回复到剪贴板（/copy N 复制第 N 条）',
   'Create a branch of the current conversation at this point': '在当前位置创建对话分支',
   'Create a git commit': '创建 git 提交',
   // d
@@ -46,6 +51,8 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   // e
   'Edit Claude memory files': '编辑 Claude 记忆文件',
   'Enable debug logging for this session and help diagnose issues': '为本次会话启用调试日志以诊断问题',
+  'Enable Option+Enter key binding for newlines and visual bell': '启用 Option+Enter 换行和视觉响铃键绑定',
+  'Enable Shift+Enter key binding for newlines': '启用 Shift+Enter 换行键绑定',
   'Enable plan mode or view the current session plan': '启用计划模式或查看当前会话计划',
   'Exit the REPL': '退出 REPL',
   'Export the current conversation to a file or clipboard': '将当前对话导出到文件或剪贴板',
@@ -55,12 +62,17 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   // g
   'Generate a report analyzing your Claude Code sessions': '生成 Claude Code 会话分析报告',
   'Generate and display a session summary': '生成并显示会话摘要',
+  'Generate filler text for long context testing. Specify token count as argument (e.g., /lorem-ipsum 50000). Outputs approximately the requested number of tokens. Ant-only.':
+    '生成长上下文测试用填充文本，指定 token 数量（如 /lorem-ipsum 50000），仅供内部使用',
   'Get comments from a GitHub pull request': '获取 GitHub Pull Request 的评论',
   // h
   'Show help and available commands': '显示帮助和可用命令',
   // i
   'Inspect pipe registry state and toggle the pipe selector': '检查管道注册表状态并切换管道选择器',
   'Install the Claude Slack app': '安装 Claude Slack 应用',
+  // k
+  'Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modify ~/.claude/keybindings.json. Examples: "rebind ctrl+s", "add a chord shortcut", "change the submit key", "customize keybindings".':
+    '自定义快捷键、重新绑定按键或修改 ~/.claude/keybindings.json',
   // l
   'List all files currently in context': '列出当前上下文中的所有文件',
   'List all scheduled cron jobs in this session': '列出本次会话中所有定时任务',
@@ -102,6 +114,7 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   'Set effort level for model usage': '设置模型使用的努力程度',
   'Set the prompt bar color for this session': '设置本次会话的输入栏颜色',
   'Set up Claude GitHub Actions for a repository': '为仓库设置 Claude GitHub Actions',
+  'Setup Claude Code on the web (requires connecting your GitHub account)': '在 Web 上设置 Claude Code（需要连接 GitHub 账户）',
   'Show current context usage': '显示当前上下文用量',
   'Show current pipe connection status': '显示当前管道连接状态',
   'Show options when rate limit is reached': '达到速率限制时显示选项',
@@ -110,8 +123,12 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
   'Show remote session URL and QR code': '显示远程会话 URL 和二维码',
   'Show the total cost and duration of the current session': '显示当前会话的总费用和时长',
   'Show your Claude Code usage statistics and activity': '显示 Claude Code 使用统计和活动',
+  'Show Claude Code status including version, model, account, API connectivity, and tool statuses':
+    '显示 Claude Code 状态：版本、模型、账户、API 连接和工具状态',
   'Sign out from your Anthropic account': '退出 Anthropic 账户',
   'Start a background shell monitor (Shift+Down to view)': '启动后台 shell 监控（Shift+Down 查看）',
+  'Start a persistent Remote Control server (daemon) that accepts multiple sessions':
+    '启动持久化远程控制服务器（守护进程），接受多个会话',
   'Subscribe to GitHub PR activity (comments, CI, reviews)': '订阅 GitHub PR 动态（评论、CI、审查）',
   'Submit feedback about Claude Code': '提交关于 Claude Code 的反馈',
   'Switch API provider (anthropic/openai/gemini/grok/bedrock/vertex/foundry)':
@@ -127,6 +144,12 @@ const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
     '切换省钱模式 — 禁用记忆提取和提示建议以节省 token',
   'Toggle proactive (autonomous) mode': '切换主动（自主）模式',
   'Toggle voice mode': '切换语音模式',
+  "Capture this session's repeatable process into a skill. Call at end of the process you want to capture with an optional description.":
+    '将本次会话的可重复流程捕获为技能，在流程结束时调用，可附带可选描述',
+  'Create, update, list, or run scheduled remote agents (triggers) that execute on a cron schedule.':
+    '创建、更新、列出或运行按 cron 计划执行的定时远程代理',
+  '[ANT-ONLY] Investigate frozen/stuck/slow Claude Code sessions on this machine and post a diagnostic report to #claude-code-feedback.':
+    '【内部】调查本机上冻结/卡死/缓慢的 Claude Code 会话并发布诊断报告',
   'Use this skill to configure the Claude Code harness via settings.json. Automated behaviors ("from now on when X", "each time X", "whenever X", "before/after X") require hooks configured in settings.json - the harness executes these, not Claude, so memory/preferences cannot fulfill them. Also use for: permissions ("allow X", "add permission", "move permission to"), env vars ("set X=Y"), hook troubleshooting, or any changes to settings.json/settings.local.json files. Examples: "allow npm commands", "add bq permission to global settings", "move permission to user settings", "set DEBUG=true", "when claude stops show X". For simple settings like theme/model, use Config tool.':
     '通过 settings.json 配置 Claude Code（权限、环境变量、钩子等）',
   // u

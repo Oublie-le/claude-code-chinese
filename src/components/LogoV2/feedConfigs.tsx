@@ -28,7 +28,7 @@ export function createRecentActivityFeed(activities: LogOption[]): FeedConfig {
   return {
     title: t('feed.recentActivity.title'),
     lines,
-    footer: lines.length > 0 ? '/resume for more' : undefined,
+    footer: lines.length > 0 ? t('feed.resume.footer') : undefined,
     emptyMessage: t('feed.recentActivity.empty'),
   }
 }
@@ -60,7 +60,7 @@ export function createWhatsNewFeed(releaseNotes: string[]): FeedConfig {
         ? "What's new [ANT-ONLY: Latest CC commits]"
         : t('feed.whatsNew.title'),
     lines,
-    footer: lines.length > 0 ? '/release-notes for more' : undefined,
+    footer: lines.length > 0 ? t('feed.releaseNotes.footer') : undefined,
     emptyMessage,
   }
 }
