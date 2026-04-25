@@ -81,29 +81,32 @@ jobs:
 
       - name: Create issue on failure
         if: failure() && steps.check.outputs.has_new_commits == 'true'
-        uses: actions/create-issue@v2
+        uses: actions/github-script@v6
         with:
-          title: '⚠️ 上游同步失败'
-          body: |
-            自动同步上游仓库时出现错误。
-            
-            **失败详情：**
-            - Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            - Branch: main
-            
-            请手动检查并解决问题。
-            
-            ---
-            
-            **手动同步命令：**
-            ```bash
-            git fetch upstream main
-            git merge upstream/main
-            git push origin main
-            ```
-          labels: |
-            ci-failed
-            sync-upstream
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ 上游同步失败',
+              body: `自动同步上游仓库时出现错误。
+
+**失败详情：**
+- Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+- Branch: main
+
+请手动检查并解决问题。
+
+---
+
+**手动同步命令：**
+\`\`\`bash
+git fetch upstream main
+git merge upstream/main
+git push origin main
+\`\`\``,
+              labels: ['ci-failed', 'sync-upstream']
+            });
 
       - name: Show summary
         if: always()
