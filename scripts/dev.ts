@@ -40,7 +40,15 @@ const inspectArgs = process.env.BUN_INSPECT
 
 const result = Bun.spawnSync(
     ["bun", ...inspectArgs, "run", ...defineArgs, ...featureArgs, cliPath, ...process.argv.slice(2)],
-    { stdio: ["inherit", "inherit", "inherit"], cwd: projectRoot },
+    {
+        stdio: ["inherit", "inherit", "inherit"],
+        cwd: projectRoot,
+        env: {
+            ...process.env,
+            // Isolate dev config from the local installed Claude to avoid conflicts
+            CLAUDE_CONFIG_DIR: process.env.CLAUDE_CONFIG_DIR ?? join(projectRoot, ".dev-config"),
+        },
+    },
 );
 
 process.exit(result.exitCode ?? 0);

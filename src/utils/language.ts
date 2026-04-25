@@ -1,7 +1,13 @@
 import { getGlobalConfig } from './config.js'
 import { getSystemLocaleLanguage } from './intl.js'
 
-export type PreferredLanguage = 'auto' | 'en' | 'zh'
+export const SUPPORTED_LANGUAGES = [
+  { code: 'auto', label: 'Auto (follow system)' },
+  { code: 'en', label: 'English' },
+  { code: 'zh', label: '中文' },
+] as const
+
+export type PreferredLanguage = (typeof SUPPORTED_LANGUAGES)[number]['code']
 export type ResolvedLanguage = 'en' | 'zh'
 
 /**
@@ -15,12 +21,6 @@ export function getResolvedLanguage(): ResolvedLanguage {
   return sysLang === 'zh' ? 'zh' : 'en'
 }
 
-const DISPLAY_NAMES: Record<string, string> = {
-  auto: 'Auto (follow system)',
-  en: 'English',
-  zh: '中文',
-}
-
 export function getLanguageDisplayName(lang: string): string {
-  return DISPLAY_NAMES[lang] ?? lang
+  return SUPPORTED_LANGUAGES.find(l => l.code === lang)?.label ?? lang
 }

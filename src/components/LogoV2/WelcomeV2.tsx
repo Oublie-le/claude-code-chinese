@@ -1,12 +1,14 @@
 import React from 'react'
 import { Box, Text, useTheme } from '@anthropic/ink'
 import { env } from '../../utils/env.js'
+import { getResolvedLanguage } from '../../utils/language.js'
 
 const WELCOME_V2_WIDTH = 58
 
 export function WelcomeV2(): React.ReactNode {
   const [theme] = useTheme()
-  const welcomeMessage = 'Welcome to Claude Code'
+  const lang = getResolvedLanguage()
+  const welcomeMessage = lang === 'zh' ? '欢迎使用 Claude Code' : 'Welcome to Claude Code'
 
   if (env.terminal === 'Apple_Terminal') {
     return (

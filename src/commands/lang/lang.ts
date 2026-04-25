@@ -6,11 +6,12 @@ import type {
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js'
 import {
   type PreferredLanguage,
+  SUPPORTED_LANGUAGES,
   getLanguageDisplayName,
   getResolvedLanguage,
 } from '../../utils/language.js'
 
-const VALID_LANGS: readonly PreferredLanguage[] = ['en', 'zh', 'auto']
+const VALID_LANGS = SUPPORTED_LANGUAGES.map(l => l.code)
 
 export async function call(
   onDone: LocalJSXCommandOnDone,
@@ -31,9 +32,10 @@ export async function call(
   }
 
   if (!VALID_LANGS.includes(arg as PreferredLanguage)) {
-    onDone(`Invalid language "${arg}". Use: en, zh, or auto`, {
-      display: 'system',
-    })
+    onDone(
+      `Invalid language "${arg}". Use: ${VALID_LANGS.filter(l => l !== 'auto').join(', ')}, or auto`,
+      { display: 'system' },
+    )
     return null
   }
 

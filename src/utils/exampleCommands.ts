@@ -5,6 +5,7 @@ import { getCurrentProjectConfig, saveCurrentProjectConfig } from './config.js'
 import { env } from './env.js'
 import { execFileNoThrowWithCwd } from './execFileNoThrow.js'
 import { getIsGit, gitExe } from './git.js'
+import { getResolvedLanguage } from './language.js'
 import { logError } from './log.js'
 import { getGitEmail } from './user.js'
 
@@ -156,7 +157,20 @@ export const getExampleCommandFromCache = memoize(() => {
     'create a util logging.py that...',
   ]
 
-  return `Try "${sample(commands)}"`
+  const commandsZh = [
+    '修复 lint 错误',
+    '修复类型检查错误',
+    `${frequentFile} 是怎么工作的？`,
+    `重构 ${frequentFile}`,
+    '如何记录错误日志？',
+    `编辑 ${frequentFile} 来…`,
+    `为 ${frequentFile} 写测试`,
+    '创建一个 logging.py 工具…',
+  ]
+
+  const lang = getResolvedLanguage()
+  const chosen = sample(lang === 'zh' ? commandsZh : commands)
+  return lang === 'zh' ? `试试"${chosen}"` : `Try "${chosen}"`
 })
 
 export const refreshExampleCommands = memoize(async (): Promise<void> => {

@@ -13,6 +13,7 @@ import { getStoredChangelogFromMemory, parseChangelog } from './releaseNotes.js'
 import { gt } from './semver.js'
 import { loadMessageLogs } from './sessionStorage.js'
 import { getInitialSettings } from './settings/settings.js'
+import { getResolvedLanguage } from './language.js'
 
 // Layout constants
 const MAX_LEFT_WIDTH = 50
@@ -95,10 +96,11 @@ export function calculateOptimalLeftWidth(
  * Formats the welcome message based on username
  */
 export function formatWelcomeMessage(username: string | null): string {
+  const lang = getResolvedLanguage()
   if (!username || username.length > MAX_USERNAME_LENGTH) {
-    return 'Welcome back!'
+    return lang === 'zh' ? '欢迎回来！' : 'Welcome back!'
   }
-  return `Welcome back ${username}!`
+  return lang === 'zh' ? `欢迎回来 ${username}！` : `Welcome back ${username}!`
 }
 
 /**
@@ -255,7 +257,7 @@ export function getLogoDisplayData(): {
     : displayPath
   const billingType = isClaudeAISubscriber()
     ? getSubscriptionName()
-    : 'API Usage Billing'
+    : getResolvedLanguage() === 'zh' ? 'API 用量计费' : 'API Usage Billing'
   const agentName = getInitialSettings().agent
 
   return {

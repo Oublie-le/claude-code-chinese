@@ -17,6 +17,7 @@ import { env } from '../utils/env.js'
 import { isRunningOnHomespace } from '../utils/envUtils.js'
 import { PreflightStep } from '../utils/preflightChecks.js'
 import type { ThemeSetting } from '../utils/theme.js'
+import { getResolvedLanguage } from '../utils/language.js'
 import { ApproveApiKey } from './ApproveApiKey.js'
 import { ConsoleOAuthFlow } from './ConsoleOAuthFlow.js'
 import { Select } from './CustomSelect/select.js'
@@ -47,6 +48,7 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
   const [skipOAuth, setSkipOAuth] = useState(false)
   const [oauthEnabled] = useState(() => isAnthropicAuthEnabled())
   const [theme, setTheme] = useTheme()
+  const lang = getResolvedLanguage()
 
   useEffect(() => {
     logEvent('tengu_began_setup', {
@@ -82,37 +84,41 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
       <ThemePicker
         onThemeSelect={handleThemeSelection}
         showIntroText={true}
-        helpText="To change this later, run /theme"
+        helpText={lang === 'zh' ? '稍后可通过 /theme 更改' : 'To change this later, run /theme'}
         hideEscToCancel={true}
-        skipExitHandling={true} // Skip exit handling as Onboarding already handles it
+        skipExitHandling={true}
       />
     </Box>
   )
 
   const securityStep = (
     <Box flexDirection="column" gap={1} paddingLeft={1}>
-      <Text bold>Security notes:</Text>
+      <Text bold>{lang === 'zh' ? '安全提示：' : 'Security notes:'}</Text>
       <Box flexDirection="column" width={70}>
-        {/**
-         * OrderedList misnumbers items when rendering conditionally,
-         * so put all items in the if/else
-         */}
         <OrderedList>
           <OrderedList.Item>
-            <Text>Claude can make mistakes</Text>
+            <Text>{lang === 'zh' ? 'Claude 可能会犯错' : 'Claude can make mistakes'}</Text>
             <Text dimColor wrap="wrap">
-              You should always review Claude&apos;s responses, especially when
-              <Newline />
-              running code.
-              <Newline />
+              {lang === 'zh' ? (
+                <>请务必检查 Claude 的回复，尤其是在执行代码时。<Newline /></>
+              ) : (
+                <>
+                  You should always review Claude&apos;s responses, especially when
+                  <Newline />
+                  running code.
+                  <Newline />
+                </>
+              )}
             </Text>
           </OrderedList.Item>
           <OrderedList.Item>
             <Text>
-              Due to prompt injection risks, only use it with code you trust
+              {lang === 'zh'
+                ? '存在提示注入风险，请仅在信任的代码上使用'
+                : 'Due to prompt injection risks, only use it with code you trust'}
             </Text>
             <Text dimColor wrap="wrap">
-              For more details see:
+              {lang === 'zh' ? '详情请见：' : 'For more details see:'}
               <Newline />
               <Link url="https://code.claude.com/docs/en/security" />
             </Text>
@@ -184,30 +190,41 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
       id: 'terminal-setup',
       component: (
         <Box flexDirection="column" gap={1} paddingLeft={1}>
-          <Text bold>Use Claude Code&apos;s terminal setup?</Text>
+          <Text bold>{lang === 'zh' ? '使用 Claude Code 的终端设置？' : "Use Claude Code's terminal setup?"}</Text>
           <Box flexDirection="column" width={70} gap={1}>
             <Text>
-              For the optimal coding experience, enable the recommended settings
-              <Newline />
-              for your terminal:{' '}
-              {env.terminal === 'Apple_Terminal'
-                ? 'Option+Enter for newlines and visual bell'
-                : 'Shift+Enter for newlines'}
+              {lang === 'zh' ? (
+                <>
+                  为获得最佳编码体验，请为您的终端启用推荐设置：
+                  <Newline />
+                  {env.terminal === 'Apple_Terminal'
+                    ? 'Option+Enter 换行及视觉响铃'
+                    : 'Shift+Enter 换行'}
+                </>
+              ) : (
+                <>
+                  For the optimal coding experience, enable the recommended settings
+                  <Newline />
+                  for your terminal:{' '}
+                  {env.terminal === 'Apple_Terminal'
+                    ? 'Option+Enter for newlines and visual bell'
+                    : 'Shift+Enter for newlines'}
+                </>
+              )}
             </Text>
             <Select
               options={[
                 {
-                  label: 'Yes, use recommended settings',
+                  label: lang === 'zh' ? '是，使用推荐设置' : 'Yes, use recommended settings',
                   value: 'install',
                 },
                 {
-                  label: 'No, maybe later with /terminal-setup',
+                  label: lang === 'zh' ? '否，稍后通过 /terminal-setup 设置' : 'No, maybe later with /terminal-setup',
                   value: 'no',
                 },
               ]}
               onChange={value => {
                 if (value === 'install') {
-                  // Errors already logged in setupTerminal, just swallow and proceed
                   void setupTerminal(theme)
                     .catch(() => {})
                     .finally(goToNextStep)
@@ -219,9 +236,9 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
             />
             <Text dimColor>
               {exitState.pending ? (
-                <>Press {exitState.keyName} again to exit</>
+                <>{lang === 'zh' ? `再按 ${exitState.keyName} 退出` : `Press ${exitState.keyName} again to exit`}</>
               ) : (
-                <>Enter to confirm · Esc to skip</>
+                <>{lang === 'zh' ? 'Enter 确认 · Esc 跳过' : 'Enter to confirm · Esc to skip'}</>
               )}
             </Text>
           </Box>
@@ -273,7 +290,7 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
         {currentStep?.component}
         {exitState.pending && (
           <Box padding={1}>
-            <Text dimColor>Press {exitState.keyName} again to exit</Text>
+            <Text dimColor>{lang === 'zh' ? `再按 ${exitState.keyName} 退出` : `Press ${exitState.keyName} again to exit`}</Text>
           </Box>
         )}
       </Box>

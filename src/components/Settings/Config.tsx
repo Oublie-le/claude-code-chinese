@@ -46,6 +46,11 @@ import { Dialog } from '@anthropic/ink';
 import { Select } from '../CustomSelect/index.js';
 import { OutputStylePicker } from '../OutputStylePicker.js';
 import { LanguagePicker } from '../LanguagePicker.js';
+import { UILanguagePicker } from '../UILanguagePicker.js';
+import {
+  type PreferredLanguage,
+  getLanguageDisplayName,
+} from '../../utils/language.js';
 import {
   type MemoryFileInfo,
   getExternalClaudeMdIncludes,
@@ -129,6 +134,7 @@ type SubMenu =
   | 'OutputStyle'
   | 'ChannelDowngrade'
   | 'Language'
+  | 'UILanguage'
   | 'EnableAutoUpdates';
 export function Config({
   onClose,
@@ -151,6 +157,9 @@ export function Config({
   const initialOutputStyle = React.useRef(currentOutputStyle);
   const [currentLanguage, setCurrentLanguage] = useState<string | undefined>(settingsData?.language);
   const initialLanguage = React.useRef(currentLanguage);
+  const [currentUILanguage, setCurrentUILanguage] = useState<PreferredLanguage>(
+    getGlobalConfig().preferredLanguage ?? 'auto',
+  );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollOffset, setScrollOffset] = useState(0);
   const [isSearchMode, setIsSearchMode] = useState(true);
@@ -826,6 +835,13 @@ export function Config({
       onChange: () => {}, // handled by LanguagePicker submenu
     },
     {
+      id: 'uiLanguage',
+      label: 'UI Language',
+      value: getLanguageDisplayName(currentUILanguage),
+      type: 'managedEnum' as const,
+      onChange: () => {}, // handled by UILanguagePicker submenu
+    },
+    {
       id: 'editorMode',
       label: 'Editor mode',
       // Convert 'emacs' to 'normal' for backward compatibility
@@ -1441,7 +1457,8 @@ export function Config({
       setting.id === 'teammateDefaultModel' ||
       setting.id === 'showExternalIncludesDialog' ||
       setting.id === 'outputStyle' ||
-      setting.id === 'language'
+      setting.id === 'language' ||
+      setting.id === 'uiLanguage'
     ) {
       // managedEnum items open a submenu — isDirty is set by the submenu's
       // completion callback, not here (submenu may be cancelled).
@@ -1468,6 +1485,10 @@ export function Config({
           return;
         case 'language':
           setShowSubmenu('Language');
+          setTabsHidden(true);
+          return;
+        case 'uiLanguage':
+          setShowSubmenu('UILanguage');
           setTabsHidden(true);
           return;
       }
@@ -1799,6 +1820,30 @@ export function Config({
                 language: (language ?? 'default') as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
                 source: 'config_panel' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
               });
+            }}
+            onCancel={() => {
+              setShowSubmenu(null);
+              setTabsHidden(false);
+            }}
+          />
+          <Text dimColor>
+            <Byline>
+              <KeyboardShortcutHint shortcut="Enter" action="confirm" />
+              <ConfigurableShortcutHint action="confirm:no" context="Settings" fallback="Esc" description="cancel" />
+            </Byline>
+          </Text>
+        </>
+      ) : showSubmenu === 'UILanguage' ? (
+        <>
+          <UILanguagePicker
+            currentLanguage={currentUILanguage}
+            onComplete={lang => {
+              isDirty.current = true;
+              setCurrentUILanguage(lang);
+              setShowSubmenu(null);
+              setTabsHidden(false);
+              saveGlobalConfig(current => ({ ...current, preferredLanguage: lang }));
+              setGlobalConfig({ ...getGlobalConfig(), preferredLanguage: lang });
             }}
             onCancel={() => {
               setShowSubmenu(null);

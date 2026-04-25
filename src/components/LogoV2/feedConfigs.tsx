@@ -10,9 +10,11 @@ import {
 import type { LogOption } from '../../types/logs.js'
 import { getCwd } from '../../utils/cwd.js'
 import { formatRelativeTimeAgo } from '../../utils/format.js'
+import { getResolvedLanguage } from '../../utils/language.js'
 import type { FeedConfig, FeedLine } from './Feed.js'
 
 export function createRecentActivityFeed(activities: LogOption[]): FeedConfig {
+  const lang = getResolvedLanguage()
   const lines: FeedLine[] = activities.map(log => {
     const time = formatRelativeTimeAgo(log.modified)
     const description =
@@ -25,14 +27,15 @@ export function createRecentActivityFeed(activities: LogOption[]): FeedConfig {
   })
 
   return {
-    title: 'Recent activity',
+    title: lang === 'zh' ? '最近活动' : 'Recent activity',
     lines,
     footer: lines.length > 0 ? '/resume for more' : undefined,
-    emptyMessage: 'No recent activity',
+    emptyMessage: lang === 'zh' ? '暂无最近活动' : 'No recent activity',
   }
 }
 
 export function createWhatsNewFeed(releaseNotes: string[]): FeedConfig {
+  const lang = getResolvedLanguage()
   const lines: FeedLine[] = releaseNotes.map(note => {
     if (process.env.USER_TYPE === 'ant') {
       const match = note.match(/^(\d+\s+\w+\s+ago)\s+(.+)$/)
@@ -51,13 +54,13 @@ export function createWhatsNewFeed(releaseNotes: string[]): FeedConfig {
   const emptyMessage =
     process.env.USER_TYPE === 'ant'
       ? 'Unable to fetch latest claude-cli-internal commits'
-      : 'Check the Claude Code changelog for updates'
+      : lang === 'zh' ? '查看 Claude Code 更新日志' : 'Check the Claude Code changelog for updates'
 
   return {
     title:
       process.env.USER_TYPE === 'ant'
         ? "What's new [ANT-ONLY: Latest CC commits]"
-        : "What's new",
+        : lang === 'zh' ? '最新动态' : "What's new",
     lines,
     footer: lines.length > 0 ? '/release-notes for more' : undefined,
     emptyMessage,
@@ -65,6 +68,7 @@ export function createWhatsNewFeed(releaseNotes: string[]): FeedConfig {
 }
 
 export function createProjectOnboardingFeed(steps: Step[]): FeedConfig {
+  const lang = getResolvedLanguage()
   const enabledSteps = steps
     .filter(({ isEnabled }) => isEnabled)
     .sort((a, b) => Number(a.isComplete) - Number(b.isComplete))
@@ -78,7 +82,9 @@ export function createProjectOnboardingFeed(steps: Step[]): FeedConfig {
 
   const warningText =
     getCwd() === homedir()
-      ? 'Note: You have launched claude in your home directory. For the best experience, launch it in a project directory instead.'
+      ? lang === 'zh'
+        ? '提示：您在主目录下启动了 Claude。为获得最佳体验，请在项目目录下启动。'
+        : 'Note: You have launched claude in your home directory. For the best experience, launch it in a project directory instead.'
       : undefined
 
   if (warningText) {
@@ -88,7 +94,7 @@ export function createProjectOnboardingFeed(steps: Step[]): FeedConfig {
   }
 
   return {
-    title: 'Tips for getting started',
+    title: lang === 'zh' ? '入门提示' : 'Tips for getting started',
     lines,
   }
 }

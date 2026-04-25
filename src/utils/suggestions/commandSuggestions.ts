@@ -6,7 +6,157 @@ import {
   getCommandName,
 } from '../../commands.js'
 import type { SuggestionItem } from '../../components/PromptInput/PromptInputFooterSuggestions.js'
+import { getResolvedLanguage } from '../language.js'
 import { getSkillUsageScore } from './skillUsageTracking.js'
+
+// Chinese translations for common slash command descriptions
+const ZH_COMMAND_DESCRIPTIONS: Record<string, string> = {
+  // a
+  'Activate pending plugin changes in the current session': '在当前会话中激活待处理的插件变更',
+  'Add a new working directory': '添加新的工作目录',
+  'Ask a quick side question without interrupting the main conversation': '不打断主对话快速提问',
+  'Attach to a sub Claude CLI instance via named pipe': '通过命名管道连接子 Claude CLI',
+  // b
+  'Hatch a coding companion · pet, off': '孵化编程伙伴 · pet, off',
+  'Build apps with the Claude API or Anthropic SDK.\nTRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`/`claude_agent_sdk`, or user asks to use Claude API, Anthropic SDKs, or Agent SDK.\nDO NOT TRIGGER when: code imports `openai`/other AI SDK, general programming, or ML/data-science tasks.':
+    '使用 Claude API 或 Anthropic SDK 构建应用',
+  'Research and plan a large-scale change, then execute it in parallel across 5–30 isolated worktree agents that each open a PR.':
+    '研究并规划大规模变更，通过 5-30 个并行 worktree 代理执行，每个代理各开一个 PR',
+  // c
+  'Cancel a scheduled cron job by ID': '按 ID 取消定时任务',
+  'Change the theme': '更改主题',
+  'Claim main role for this machine (overrides current main machine)': '声明此机器为主机（覆盖当前主机）',
+  'Clear conversation history and free up context': '清除对话历史并释放上下文',
+  'Claude in Chrome (Beta) settings': 'Chrome 中的 Claude（Beta）设置',
+  'Commit, push, and open a PR': '提交、推送并创建 PR',
+  'Complete a security review of the pending changes on the current branch': '对当前分支的待更改内容进行安全审查',
+  'Configure extra usage to keep working when limits are hit': '配置额外用量以在触及限制后继续工作',
+  'Configure the advisor model': '配置顾问模型',
+  'Configure the default remote environment for teleport sessions': '配置传送会话的默认远程环境',
+  'Connect this terminal for remote-control sessions': '连接此终端用于远程控制会话',
+  'Continue the current session in Claude Desktop': '在 Claude Desktop 中继续当前会话',
+  'Control automatic skill matching during conversations': '控制对话中的自动技能匹配',
+  'Create a branch of the current conversation at this point': '在当前位置创建对话分支',
+  'Create a git commit': '创建 git 提交',
+  // d
+  'Deprecated: use /config to change output style': '已弃用：请使用 /config 更改输出样式',
+  'Detach from a sub CLI (or all connected subs)': '断开与子 CLI 的连接（或全部断开）',
+  'Diagnose and verify your Claude Code installation and settings': '诊断并验证 Claude Code 安装和设置',
+  'Dump the JS heap to ~/Desktop': '将 JS 堆转储到 ~/Desktop',
+  // e
+  'Edit Claude memory files': '编辑 Claude 记忆文件',
+  'Enable debug logging for this session and help diagnose issues': '为本次会话启用调试日志以诊断问题',
+  'Enable plan mode or view the current session plan': '启用计划模式或查看当前会话计划',
+  'Exit the REPL': '退出 REPL',
+  'Export the current conversation to a file or clipboard': '将当前对话导出到文件或剪贴板',
+  // f
+  'Fork the current session into a new sub-agent': '将当前会话分叉为新的子代理',
+  'Force snip conversation history at current point': '在当前位置强制截断对话历史',
+  // g
+  'Generate a report analyzing your Claude Code sessions': '生成 Claude Code 会话分析报告',
+  'Generate and display a session summary': '生成并显示会话摘要',
+  'Get comments from a GitHub pull request': '获取 GitHub Pull Request 的评论',
+  // h
+  'Show help and available commands': '显示帮助和可用命令',
+  // i
+  'Inspect pipe registry state and toggle the pipe selector': '检查管道注册表状态并切换管道选择器',
+  'Install the Claude Slack app': '安装 Claude Slack 应用',
+  // l
+  'List all files currently in context': '列出当前上下文中的所有文件',
+  'List all scheduled cron jobs in this session': '列出本次会话中所有定时任务',
+  'List and manage background tasks': '列出并管理后台任务',
+  'List available skills': '列出可用技能',
+  'List available workflow scripts': '列出可用工作流脚本',
+  'List connected Claude Code peers': '列出已连接的 Claude Code 对等端',
+  // m
+  'Manage agent configurations': '管理代理配置',
+  'Manage allow & deny tool permission rules': '管理工具权限允许与拒绝规则',
+  'Manage background sessions and daemon': '管理后台会话和守护进程',
+  'Manage Claude Code plugins': '管理 Claude Code 插件',
+  'Manage IDE integrations and show status': '管理 IDE 集成并显示状态',
+  'Manage MCP servers': '管理 MCP 服务器',
+  'Manage skill learning (observe, analyze, evolve)': '管理技能学习（观察、分析、进化）',
+  'Manage template jobs': '管理模板任务',
+  'Manually trigger memory consolidation — review, organize, and prune your auto-memory files.':
+    '手动触发记忆整理 — 审查、组织并清理自动记忆文件',
+  // o
+  'Open config panel': '打开配置面板',
+  'Open or create your keybindings configuration file': '打开或创建快捷键配置文件',
+  'Open the Kairos assistant panel': '打开 Kairos 助手面板',
+  'Order Claude Code stickers': '订购 Claude Code 贴纸',
+  // p
+  'Play the thinkback animation': '播放 thinkback 动画',
+  // r
+  'Rename the current conversation': '重命名当前对话',
+  'Restore the code and/or conversation to a previous point': '将代码或对话恢复到之前的状态',
+  'Resume a previous conversation': '恢复之前的对话',
+  'Review a pull request': '审查 Pull Request',
+  'Review auto-memory entries and propose promotions to CLAUDE.md, CLAUDE.local.md, or shared memory. Also detects outdated, conflicting, and duplicate entries across memory layers.':
+    '审查自动记忆条目并建议升级到 CLAUDE.md，同时检测过期、冲突和重复条目',
+  'Run a prompt or slash command on a recurring interval (e.g. /loop 5m /foo, defaults to 10m)':
+    '按循环间隔运行提示或命令（例如 /loop 5m /foo，默认 10m）',
+  // s
+  "Set up Claude Code's status line UI": '设置 Claude Code 状态栏 UI',
+  'Send a message to a connected sub CLI': '向已连接的子 CLI 发送消息',
+  'Set display language (en/zh/auto)': '设置界面语言 (en/zh/auto)',
+  'Set effort level for model usage': '设置模型使用的努力程度',
+  'Set the prompt bar color for this session': '设置本次会话的输入栏颜色',
+  'Set up Claude GitHub Actions for a repository': '为仓库设置 Claude GitHub Actions',
+  'Show current context usage': '显示当前上下文用量',
+  'Show current pipe connection status': '显示当前管道连接状态',
+  'Show options when rate limit is reached': '达到速率限制时显示选项',
+  'Show plan usage limits': '显示计划用量限制',
+  'Show QR code to download the Claude mobile app': '显示下载 Claude 移动应用的二维码',
+  'Show remote session URL and QR code': '显示远程会话 URL 和二维码',
+  'Show the total cost and duration of the current session': '显示当前会话的总费用和时长',
+  'Show your Claude Code usage statistics and activity': '显示 Claude Code 使用统计和活动',
+  'Sign out from your Anthropic account': '退出 Anthropic 账户',
+  'Start a background shell monitor (Shift+Down to view)': '启动后台 shell 监控（Shift+Down 查看）',
+  'Subscribe to GitHub PR activity (comments, CI, reviews)': '订阅 GitHub PR 动态（评论、CI、审查）',
+  'Submit feedback about Claude Code': '提交关于 Claude Code 的反馈',
+  'Switch API provider (anthropic/openai/gemini/grok/bedrock/vertex/foundry)':
+    '切换 API 提供商（anthropic/openai/gemini/grok/bedrock/vertex/foundry）',
+  'Review changed code for reuse, quality, and efficiency, then fix any issues found.':
+    '审查变更代码的复用性、质量和效率，并修复发现的问题',
+  // t
+  'Toggle a searchable tag on the current session': '为当前会话切换可搜索标签',
+  'Toggle between Vim and Normal editing modes': '在 Vim 和普通编辑模式之间切换',
+  'Toggle brief-only mode': '切换简报模式',
+  'Toggle coordinator (multi-worker) mode': '切换协调器（多工作者）模式',
+  'Toggle poor mode — disable extract_memories and prompt_suggestion to save tokens':
+    '切换省钱模式 — 禁用记忆提取和提示建议以节省 token',
+  'Toggle proactive (autonomous) mode': '切换主动（自主）模式',
+  'Toggle voice mode': '切换语音模式',
+  'Use this skill to configure the Claude Code harness via settings.json. Automated behaviors ("from now on when X", "each time X", "whenever X", "before/after X") require hooks configured in settings.json - the harness executes these, not Claude, so memory/preferences cannot fulfill them. Also use for: permissions ("allow X", "add permission", "move permission to"), env vars ("set X=Y"), hook troubleshooting, or any changes to settings.json/settings.local.json files. Examples: "allow npm commands", "add bq permission to global settings", "move permission to user settings", "set DEBUG=true", "when claude stops show X". For simple settings like theme/model, use Config tool.':
+    '通过 settings.json 配置 Claude Code（权限、环境变量、钩子等）',
+  // u
+  'Upgrade to Max for higher rate limits and more Opus': '升级到 Max 以获取更高速率限制和更多 Opus',
+  // v
+  'View and update your privacy settings': '查看并更新隐私设置',
+  'View hook configurations for tool events': '查看工具事件的钩子配置',
+  'View release notes': '查看发版说明',
+  'View session history of a connected sub CLI': '查看已连接子 CLI 的会话历史',
+  'View uncommitted changes and per-turn diffs': '查看未提交更改和每轮对话的差异',
+  'Visualize current context usage as a colored grid': '以彩色网格可视化当前上下文用量',
+  // y
+  'Your 2025 Claude Code Year in Review': '你的 2025 Claude Code 年度回顾',
+}
+
+function translateDescription(description: string): string {
+  if (getResolvedLanguage() !== 'zh') return description
+  // Exact match first
+  const exact = ZH_COMMAND_DESCRIPTIONS[description]
+  if (exact) return exact
+  // Dynamic descriptions: prefix match
+  if (description.startsWith('~10–30 min') || description.startsWith('~10-30 min')) {
+    return '约 10–30 分钟 · 在线版 Claude Code 起草高级计划供你编辑和批准'
+  }
+  if (description.startsWith('~10–20 min') || description.startsWith('~10-20 min')) {
+    return '约 10–20 分钟 · 在你的分支上查找并验证 Bug，在线运行'
+  }
+  // sandbox description is dynamic (shows enabled/disabled state) — keep as-is
+  return description
+}
 
 // Treat these characters as word separators for command search
 const SEPARATORS = /[:_-]/g
@@ -281,7 +431,7 @@ function createCommandSuggestionItem(
       : undefined
 
   const fullDescription =
-    (isWorkflow ? cmd.description : formatDescriptionWithSource(cmd)) +
+    translateDescription(isWorkflow ? cmd.description : formatDescriptionWithSource(cmd)) +
     (cmd.type === 'prompt' && cmd.argNames?.length
       ? ` (arguments: ${cmd.argNames.join(', ')})`
       : '')
