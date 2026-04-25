@@ -89,24 +89,9 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: '⚠️ 上游同步失败',
-              body: `自动同步上游仓库时出现错误。
-
-**失败详情：**
-- Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-- Branch: main
-
-请手动检查并解决问题。
-
----
-
-**手动同步命令：**
-\`\`\`bash
-git fetch upstream main
-git merge upstream/main
-git push origin main
-\`\`\``,
+              body: '自动同步上游仓库时出现错误。\n\n**失败详情：**\n- Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\n- Branch: main\n\n请手动检查并解决问题。\n\n---\n\n**手动同步命令：**\n```bash\ngit fetch upstream main\ngit merge upstream/main\ngit push origin main\n```',
               labels: ['ci-failed', 'sync-upstream']
-            });
+            })
 
       - name: Show summary
         if: always()
