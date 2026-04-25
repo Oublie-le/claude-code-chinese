@@ -1,16 +1,22 @@
-# Claude Code Best V5 (CCB)
+# Claude Code 中文汉化版 🇨🇳
 
-[![GitHub Stars](https://img.shields.io/github/stars/claude-code-best/claude-code?style=flat-square&logo=github&color=yellow)](https://github.com/claude-code-best/claude-code/stargazers)
-[![GitHub Contributors](https://img.shields.io/github/contributors/claude-code-best/claude-code?style=flat-square&color=green)](https://github.com/claude-code-best/claude-code/graphs/contributors)
-[![GitHub Issues](https://img.shields.io/github/issues/claude-code-best/claude-code?style=flat-square&color=orange)](https://github.com/claude-code-best/claude-code/issues)
-[![GitHub License](https://img.shields.io/github/license/claude-code-best/claude-code?style=flat-square)](https://github.com/claude-code-best/claude-code/blob/main/LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/claude-code-best/claude-code?style=flat-square&color=blue)](https://github.com/claude-code-best/claude-code/commits/main)
+[![GitHub Stars](https://img.shields.io/github/stars/Oublie-le/claude-code-chinese?style=flat-square&logo=github&color=yellow)](https://github.com/Oublie-le/claude-code-chinese/stargazers)
+[![GitHub Contributors](https://img.shields.io/github/contributors/Oublie-le/claude-code-chinese?style=flat-square&color=green)](https://github.com/Oublie-le/claude-code-chinese/graphs/contributors)
+[![GitHub Issues](https://img.shields.io/github/issues/Oublie-le/claude-code-chinese?style=flat-square&color=orange)](https://github.com/Oublie-le/claude-code-chinese/issues)
+[![GitHub License](https://img.shields.io/github/license/Oublie-le/claude-code-chinese?style=flat-square)](https://github.com/Oublie-le/claude-code-chinese/blob/main/LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/claude-code-zh-cn?style=flat-square&logo=npm)](https://www.npmjs.com/package/claude-code-zh-cn)
 [![Bun](https://img.shields.io/badge/runtime-Bun-black?style=flat-square&logo=bun)](https://bun.sh/)
-[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?style=flat-square&logo=discord)](https://discord.gg/uApuzJWGKX)
 
-> Which Claude do you like? The open source one is the best.
+> 这是 Claude Code Best (CCB) 的**中文汉化版本**，提供完整的中文界面支持
 
-牢 A (Anthropic) 官方 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 工具的源码反编译/逆向还原项目。目标是将 Claude Code 大部分功能及工程化能力复现 (问就是老佛爷已经付过钱了)。虽然很难绷, 但是它叫做 CCB(踩踩背)... 而且, 我们实现了企业版或者需要登陆 Claude 账号才能使用的特性, 实现技术普惠
+**原仓库**: [claude-code-best/claude-code](https://github.com/claude-code-best/claude-code) — 由 Anthropic 官方 Claude Code 工具反编译而来
+
+本仓库基于上游进行以下增强：
+- 🇨🇳 **完整的中文界面** — 欢迎界面、命令菜单、快捷键提示、引导流程等所有 UI 文字均已本地化
+- ✨ 保持与上游最新功能同步
+- 📦 发布到 npm 的 `claude-code-zh-cn` 包，开箱即用
+
+**关于 CCB**: A (Anthropic) 官方 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 工具的源码反编译/逆向还原项目。目标是将 Claude Code 大部分功能及工程化能力复现 (问就是老佛爷已经付过钱了)。虽然很难绷, 但是它叫做 CCB(踩踩背)... 而且, 我们实现了企业版或者需要登陆 Claude 账号才能使用的特性, 实现技术普惠
 
 > 我们将会在五一期间进行整个代码仓库的 lint 规范化, 这个期间提交的 PR 可能会有非常多的冲突, 所以大的功能请尽量在这之前提交哈
 
@@ -40,20 +46,21 @@
 
 ## ⚡ 快速开始(安装版)
 
-不用克隆仓库, 从 NPM 下载后, 直接使用
+不用克隆仓库, 从 NPM 下载后, 直接使用（中文汉化版）
 
 ```sh
-npm i -g claude-code-best
+npm i -g claude-code-zh-cn
 
 # bun 安装比较多问题, 推荐 npm 装
-# bun  i -g claude-code-best
-# bun pm -g trust claude-code-best @claude-code-best/mcp-chrome-bridge
+# bun i -g claude-code-zh-cn
+# bun pm -g trust claude-code-zh-cn @claude-code-best/mcp-chrome-bridge
 
-ccb # 以 nodejs 打开 claude code
-ccb-bun # 以 bun 形态打开
-ccb update # 更新到最新版本
-CLAUDE_BRIDGE_BASE_URL=https://remote-control.claude-code-best.win/ CLAUDE_BRIDGE_OAUTH_TOKEN=test-my-key ccb --remote-control # 我们有自部署的远程控制
+claude-code-zh # 以 nodejs 打开 claude code（中文界面）
+claude-code-zh-bun # 以 bun 形态打开（中文界面）
+claude-code-zh update # 更新到最新版本
 ```
+
+> **提示**: 也可以安装原始英文版本 `claude-code-best`，功能完全相同，只是界面语言不同
 
 ## ⚡ 快速开始(源码版)
 
