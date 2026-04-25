@@ -6,6 +6,11 @@ on:
     - cron: '0 2 * * 0'
   workflow_dispatch:  # 允许手动触发
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -20,6 +25,8 @@ jobs:
         run: |
           git config user.name "Sync Bot"
           git config user.email "sync-bot@github.com"
+          # 配置 git 使用 GITHUB_TOKEN 进行认证
+          git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
 
       - name: Add upstream remote
         run: |
