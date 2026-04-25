@@ -1,6 +1,6 @@
 {
   "name": "claude-code-zh-cn",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "Claude Code CLI 中文汉化版 — 支持界面语言切换（中文/英文/自动），覆盖欢迎界面、命令菜单、快捷键提示、引导流程等所有 UI 文字 | Claude Code CLI with Chinese UI localization",
   "type": "module",
   "author": "Oublie-le",
