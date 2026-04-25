@@ -5,6 +5,7 @@ import {
   getKeybindingsPath,
   isKeybindingCustomizationEnabled,
 } from '../keybindings/loadUserBindings.js'
+import { t } from '../utils/language.js'
 
 /**
  * Displays keybinding validation warnings in the UI.
@@ -31,10 +32,10 @@ export function KeybindingWarnings(): React.ReactNode {
   return (
     <Box flexDirection="column" marginTop={1} marginBottom={1}>
       <Text bold color={errors.length > 0 ? 'error' : 'warning'}>
-        Keybinding Configuration Issues
+        {t('keybinding.warnings.title')}
       </Text>
       <Box>
-        <Text dimColor>Location: </Text>
+        <Text dimColor>{t('keybinding.warnings.location')}</Text>
         <Text dimColor>{getKeybindingsPath()}</Text>
       </Box>
       <Box marginLeft={1} flexDirection="column" marginTop={1}>
@@ -42,7 +43,7 @@ export function KeybindingWarnings(): React.ReactNode {
           <Box key={`error-${i}`} flexDirection="column">
             <Box>
               <Text dimColor>└ </Text>
-              <Text color="error">[Error]</Text>
+              <Text color="error">{t('keybinding.warnings.error')}</Text>
               <Text dimColor> {error.message}</Text>
             </Box>
             {error.suggestion && (
@@ -56,7 +57,7 @@ export function KeybindingWarnings(): React.ReactNode {
           <Box key={`warning-${i}`} flexDirection="column">
             <Box>
               <Text dimColor>└ </Text>
-              <Text color="warning">[Warning]</Text>
+              <Text color="warning">{t('keybinding.warnings.warning')}</Text>
               <Text dimColor> {warning.message}</Text>
             </Box>
             {warning.suggestion && (

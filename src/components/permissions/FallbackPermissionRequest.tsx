@@ -6,6 +6,7 @@ import { env } from '../../utils/env.js'
 import { shouldShowAlwaysAllowOptions } from '../../utils/permissions/permissionsLoader.js'
 import { truncateToLines } from '../../utils/stringUtils.js'
 import { logUnaryEvent } from '../../utils/unaryLogging.js'
+import { t } from '../../utils/language.js'
 import { type UnaryEvent, usePermissionRequestLogging } from './hooks.js'
 import { PermissionDialog } from './PermissionDialog.js'
 import {
@@ -125,7 +126,7 @@ export function FallbackPermissionRequest({
   const options = useMemo((): PermissionPromptOption<FallbackOptionValue>[] => {
     const result: PermissionPromptOption<FallbackOptionValue>[] = [
       {
-        label: 'Yes',
+        label: t('fallback.yes'),
         value: 'yes',
         feedbackConfig: { type: 'accept' },
       },
@@ -161,7 +162,7 @@ export function FallbackPermissionRequest({
   )
 
   return (
-    <PermissionDialog title="Tool use" workerBadge={workerBadge}>
+    <PermissionDialog title={t('fallback.title')} workerBadge={workerBadge}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Text>
           {userFacingName}(

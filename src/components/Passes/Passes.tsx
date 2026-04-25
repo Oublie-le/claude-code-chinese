@@ -19,6 +19,7 @@ import type {
 } from '../../services/oauth/types.js'
 import { count } from '../../utils/array.js'
 import { logError } from '../../utils/log.js'
+import { t } from '../../utils/language.js'
 import { Pane } from '@anthropic/ink'
 
 type PassStatus = {
@@ -130,12 +131,12 @@ export function Passes({ onDone }: Props): React.ReactNode {
     return (
       <Pane>
         <Box flexDirection="column" gap={1}>
-          <Text dimColor>Loading guest pass information…</Text>
+          <Text dimColor>{t('passes.loading')}</Text>
           <Text dimColor italic>
             {exitState.pending ? (
-              <>Press {exitState.keyName} again to exit</>
+              <>{t('exit.pressAgain', { key: exitState.keyName ?? '' })}</>
             ) : (
-              <>Esc to cancel</>
+              <>{t('passes.esc')}</>
             )}
           </Text>
         </Box>
@@ -147,12 +148,12 @@ export function Passes({ onDone }: Props): React.ReactNode {
     return (
       <Pane>
         <Box flexDirection="column" gap={1}>
-          <Text>Guest passes are not currently available.</Text>
+          <Text>{t('passes.unavailable')}</Text>
           <Text dimColor italic>
             {exitState.pending ? (
-              <>Press {exitState.keyName} again to exit</>
+              <>{t('exit.pressAgain', { key: exitState.keyName ?? '' })}</>
             ) : (
-              <>Esc to cancel</>
+              <>{t('passes.esc')}</>
             )}
           </Text>
         </Box>
@@ -198,7 +199,7 @@ export function Passes({ onDone }: Props): React.ReactNode {
   return (
     <Pane>
       <Box flexDirection="column" gap={1}>
-        <Text color="permission">Guest passes · {availableCount} left</Text>
+        <Text color="permission">{t('passes.header', { count: String(availableCount) })}</Text>
 
         <Box flexDirection="row" marginLeft={2}>
           {sortedPasses.slice(0, 3).map(pass => renderTicket(pass))}
@@ -213,8 +214,8 @@ export function Passes({ onDone }: Props): React.ReactNode {
         <Box flexDirection="column" marginLeft={2}>
           <Text dimColor>
             {referrerReward
-              ? `Share a free week of Claude Code with friends. If they love it and subscribe, you'll get ${formatCreditAmount(referrerReward)} of extra usage to keep building. `
-              : 'Share a free week of Claude Code with friends. '}
+              ? t('passes.share.reward', { amount: formatCreditAmount(referrerReward) })
+              : t('passes.share')}
             <Link
               url={
                 referrerReward
@@ -222,7 +223,7 @@ export function Passes({ onDone }: Props): React.ReactNode {
                   : 'https://support.claude.com/en/articles/12875061-claude-code-guest-passes'
               }
             >
-              Terms apply.
+              {t('passes.terms')}
             </Link>
           </Text>
         </Box>
@@ -230,9 +231,9 @@ export function Passes({ onDone }: Props): React.ReactNode {
         <Box>
           <Text dimColor italic>
             {exitState.pending ? (
-              <>Press {exitState.keyName} again to exit</>
+              <>{t('exit.pressAgain', { key: exitState.keyName ?? '' })}</>
             ) : (
-              <>Enter to copy link · Esc to cancel</>
+              <>{t('passes.footer')}</>
             )}
           </Text>
         </Box>

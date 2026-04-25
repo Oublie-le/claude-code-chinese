@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Text } from '@anthropic/ink'
 import { useAppState } from '../../state/AppState.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   teamsSelected: boolean
@@ -31,7 +32,7 @@ export function TeamStatus({
     showHint && teamsSelected ? (
       <>
         <Text dimColor>· </Text>
-        <Text dimColor>Enter to view</Text>
+        <Text dimColor>{t('teamStatus.enterToView')}</Text>
       </>
     ) : null
 

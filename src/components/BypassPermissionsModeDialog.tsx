@@ -5,6 +5,7 @@ import { gracefulShutdownSync } from '../utils/gracefulShutdown.js'
 import { updateSettingsForSource } from '../utils/settings/settings.js'
 import { Select } from './CustomSelect/index.js'
 import { Dialog } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 
 type Props = {
   onAccept(): void
@@ -41,7 +42,7 @@ export function BypassPermissionsModeDialog({
 
   return (
     <Dialog
-      title="WARNING: Claude Code running in Bypass Permissions mode"
+      title={t('bypass.title')}
       color="error"
       onCancel={handleEscape}
     >
@@ -63,8 +64,8 @@ export function BypassPermissionsModeDialog({
 
       <Select
         options={[
-          { label: 'No, exit', value: 'decline' },
-          { label: 'Yes, I accept', value: 'accept' },
+          { label: t('bypass.decline'), value: 'decline' },
+          { label: t('bypass.accept'), value: 'accept' },
         ]}
         onChange={value => onChange(value as 'accept' | 'decline')}
       />

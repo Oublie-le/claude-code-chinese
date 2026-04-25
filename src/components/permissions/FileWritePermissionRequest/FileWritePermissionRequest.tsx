@@ -6,6 +6,7 @@ import { FileWriteTool } from '@claude-code-best/builtin-tools/tools/FileWriteTo
 import { getCwd } from '../../../utils/cwd.js'
 import { isENOENT } from '../../../utils/errors.js'
 import { readFileSync } from '../../../utils/fileRead.js'
+import { t } from '../../../utils/language.js'
 import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js'
 import {
   createSingleEditDiffConfig,
@@ -77,7 +78,7 @@ export function FileWritePermissionRequest(
       onDone={props.onDone}
       onReject={props.onReject}
       workerBadge={props.workerBadge}
-      title={fileExists ? 'Overwrite file' : 'Create file'}
+      title={fileExists ? t('fileWrite.overwrite') : t('fileWrite.create')}
       subtitle={relative(getCwd(), file_path)}
       question={
         <Text>

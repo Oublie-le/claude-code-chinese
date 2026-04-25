@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Text } from '@anthropic/ink'
 import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js'
+import { t } from '../../utils/language.js'
 
 export function SandboxDoctorSection(): React.ReactNode {
   if (!SandboxManager.isSupportedPlatform()) {
@@ -21,14 +22,14 @@ export function SandboxDoctorSection(): React.ReactNode {
 
   const statusColor = hasErrors ? ('error' as const) : ('warning' as const)
   const statusText = hasErrors
-    ? 'Missing dependencies'
-    : 'Available (with warnings)'
+    ? t('sandboxDoctor.missingDeps')
+    : t('sandboxDoctor.withWarnings')
 
   return (
     <Box flexDirection="column">
-      <Text bold>Sandbox</Text>
+      <Text bold>{t('sandboxDoctor.sandboxTitle')}</Text>
       <Text>
-        └ Status: <Text color={statusColor}>{statusText}</Text>
+        {t('sandboxDoctor.statusLabel')}<Text color={statusColor}>{statusText}</Text>
       </Text>
       {depCheck.errors.map((e, i) => (
         <Text key={i} color="error">
@@ -41,7 +42,7 @@ export function SandboxDoctorSection(): React.ReactNode {
         </Text>
       ))}
       {hasErrors && (
-        <Text dimColor>└ Run /sandbox for install instructions</Text>
+        <Text dimColor>{t('sandboxDoctor.installInstructions')}</Text>
       )}
     </Box>
   )

@@ -12,6 +12,7 @@ import * as React from 'react'
 import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js'
 import type { HookEventMetadata } from 'src/utils/hooks/hooksConfigManager.js'
 import { Box, Link, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import { plural } from '../../utils/stringUtils.js'
 import { Select } from '../CustomSelect/select.js'
 import { Dialog } from '@anthropic/ink'
@@ -33,28 +34,25 @@ export function SelectEventMode({
   onSelectEvent,
   onCancel,
 }: Props): React.ReactNode {
-  const subtitle = `${totalHooksCount} ${plural(totalHooksCount, 'hook')} configured`
+  const subtitle = t('hooks.hooksConfigured', { count: String(totalHooksCount), hook: plural(totalHooksCount, 'hook') })
 
   return (
-    <Dialog title="Hooks" subtitle={subtitle} onCancel={onCancel}>
+    <Dialog title={t('hooks.hooksTitle')} subtitle={subtitle} onCancel={onCancel}>
       <Box flexDirection="column" gap={1}>
         {restrictedByPolicy && (
           <Box flexDirection="column">
             <Text color="suggestion">
-              {figures.info} Hooks Restricted by Policy
+              {figures.info} {t('hooks.restrictedByPolicy')}
             </Text>
             <Text dimColor>
-              Only hooks from managed settings can run. User-defined hooks from
-              ~/.claude/settings.json, .claude/settings.json, and
-              .claude/settings.local.json are blocked.
+              {t('hooks.restrictedDescription')}
             </Text>
           </Box>
         )}
 
         <Box flexDirection="column">
           <Text dimColor>
-            {figures.info} This menu is read-only. To add or modify hooks, edit
-            settings.json directly or ask Claude.{' '}
+            {figures.info} {t('hooks.readOnlyHint')}{' '}
             <Link url="https://code.claude.com/docs/en/hooks">Learn more</Link>
           </Text>
         </Box>

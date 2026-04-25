@@ -8,6 +8,7 @@ import { openBrowser } from '../utils/browser.js'
 import { errorMessage } from '../utils/errors.js'
 import { gracefulShutdown } from '../utils/gracefulShutdown.js'
 import { flushSessionStorage } from '../utils/sessionStorage.js'
+import { t } from '../utils/language.js'
 
 const DESKTOP_DOCS_URL = 'https://clau.de/desktop'
 
@@ -120,7 +121,7 @@ export function DesktopHandoff({ onDone }: Props): React.ReactNode {
     return (
       <Box flexDirection="column" paddingX={2}>
         <Text color="error">Error: {error}</Text>
-        <Text dimColor>Press any key to continue…</Text>
+        <Text dimColor>{t('desktop.error.anykey')}</Text>
       </Box>
     )
   }
@@ -129,7 +130,7 @@ export function DesktopHandoff({ onDone }: Props): React.ReactNode {
     return (
       <Box flexDirection="column" paddingX={2}>
         <Text>{downloadMessage}</Text>
-        <Text>Download now? (y/n)</Text>
+        <Text>{t('desktop.download.prompt')}</Text>
       </Box>
     )
   }
@@ -138,10 +139,10 @@ export function DesktopHandoff({ onDone }: Props): React.ReactNode {
     Exclude<DesktopHandoffState, 'error' | 'prompt-download'>,
     string
   > = {
-    checking: 'Checking for Claude Desktop…',
-    flushing: 'Saving session…',
-    opening: 'Opening Claude Desktop…',
-    success: 'Opening in Claude Desktop…',
+    checking: t('desktop.checking'),
+    flushing: t('desktop.flushing'),
+    opening: t('desktop.opening'),
+    success: t('desktop.success'),
   }
 
   return <LoadingState message={messages[state]} />

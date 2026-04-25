@@ -11,6 +11,7 @@ import {
 } from '../utils/settings/constants.js'
 import { plural } from '../utils/stringUtils.js'
 import { ContextSuggestions } from './ContextSuggestions.js'
+import { t } from '../utils/language.js'
 
 const RESERVED_CATEGORY_NAME = 'Autocompact buffer'
 
@@ -152,7 +153,7 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
 
   return (
     <Box flexDirection="column" paddingLeft={1}>
-      <Text bold>Context Usage</Text>
+      <Text bold>{t('context.title')}</Text>
       <Box flexDirection="row" gap={2}>
         {/* Fixed size grid */}
         <Box flexDirection="column" flexShrink={0}>
@@ -192,7 +193,7 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
           <CollapseStatus />
           <Text> </Text>
           <Text dimColor italic>
-            Estimated usage by category
+            {t('context.estimated')}
           </Text>
           {visibleCategories.map((cat, index) => {
             const tokenDisplay = formatTokens(cat.tokens)
@@ -252,16 +253,16 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
         {mcpTools.length > 0 && (
           <Box flexDirection="column" marginTop={1}>
             <Box>
-              <Text bold>MCP tools</Text>
+              <Text bold>{t('context.mcpTools')}</Text>
               <Text dimColor>
                 {' '}
-                · /mcp{hasDeferredMcpTools ? ' (loaded on-demand)' : ''}
+                · /mcp{hasDeferredMcpTools ? ` ${t('context.loadedOnDemand')}` : ''}
               </Text>
             </Box>
             {/* Show loaded tools first */}
             {mcpTools.some(t => t.isLoaded) && (
               <Box flexDirection="column" marginTop={1}>
-                <Text dimColor>Loaded</Text>
+                <Text dimColor>{t('context.loadedLabel')}</Text>
                 {mcpTools
                   .filter(t => t.isLoaded)
                   .map((tool, i) => (
@@ -275,7 +276,7 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
             {/* Show available (deferred) tools */}
             {hasDeferredMcpTools && mcpTools.some(t => !t.isLoaded) && (
               <Box flexDirection="column" marginTop={1}>
-                <Text dimColor>Available</Text>
+                <Text dimColor>{t('context.availableLabel')}</Text>
                 {mcpTools
                   .filter(t => !t.isLoaded)
                   .map((tool, i) => (
@@ -358,7 +359,7 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
         {agents.length > 0 && (
           <Box flexDirection="column" marginTop={1}>
             <Box>
-              <Text bold>Custom agents</Text>
+              <Text bold>{t('context.customAgents')}</Text>
               <Text dimColor> · /agents</Text>
             </Box>
             {Array.from(groupBySource(agents).entries()).map(
@@ -380,7 +381,7 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
         {memoryFiles.length > 0 && (
           <Box flexDirection="column" marginTop={1}>
             <Box>
-              <Text bold>Memory files</Text>
+              <Text bold>{t('context.memoryFiles')}</Text>
               <Text dimColor> · /memory</Text>
             </Box>
             {memoryFiles.map((file, i) => (
@@ -395,7 +396,7 @@ export function ContextVisualization({ data }: Props): React.ReactNode {
         {skills && skills.tokens > 0 && (
           <Box flexDirection="column" marginTop={1}>
             <Box>
-              <Text bold>Skills</Text>
+              <Text bold>{t('context.skillsLabel')}</Text>
               <Text dimColor> · /skills</Text>
             </Box>
             {Array.from(groupBySource(skills.skillFrontmatter).entries()).map(

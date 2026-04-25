@@ -6,6 +6,7 @@ import { removeSandboxViolationTags } from 'src/utils/sandbox/sandbox-ui-utils.j
 import { Box, Text } from '@anthropic/ink'
 import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js'
 import { countCharInString } from '../utils/stringUtils.js'
+import { t } from '../utils/language.js'
 import { MessageResponse } from './MessageResponse.js'
 
 const MAX_RENDERED_LINES = 10
@@ -27,7 +28,7 @@ export function FallbackToolUseErrorMessage({
   let error: string
 
   if (typeof result !== 'string') {
-    error = 'Tool execution failed'
+    error = t('tool.error.execFailed')
   } else {
     const extractedError = extractTag(result, 'tool_use_error') ?? result
     // Remove sandbox_violations tags from error display (Claude still sees them in the tool result)
@@ -36,7 +37,7 @@ export function FallbackToolUseErrorMessage({
     const withoutErrorTags = withoutSandboxViolations.replace(/<\/?error>/g, '')
     const trimmed = withoutErrorTags.trim()
     if (!verbose && trimmed.includes('InputValidationError: ')) {
-      error = 'Invalid tool parameters'
+      error = t('tool.error.invalidParams')
     } else if (
       trimmed.startsWith('Error: ') ||
       trimmed.startsWith('Cancelled: ')
@@ -64,13 +65,13 @@ export function FallbackToolUseErrorMessage({
           // rendering bug
           <Box>
             <Text dimColor>
-              … +{plusLines} {plusLines === 1 ? 'line' : 'lines'} (
+              … +{plusLines} {plusLines === 1 ? t('tool.error.line') : t('tool.error.lines')} (
             </Text>
             <Text dimColor bold>
               {transcriptShortcut}
             </Text>
             <Text> </Text>
-            <Text dimColor>to see all)</Text>
+            <Text dimColor>{t('tool.error.toSeeAll')}</Text>
           </Box>
         )}
       </Box>

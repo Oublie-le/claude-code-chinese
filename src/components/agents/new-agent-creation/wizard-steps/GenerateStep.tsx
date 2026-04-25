@@ -6,6 +6,7 @@ import { useKeybinding } from '../../../../keybindings/useKeybinding.js'
 import { createAbortController } from '../../../../utils/abortController.js'
 import { editPromptInEditor } from '../../../../utils/promptEditor.js'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
+import { t } from '../../../../utils/language.js'
 import { Spinner } from '../../../Spinner.js'
 import TextInput from '../../../TextInput.js'
 import { useWizard } from '../../../wizard/index.js'
@@ -29,7 +30,7 @@ export function GenerateStep(): ReactNode {
       abortControllerRef.current.abort()
       abortControllerRef.current = null
       setIsGenerating(false)
-      setError('Generation cancelled')
+      setError(t('wizard.generate.cancelled'))
     }
   }, [])
 
@@ -76,7 +77,7 @@ export function GenerateStep(): ReactNode {
   const handleGenerate = async (): Promise<void> => {
     const trimmedPrompt = prompt.trim()
     if (!trimmedPrompt) {
-      setError('Please describe what the agent should do')
+      setError(t('wizard.generate.error.empty'))
       return
     }
 
@@ -127,8 +128,7 @@ export function GenerateStep(): ReactNode {
     }
   }
 
-  const subtitle =
-    'Describe what this agent should do and when it should be used (be comprehensive for best results)'
+  const subtitle = t('wizard.generate.subtitle')
 
   if (isGenerating) {
     return (
@@ -145,7 +145,7 @@ export function GenerateStep(): ReactNode {
       >
         <Box flexDirection="row" alignItems="center">
           <Spinner />
-          <Text color="suggestion"> Generating agent from description...</Text>
+          <Text color="suggestion"> {t('wizard.generate.generating')}</Text>
         </Box>
       </WizardDialogLayout>
     )
@@ -187,7 +187,7 @@ export function GenerateStep(): ReactNode {
           value={prompt}
           onChange={setPrompt}
           onSubmit={handleGenerate}
-          placeholder="e.g., Help me write unit tests for my code..."
+          placeholder={t('wizard.generate.placeholder')}
           columns={80}
           cursorOffset={cursorOffset}
           onChangeCursorOffset={setCursorOffset}

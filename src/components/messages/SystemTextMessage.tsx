@@ -15,6 +15,7 @@ import { basename } from 'path'
 import { MessageResponse } from '../MessageResponse.js'
 
 import { openPath } from '../../utils/browser.js'
+import { t } from '../../utils/language.js'
 /* eslint-disable @typescript-eslint/no-require-imports */
 const teamMemSaved = feature('TEAMMEM')
   ? (require('./teamMemSaved.js') as typeof import('./teamMemSaved.js'))
@@ -95,7 +96,7 @@ export function SystemTextMessage({
         <Box minWidth={2}>
           <Text color="error">{BLACK_CIRCLE}</Text>
         </Box>
-        <Text dimColor>All background agents stopped</Text>
+        <Text dimColor>{t('system.allAgentsStopped')}</Text>
       </Box>
     )
   }
@@ -126,7 +127,7 @@ export function SystemTextMessage({
     return (
       <Box marginTop={addMargin ? 1 : 0} backgroundColor={bg} width="100%">
         <Text dimColor>{TEARDROP_ASTERISK} </Text>
-        <Text>Allowed </Text>
+        <Text>{t('system.allowed')}</Text>
         <Text bold>{(message.commands as string[]).join(', ')}</Text>
       </Box>
     )

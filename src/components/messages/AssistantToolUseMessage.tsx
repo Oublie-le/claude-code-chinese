@@ -14,6 +14,7 @@ import {
 } from '../../Tool.js'
 import type { ProgressMessage } from '../../types/message.js'
 import { useIsClassifierChecking } from '../../utils/classifierApprovalsHook.js'
+import { t } from '../../utils/language.js'
 import { logError } from '../../utils/log.js'
 import type { buildMessageLookups } from '../../utils/messages.js'
 import { MessageResponse } from '../MessageResponse.js'
@@ -205,13 +206,13 @@ export function AssistantToolUseMessage({
             <MessageResponse height={1}>
               <Text dimColor>
                 {isAutoClassifier
-                  ? 'Auto classifier checking\u2026'
-                  : 'Bash classifier checking\u2026'}
+                  ? t('tooluse.autoClassifier')
+                  : t('tooluse.bashClassifier')}
               </Text>
             </MessageResponse>
           ) : isWaitingForPermission ? (
             <MessageResponse height={1}>
-              <Text dimColor>Waiting for permission…</Text>
+              <Text dimColor>{t('tooluse.waitingPermission')}</Text>
             </MessageResponse>
           ) : (
             renderToolUseProgressMessage(

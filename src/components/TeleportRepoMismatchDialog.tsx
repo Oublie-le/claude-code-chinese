@@ -5,6 +5,7 @@ import {
   removePathFromRepo,
   validateRepoAtPath,
 } from '../utils/githubRepoPathMapping.js'
+import { t } from '../utils/language.js'
 import { Select } from './CustomSelect/index.js'
 import { Dialog } from '@anthropic/ink'
 import { Spinner } from './Spinner.js'
@@ -50,7 +51,7 @@ export function TeleportRepoMismatchDialog({
       setValidating(false)
 
       setErrorMessage(
-        `${getDisplayPath(value)} no longer contains the correct repository. Select another path.`,
+        t('teleport.repoMismatch.noLongerValid', { path: getDisplayPath(value) }),
       )
     },
     [targetRepo, availablePaths, onSelectPath, onCancel],
@@ -60,29 +61,29 @@ export function TeleportRepoMismatchDialog({
     ...availablePaths.map(path => ({
       label: (
         <Text>
-          Use <Text bold>{getDisplayPath(path)}</Text>
+          {t('teleport.repoMismatch.use')} <Text bold>{getDisplayPath(path)}</Text>
         </Text>
       ),
       value: path,
     })),
-    { label: 'Cancel', value: 'cancel' },
+    { label: t('teleport.cancel'), value: 'cancel' },
   ]
 
   return (
-    <Dialog title="Teleport to Repo" onCancel={onCancel} color="background">
+    <Dialog title={t('teleport.repoMismatch.title')} onCancel={onCancel} color="background">
       {availablePaths.length > 0 ? (
         <>
           <Box flexDirection="column" gap={1}>
             {errorMessage && <Text color="error">{errorMessage}</Text>}
             <Text>
-              Open Claude Code in <Text bold>{targetRepo}</Text>:
+              {t('teleport.repoMismatch.openIn')} <Text bold>{targetRepo}</Text>:
             </Text>
           </Box>
 
           {validating ? (
             <Box>
               <Spinner />
-              <Text> Validating repository…</Text>
+              <Text> {t('teleport.repoMismatch.validating')}</Text>
             </Box>
           ) : (
             <Select
@@ -95,7 +96,7 @@ export function TeleportRepoMismatchDialog({
         <Box flexDirection="column" gap={1}>
           {errorMessage && <Text color="error">{errorMessage}</Text>}
           <Text dimColor>
-            Run claude --teleport from a checkout of {targetRepo}
+            {t('teleport.repoMismatch.runFrom')} {targetRepo}
           </Text>
         </Box>
       )}

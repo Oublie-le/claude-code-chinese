@@ -10,6 +10,7 @@ import { Box, Text, stringWidth, wrapAnsi } from '@anthropic/ink'
 import { logEvent } from '../services/analytics/index.js'
 import type { HistoryEntry } from '../utils/config.js'
 import { formatRelativeTimeAgo, truncateToWidth } from '../utils/format.js'
+import { t } from '../utils/language.js'
 import { FuzzyPicker } from '@anthropic/ink'
 
 type Props = {
@@ -95,8 +96,8 @@ export function HistorySearchDialog({
 
   return (
     <FuzzyPicker
-      title="Search prompts"
-      placeholder="Filter history…"
+      title={t('history.title')}
+      placeholder={t('history.placeholder')}
       initialQuery={initialQuery}
       items={filtered}
       getKey={item => String(item.entry.timestamp)}
@@ -111,12 +112,12 @@ export function HistorySearchDialog({
       onCancel={onCancel}
       emptyMessage={q =>
         items === null
-          ? 'Loading…'
+          ? t('history.loading')
           : q
-            ? 'No matching prompts'
-            : 'No history yet'
+            ? t('history.noMatch')
+            : t('history.empty')
       }
-      selectAction="use"
+      selectAction={t('history.selectAction')}
       direction="up"
       previewPosition={previewOnRight ? 'right' : 'bottom'}
       renderItem={(item, isFocused) => (
@@ -151,7 +152,7 @@ export function HistorySearchDialog({
                 {row}
               </Text>
             ))}
-            {more > 0 && <Text dimColor>{`… +${more} more lines`}</Text>}
+            {more > 0 && <Text dimColor>{t('history.moreLines', { count: String(more) })}</Text>}
           </Box>
         )
       }}

@@ -11,6 +11,7 @@ import { getExternalEditor } from '../../../utils/editor.js'
 import { toIDEDisplayName } from '../../../utils/ide.js'
 import type { ImageDimensions } from '../../../utils/imageResizer.js'
 import { editPromptInEditor } from '../../../utils/promptEditor.js'
+import { t } from '../../../utils/language.js'
 import {
   type OptionWithDescription,
   Select,
@@ -193,8 +194,8 @@ export function QuestionView({
   const otherOption: OptionWithDescription<string> = {
     type: 'input' as const,
     value: '__other__',
-    label: 'Other',
-    placeholder: question.multiSelect ? 'Type something' : 'Type something.',
+    label: t('questionView.other'),
+    placeholder: question.multiSelect ? t('questionView.typeSomething') : t('questionView.typeSomethingDot'),
     initialValue: questionState?.textInputValue ?? '',
     onChange: (value: string) => {
       onUpdateQuestionState(
@@ -293,8 +294,8 @@ export function QuestionView({
                 onCancel={onCancel}
                 submitButtonText={
                   currentQuestionIndex === questions.length - 1
-                    ? 'Submit'
-                    : 'Next'
+                    ? t('questionView.submit')
+                    : t('questionView.next')
                 }
                 onSubmit={onSubmit}
                 onDownFromLastItem={handleDownFromLastItem}
@@ -353,7 +354,7 @@ export function QuestionView({
                     : undefined
                 }
               >
-                {options.length + 1}. Chat about this
+                {options.length + 1}. {t('questionView.chatAboutThis')}
               </Text>
             </Box>
             {isInPlanMode && (
@@ -370,7 +371,7 @@ export function QuestionView({
                       : undefined
                   }
                 >
-                  {options.length + 2}. Skip interview and plan immediately
+                  {options.length + 2}. {t('questionView.skipInterview')}
                 </Text>
               </Box>
             )}
@@ -383,7 +384,7 @@ export function QuestionView({
                   {figures.arrowUp}/{figures.arrowDown} to navigate
                 </>
               ) : (
-                'Tab/Arrow keys to navigate'
+                t('questionView.tabArrowNav')
               )}
               {isOtherFocused && editorName && (
                 <> · ctrl+g to edit in {editorName}</>

@@ -22,6 +22,7 @@ import { toInternalMessages } from '../../utils/messages/mappers.js'
 import { EMPTY_LOOKUPS, normalizeMessages } from '../../utils/messages.js'
 import { plural } from '../../utils/stringUtils.js'
 import { teleportResumeCodeSession } from '../../utils/teleport.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/select.js'
 import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
 import { Message } from '../Message.js'
@@ -154,18 +155,18 @@ function UltraplanSessionDetail({
   if (confirmingStop) {
     return (
       <Dialog
-        title="Stop ultraplan?"
+        title={t('remote.stopUltraplan')}
         onCancel={() => setConfirmingStop(false)}
         color="background"
       >
         <Box flexDirection="column" gap={1}>
           <Text dimColor>
-            This will terminate the Claude Code on the web session.
+            {t('remote.terminateSession')}
           </Text>
           <Select
             options={[
-              { label: 'Terminate session', value: 'stop' as const },
-              { label: 'Back', value: 'back' as const },
+              { label: t('remote.terminateSessionBtn'), value: 'stop' as const },
+              { label: t('remote.backBtn'), value: 'back' as const },
             ]}
             onChange={v => {
               if (v === 'stop') {
@@ -215,14 +216,11 @@ function UltraplanSessionDetail({
         </Link>
         <Select
           options={[
-            {
-              label: 'Review in Claude Code on the web',
-              value: 'open' as const,
-            },
+            { label: t('remote.reviewInBrowser'), value: 'open' as const },
             ...(onKill && running
-              ? [{ label: 'Stop ultraplan', value: 'stop' as const }]
+              ? [{ label: t('remote.stopUltraplanBtn'), value: 'stop' as const }]
               : []),
-            { label: 'Back', value: 'back' as const },
+            { label: t('remote.backBtn'), value: 'back' as const },
           ]}
           onChange={v => {
             switch (v) {
@@ -350,19 +348,18 @@ function ReviewSessionDetail({
   if (confirmingStop) {
     return (
       <Dialog
-        title="Stop ultrareview?"
+        title={t('remote.stopUltrareview')}
         onCancel={() => setConfirmingStop(false)}
         color="background"
       >
         <Box flexDirection="column" gap={1}>
           <Text dimColor>
-            This archives the remote session and stops local tracking. The
-            review will not complete and any findings so far are discarded.
+            {t('remote.stopUltrareviewBody')}
           </Text>
           <Select
             options={[
-              { label: 'Stop ultrareview', value: 'stop' as const },
-              { label: 'Back', value: 'back' as const },
+              { label: t('remote.stopUltrareviewBtn'), value: 'stop' as const },
+              { label: t('remote.backBtn'), value: 'back' as const },
             ]}
             onChange={v => {
               if (v === 'stop') {
@@ -380,15 +377,15 @@ function ReviewSessionDetail({
 
   const options: { label: string; value: MenuAction }[] = completed
     ? [
-        { label: 'Open in Claude Code on the web', value: 'open' },
+        { label: t('remote.reviewInBrowser'), value: 'open' },
         { label: 'Dismiss', value: 'dismiss' },
       ]
     : [
-        { label: 'Open in Claude Code on the web', value: 'open' },
+        { label: t('remote.reviewInBrowser'), value: 'open' },
         ...(onKill && running
-          ? [{ label: 'Stop ultrareview', value: 'stop' as const }]
+          ? [{ label: t('remote.stopUltrareviewBtn'), value: 'stop' as const }]
           : []),
-        { label: 'Back', value: 'back' },
+        { label: t('remote.backBtn'), value: 'back' },
       ]
 
   const handleSelect = (action: MenuAction) => {
@@ -554,7 +551,7 @@ export function RemoteSessionDetailDialog({
       onKeyDown={handleKeyDown}
     >
       <Dialog
-        title="Remote session details"
+        title={t('remote.sessionDetails')}
         onCancel={handleClose}
         color="background"
         inputGuide={exitState =>
@@ -573,7 +570,7 @@ export function RemoteSessionDetailDialog({
       >
         <Box flexDirection="column">
           <Text>
-            <Text bold>Status</Text>:{' '}
+            <Text bold>{t('remote.statusLabel')}</Text>:{' '}
             {displayStatus === 'running' || displayStatus === 'starting' ? (
               <Text color="background">{displayStatus}</Text>
             ) : displayStatus === 'completed' ? (
@@ -583,20 +580,20 @@ export function RemoteSessionDetailDialog({
             )}
           </Text>
           <Text>
-            <Text bold>Runtime</Text>:{' '}
+            <Text bold>{t('remote.runtimeLabel')}</Text>:{' '}
             {formatDuration(
               (session.endTime ?? Date.now()) - session.startTime,
             )}
           </Text>
           <Text wrap="truncate-end">
-            <Text bold>Title</Text>: {displayTitle}
+            <Text bold>{t('remote.titleLabel')}</Text>: {displayTitle}
           </Text>
           <Text>
-            <Text bold>Progress</Text>:{' '}
+            <Text bold>{t('remote.progressLabel')}</Text>:{' '}
             <RemoteSessionProgress session={session} />
           </Text>
           <Text>
-            <Text bold>Session URL</Text>:{' '}
+            <Text bold>{t('remote.sessionUrlLabel')}</Text>:{' '}
             <Link url={getRemoteTaskSessionUrl(session.sessionId)}>
               <Text dimColor>{getRemoteTaskSessionUrl(session.sessionId)}</Text>
             </Link>
@@ -607,7 +604,7 @@ export function RemoteSessionDetailDialog({
         {session.log.length > 0 && (
           <Box flexDirection="column" marginTop={1}>
             <Text>
-              <Text bold>Recent messages</Text>:
+              <Text bold>{t('remote.recentMessages')}</Text>:
             </Text>
             <Box flexDirection="column" height={10} overflowY="hidden">
               {lastMessages.map((msg, i) => (
@@ -631,8 +628,7 @@ export function RemoteSessionDetailDialog({
             </Box>
             <Box marginTop={1}>
               <Text dimColor italic>
-                Showing last {lastMessages.length} of {session.log.length}{' '}
-                messages
+                {t('remote.showingLast', { count: String(lastMessages.length), total: String(session.log.length) })}
               </Text>
             </Box>
           </Box>
@@ -641,13 +637,13 @@ export function RemoteSessionDetailDialog({
         {/* Teleport error message */}
         {teleportError && (
           <Box marginTop={1}>
-            <Text color="error">Teleport failed: {teleportError}</Text>
+            <Text color="error">{t('remote.teleportFailed', { error: teleportError })}</Text>
           </Box>
         )}
 
         {/* Teleporting status */}
         {isTeleporting && (
-          <Text color="background">Teleporting to session…</Text>
+          <Text color="background">{t('remote.teleporting')}</Text>
         )}
       </Dialog>
     </Box>

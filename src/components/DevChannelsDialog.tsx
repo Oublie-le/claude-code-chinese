@@ -3,6 +3,7 @@ import type { ChannelEntry } from '../bootstrap/state.js'
 import { Box, Text, Dialog } from '@anthropic/ink'
 import { gracefulShutdownSync } from '../utils/gracefulShutdown.js'
 import { Select } from './CustomSelect/index.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   channels: ChannelEntry[]
@@ -30,19 +31,17 @@ export function DevChannelsDialog({
 
   return (
     <Dialog
-      title="WARNING: Loading development channels"
+      title={t('devchannel.title')}
       color="error"
       onCancel={handleEscape}
     >
       <Box flexDirection="column" gap={1}>
         <Text>
-          --dangerously-load-development-channels is for local channel
-          development only. Do not use this option to run channels you have
-          downloaded off the internet.
+          {t('devchannel.body1')}
         </Text>
-        <Text>Please use --channels to run a list of approved channels.</Text>
+        <Text>{t('devchannel.body2')}</Text>
         <Text dimColor>
-          Channels:{' '}
+          {t('devchannel.channelsLabel')}{' '}
           {channels
             .map(c =>
               c.kind === 'plugin'
@@ -55,8 +54,8 @@ export function DevChannelsDialog({
 
       <Select
         options={[
-          { label: 'I am using this for local development', value: 'accept' },
-          { label: 'Exit', value: 'exit' },
+          { label: t('devchannel.accept'), value: 'accept' },
+          { label: t('devchannel.exit'), value: 'exit' },
         ]}
         onChange={value => onChange(value as 'accept' | 'exit')}
       />

@@ -12,6 +12,7 @@ import {
   hookSourceInlineDisplayString,
   type IndividualHookConfig,
 } from '../../utils/hooks/hooksSettings.js'
+import { t } from '../../utils/language.js'
 import { plural } from '../../utils/stringUtils.js'
 import { Select } from '../CustomSelect/select.js'
 import { Dialog } from '@anthropic/ink'
@@ -58,15 +59,15 @@ export function SelectMatcherMode({
   if (matchersForSelectedEvent.length === 0) {
     return (
       <Dialog
-        title={`${selectedEvent} - Matchers`}
+        title={`${selectedEvent}${t('hooks.matcherSuffix')}`}
         subtitle={eventDescription}
         onCancel={onCancel}
-        inputGuide={() => <Text>Esc to go back</Text>}
+        inputGuide={() => <Text>{t('hooks.escToGoBack')}</Text>}
       >
         <Box flexDirection="column" gap={1}>
-          <Text dimColor>No hooks configured for this event.</Text>
+          <Text dimColor>{t('hooks.noHooksConfigured')}</Text>
           <Text dimColor>
-            To add hooks, edit settings.json directly or ask Claude.
+            {t('hooks.addHooksHint')}
           </Text>
         </Box>
       </Dialog>
@@ -75,7 +76,7 @@ export function SelectMatcherMode({
 
   return (
     <Dialog
-      title={`${selectedEvent} - Matchers`}
+      title={`${selectedEvent}${t('hooks.matcherSuffix')}`}
       subtitle={eventDescription}
       onCancel={onCancel}
     >
@@ -85,7 +86,7 @@ export function SelectMatcherMode({
             const sourceText = item.sources
               .map(hookSourceInlineDisplayString)
               .join(', ')
-            const matcherLabel = item.matcher || '(all)'
+            const matcherLabel = item.matcher || t('hooks.all')
             return {
               label: `[${sourceText}] ${matcherLabel}`,
               value: item.matcher,

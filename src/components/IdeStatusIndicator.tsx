@@ -4,6 +4,7 @@ import { useIdeConnectionStatus } from '../hooks/useIdeConnectionStatus.js'
 import type { IDESelection } from '../hooks/useIdeSelection.js'
 import { Text } from '@anthropic/ink'
 import type { MCPServerConnection } from '../services/mcp/types.js'
+import { t } from '../utils/language.js'
 
 type IdeStatusIndicatorProps = {
   ideSelection: IDESelection | undefined
@@ -30,7 +31,7 @@ export function IdeStatusIndicator({
     return (
       <Text color="ide" key="selection-indicator" wrap="truncate">
         ⧉ {ideSelection.lineCount}{' '}
-        {ideSelection.lineCount === 1 ? 'line' : 'lines'} selected
+        {ideSelection.lineCount === 1 ? t('ide.status.line') : t('ide.status.lines')} selected
       </Text>
     )
   }
@@ -38,7 +39,7 @@ export function IdeStatusIndicator({
   if (ideSelection.filePath) {
     return (
       <Text color="ide" key="selection-indicator" wrap="truncate">
-        ⧉ In {basename(ideSelection.filePath)}
+        {t('ide.status.inFile', { filename: basename(ideSelection.filePath) })}
       </Text>
     )
   }

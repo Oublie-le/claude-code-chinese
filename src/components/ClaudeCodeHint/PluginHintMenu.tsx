@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Box, Text } from '@anthropic/ink'
 import { Select } from '../CustomSelect/select.js'
 import { PermissionDialog } from '../permissions/PermissionDialog.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   pluginName: string
@@ -49,36 +50,35 @@ export function PluginHintMenu({
     {
       label: (
         <Text>
-          Yes, install <Text bold>{pluginName}</Text>
+          {t('plugin.hint.yes', { name: pluginName })}
         </Text>
       ),
       value: 'yes',
     },
     {
-      label: 'No',
+      label: t('plugin.hint.no'),
       value: 'no',
     },
     {
-      label: "No, and don't show plugin installation hints again",
+      label: t('plugin.hint.disable'),
       value: 'disable',
     },
   ]
 
   return (
-    <PermissionDialog title="Plugin Recommendation">
+    <PermissionDialog title={t('plugin.hint.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1}>
           <Text dimColor>
-            The <Text bold>{sourceCommand}</Text> command suggests installing a
-            plugin.
+            {t('plugin.hint.suggest', { cmd: sourceCommand })}
           </Text>
         </Box>
         <Box>
-          <Text dimColor>Plugin:</Text>
+          <Text dimColor>{t('plugin.hint.label')}</Text>
           <Text> {pluginName}</Text>
         </Box>
         <Box>
-          <Text dimColor>Marketplace:</Text>
+          <Text dimColor>{t('plugin.hint.marketplace')}</Text>
           <Text> {marketplaceName}</Text>
         </Box>
         {pluginDescription && (
@@ -87,7 +87,7 @@ export function PluginHintMenu({
           </Box>
         )}
         <Box marginTop={1}>
-          <Text>Would you like to install it?</Text>
+          <Text>{t('plugin.hint.ask')}</Text>
         </Box>
         <Box>
           <Select

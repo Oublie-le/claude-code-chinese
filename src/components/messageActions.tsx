@@ -9,6 +9,7 @@ import type {
   RenderableMessage,
 } from '../types/message.js'
 import { isEmptyMessageText, SYNTHETIC_MESSAGES } from '../utils/messages.js'
+import { t } from '../utils/language.js'
 
 // Helper type: narrow the first element of MessageContent to a block with known shape.
 // MessageContent = string | ContentBlockParam[] | ContentBlock[], so indexing gives
@@ -334,11 +335,11 @@ export function MessageActionsBar({
           {figures.arrowUp}
           {figures.arrowDown}
         </Text>
-        <Text dimColor> navigate · </Text>
+        <Text dimColor>{t('msgActions.navigate')}</Text>
         <Text bold dimColor={false}>
           esc
         </Text>
-        <Text dimColor> back</Text>
+        <Text dimColor>{t('msgActions.back')}</Text>
       </Box>
     </Box>
   )

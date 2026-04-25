@@ -37,6 +37,7 @@ import {
 } from '../utils/context.js'
 import { getCwd } from '../utils/cwd.js'
 import { logForDebugging } from '../utils/debug.js'
+import { t } from '../utils/language.js'
 import { isFullscreenEnvEnabled } from '../utils/fullscreen.js'
 import {
   createBaseHookInput,
@@ -359,7 +360,7 @@ function StatusLineInner({
       if (!checkHasTrustDialogAccepted()) {
         addNotification({
           key: 'statusline-trust-blocked',
-          text: 'statusline skipped · restart to fix',
+          text: t('statusline.skipped'),
           color: 'warning',
           priority: 'low',
         })

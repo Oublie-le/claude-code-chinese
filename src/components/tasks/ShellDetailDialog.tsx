@@ -19,6 +19,7 @@ import {
 import { tailFile } from '../../utils/fsOperations.js'
 import { getTaskOutputPath } from '../../utils/task/diskOutput.js'
 import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 
 type Props = {
   shell: DeepImmutable<LocalShellTaskState>
@@ -121,7 +122,7 @@ export function ShellDetailDialog({
       onKeyDown={handleKeyDown}
     >
       <Dialog
-        title={isMonitor ? 'Monitor details' : 'Shell details'}
+        title={isMonitor ? t('shellDetail.monitorTitle') : t('shellDetail.shellTitle')}
         onCancel={handleClose}
         color="background"
         inputGuide={exitState =>
@@ -140,7 +141,7 @@ export function ShellDetailDialog({
       >
         <Box flexDirection="column">
           <Text>
-            <Text bold>Status:</Text>{' '}
+            <Text bold>{t('shellDetail.status')}</Text>{' '}
             {shell.status === 'running' ? (
               <Text color="background">
                 {shell.status}
@@ -162,18 +163,18 @@ export function ShellDetailDialog({
             )}
           </Text>
           <Text>
-            <Text bold>Runtime:</Text>{' '}
+            <Text bold>{t('shellDetail.runtime')}</Text>{' '}
             {formatDuration((shell.endTime ?? Date.now()) - shell.startTime)}
           </Text>
           <Text wrap="wrap">
-            <Text bold>{isMonitor ? 'Script:' : 'Command:'}</Text>{' '}
+            <Text bold>{isMonitor ? t('shellDetail.script') : t('shellDetail.command')}</Text>{' '}
             {displayCommand}
           </Text>
         </Box>
 
         <Box flexDirection="column">
-          <Text bold>Output:</Text>
-          <Suspense fallback={<Text dimColor>Loading output…</Text>}>
+          <Text bold>{t('shellDetail.output')}</Text>
+          <Suspense fallback={<Text dimColor>{t('shellDetail.loadingOutput')}</Text>}>
             <ShellOutputContent
               outputPromise={deferredOutputPromise}
               columns={columns}
@@ -197,7 +198,7 @@ function ShellOutputContent({
   const { content, bytesTotal } = use(outputPromise)
 
   if (!content) {
-    return <Text dimColor>No output available</Text>
+    return <Text dimColor>{t('shellDetail.noOutput')}</Text>
   }
 
   // Find last 10 line boundaries via lastIndexOf
@@ -236,7 +237,7 @@ function ShellOutputContent({
         ))}
       </Box>
       <Text dimColor italic>
-        {`Showing ${rendered.length} lines`}
+        {t('shellDetail.showingLines', { count: String(rendered.length) })}
         {isIncomplete ? ` of ${formatFileSize(bytesTotal)}` : ''}
       </Text>
     </>

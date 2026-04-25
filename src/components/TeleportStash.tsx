@@ -4,6 +4,7 @@ import { Box, Text, Dialog } from '@anthropic/ink'
 import { logForDebugging } from '../utils/debug.js'
 import type { GitFileStatus } from '../utils/git.js'
 import { getFileStatus, stashToCleanState } from '../utils/git.js'
+import { t } from '../utils/language.js'
 import { Select } from './CustomSelect/index.js'
 import { Spinner } from './Spinner.js'
 
@@ -36,7 +37,7 @@ export function TeleportStash({
         logForDebugging(`Error getting changed files: ${errorMessage}`, {
           level: 'error',
         })
-        setError('Failed to get changed files')
+        setError(t('teleport.stash.failedToGet'))
       } finally {
         setLoading(false)
       }
@@ -81,7 +82,7 @@ export function TeleportStash({
       <Box flexDirection="column" padding={1}>
         <Box marginBottom={1}>
           <Spinner />
-          <Text> Checking git status{figures.ellipsis}</Text>
+          <Text> {t('teleport.stash.checking')}</Text>
         </Box>
       </Box>
     )
@@ -91,12 +92,12 @@ export function TeleportStash({
     return (
       <Box flexDirection="column" padding={1}>
         <Text bold color="error">
-          Error: {error}
+          {t('teleport.stash.errorPrefix')} {error}
         </Text>
         <Box marginTop={1}>
-          <Text dimColor>Press </Text>
-          <Text bold>Escape</Text>
-          <Text dimColor> to cancel</Text>
+          <Text dimColor>{t('teleport.stash.pressEscape')} </Text>
+          <Text bold>{t('teleport.stash.escape')}</Text>
+          <Text dimColor>{t('teleport.stash.toCancel')}</Text>
         </Box>
       </Box>
     )
@@ -105,39 +106,39 @@ export function TeleportStash({
   const showFileCount = changedFiles.length > 8
 
   return (
-    <Dialog title="Working Directory Has Changes" onCancel={onCancel}>
+    <Dialog title={t('teleport.stash.title')} onCancel={onCancel}>
       <Text>
-        Teleport will switch git branches. The following changes were found:
+        {t('teleport.stash.intro')}
       </Text>
 
       <Box flexDirection="column" paddingLeft={2}>
         {changedFiles.length > 0 ? (
           showFileCount ? (
-            <Text>{changedFiles.length} files changed</Text>
+            <Text>{t('teleport.stash.filesChanged', { count: String(changedFiles.length) })}</Text>
           ) : (
             changedFiles.map((file: string, index: number) => (
               <Text key={index}>{file}</Text>
             ))
           )
         ) : (
-          <Text dimColor>No changes detected</Text>
+          <Text dimColor>{t('teleport.stash.noChanges')}</Text>
         )}
       </Box>
 
       <Text>
-        Would you like to stash these changes and continue with teleport?
+        {t('teleport.stash.question')}
       </Text>
 
       {stashing ? (
         <Box>
           <Spinner />
-          <Text> Stashing changes...</Text>
+          <Text> {t('teleport.stash.stashing')}</Text>
         </Box>
       ) : (
         <Select
           options={[
-            { label: 'Stash changes and continue', value: 'stash' },
-            { label: 'Exit', value: 'exit' },
+            { label: t('teleport.stash.stashAndContinue'), value: 'stash' },
+            { label: t('teleport.exit'), value: 'exit' },
           ]}
           onChange={handleSelectChange}
         />

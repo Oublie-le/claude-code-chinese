@@ -7,6 +7,7 @@ import {
   AuthenticationCancelledError,
   performMCPOAuthFlow,
 } from '../../services/mcp/auth.js'
+import { t } from '../../utils/language.js'
 import { capitalize } from '../../utils/stringUtils.js'
 import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js'
 import { Select } from '../CustomSelect/index.js'
@@ -105,23 +106,22 @@ export function MCPAgentServerMenu({
   if (isAuthenticating) {
     return (
       <Box flexDirection="column" gap={1} padding={1}>
-        <Text color="claude">Authenticating with {agentServer.name}…</Text>
+        <Text color="claude">{t('mcpAgent.authenticatingWith', { name: agentServer.name })}</Text>
         <Box>
           <Spinner />
-          <Text> A browser window will open for authentication</Text>
+          <Text>{t('mcpAgent.browserWillOpen')}</Text>
         </Box>
         {authorizationUrl && (
           <Box flexDirection="column">
             <Text dimColor>
-              If your browser doesn&apos;t open automatically, copy this URL
-              manually:
+              {t('mcpAgent.browserNotOpen')}
             </Text>
             <Link url={authorizationUrl} />
           </Box>
         )}
         <Box marginLeft={3}>
           <Text dimColor>
-            Return here after authenticating in your browser.{' '}
+            {t('mcpAgent.returnAfterAuth')}{' '}
             <ConfigurableShortcutHint
               action="confirm:no"
               context="Confirmation"
@@ -139,24 +139,24 @@ export function MCPAgentServerMenu({
   // Only show authenticate option for HTTP/SSE servers
   if (agentServer.needsAuth) {
     menuOptions.push({
-      label: agentServer.isAuthenticated ? 'Re-authenticate' : 'Authenticate',
+      label: agentServer.isAuthenticated ? t('mcpAgent.reAuthenticate') : t('mcpAgent.authenticate'),
       value: 'auth',
     })
   }
 
   menuOptions.push({
-    label: 'Back',
+    label: t('mcpAgent.back'),
     value: 'back',
   })
 
   return (
     <Dialog
       title={`${capitalizedServerName} MCP Server`}
-      subtitle="agent-only"
+      subtitle={t('mcpAgent.agentOnly')}
       onCancel={onCancel}
       inputGuide={exitState =>
         exitState.pending ? (
-          <Text>Press {exitState.keyName} again to exit</Text>
+          <Text>{t('mcpAgent.pressAgainToExit', { keyName: exitState.keyName ?? '' })}</Text>
         ) : (
           <Byline>
             <KeyboardShortcutHint shortcut="↑↓" action="navigate" />
@@ -173,46 +173,44 @@ export function MCPAgentServerMenu({
     >
       <Box flexDirection="column" gap={0}>
         <Box>
-          <Text bold>Type: </Text>
+          <Text bold>{t('mcpAgent.typeLabel')}</Text>
           <Text dimColor>{agentServer.transport}</Text>
         </Box>
 
         {agentServer.url && (
           <Box>
-            <Text bold>URL: </Text>
+            <Text bold>{t('mcpAgent.urlLabel')}</Text>
             <Text dimColor>{agentServer.url}</Text>
           </Box>
         )}
 
         {agentServer.command && (
           <Box>
-            <Text bold>Command: </Text>
+            <Text bold>{t('mcpAgent.commandLabel')}</Text>
             <Text dimColor>{agentServer.command}</Text>
           </Box>
         )}
 
         <Box>
-          <Text bold>Used by: </Text>
+          <Text bold>{t('mcpAgent.usedByLabel')}</Text>
           <Text dimColor>{agentServer.sourceAgents.join(', ')}</Text>
         </Box>
 
         <Box marginTop={1}>
-          <Text bold>Status: </Text>
+          <Text bold>{t('mcpAgent.statusLabel')}</Text>
           <Text>
-            {color('inactive', theme)(figures.radioOff)} not connected
-            (agent-only)
+            {color('inactive', theme)(figures.radioOff)} {t('mcpAgent.notConnected')}
           </Text>
         </Box>
 
         {agentServer.needsAuth && (
           <Box>
-            <Text bold>Auth: </Text>
+            <Text bold>{t('mcpAgent.authLabel')}</Text>
             {agentServer.isAuthenticated ? (
-              <Text>{color('success', theme)(figures.tick)} authenticated</Text>
+              <Text>{color('success', theme)(figures.tick)} {t('mcpAgent.authenticated')}</Text>
             ) : (
               <Text>
-                {color('warning', theme)(figures.triangleUpOutline)} may need
-                authentication
+                {color('warning', theme)(figures.triangleUpOutline)} {t('mcpAgent.mayNeedAuth')}
               </Text>
             )}
           </Box>
@@ -220,12 +218,12 @@ export function MCPAgentServerMenu({
       </Box>
 
       <Box>
-        <Text dimColor>This server connects only when running the agent.</Text>
+        <Text dimColor>{t('mcpAgent.agentOnlyConnect')}</Text>
       </Box>
 
       {error && (
         <Box>
-          <Text color="error">Error: {error}</Text>
+          <Text color="error">{t('mcpAgent.errorLabel', { error })}</Text>
         </Box>
       )}
 

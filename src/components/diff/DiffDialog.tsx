@@ -9,6 +9,7 @@ import { useKeybindings } from '../../keybindings/useKeybinding.js'
 import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js'
 import type { Message } from '../../types/message.js'
 import { plural } from '../../utils/stringUtils.js'
+import { t } from '../../utils/language.js'
 import { Byline, Dialog } from '@anthropic/ink'
 import { DiffDetailView } from './DiffDetailView.js'
 import { DiffFileList } from './DiffFileList.js'
@@ -170,12 +171,12 @@ export function DiffDialog({ messages, onDone }: Props): React.ReactNode {
   // Build header based on current source
   const headerTitle = currentTurn
     ? `Turn ${currentTurn.turnIndex}`
-    : 'Uncommitted changes'
+    : t('diff.uncommittedChanges')
   const headerSubtitle = currentTurn
     ? currentTurn.userPromptPreview
       ? `"${currentTurn.userPromptPreview}"`
       : ''
-    : '(git diff HEAD)'
+    : t('diff.gitDiffHead')
 
   // Source selector pills
   const sourceSelector =
@@ -205,10 +206,10 @@ export function DiffDialog({ messages, onDone }: Props): React.ReactNode {
   // Determine the appropriate message when no files are shown
   const emptyMessage = (() => {
     if (diffData.loading) {
-      return 'Loading diff…'
+      return t('diff.loadingDiff')
     }
     if (currentTurn) {
-      return 'No file changes in this turn'
+      return t('diff.noChangesInTurn')
     }
     // Check if we have stats but no files (too many files case)
     if (
@@ -216,9 +217,9 @@ export function DiffDialog({ messages, onDone }: Props): React.ReactNode {
       diffData.stats.filesCount > 0 &&
       diffData.files.length === 0
     ) {
-      return 'Too many files to display details'
+      return t('diff.tooManyFiles')
     }
-    return 'Working tree is clean'
+    return t('diff.workingTreeClean')
   })()
 
   // Build title with header subtitle inline
@@ -245,18 +246,18 @@ export function DiffDialog({ messages, onDone }: Props): React.ReactNode {
       color="background"
       inputGuide={exitState =>
         exitState.pending ? (
-          <Text>Press {exitState.keyName} again to exit</Text>
+          <Text>{t('diff.pressAgainToExit', { keyName: exitState.keyName ?? '' })}</Text>
         ) : viewMode === 'list' ? (
           <Byline>
-            {sources.length > 1 && <Text>←/→ source</Text>}
-            <Text>↑/↓ select</Text>
-            <Text>Enter view</Text>
-            <Text>{dismissShortcut} close</Text>
+            {sources.length > 1 && <Text>{t('diff.sourceNav')}</Text>}
+            <Text>{t('diff.selectNav')}</Text>
+            <Text>{t('diff.viewDetail')}</Text>
+            <Text>{t('diff.close', { shortcut: dismissShortcut })}</Text>
           </Byline>
         ) : (
           <Byline>
-            <Text>← back</Text>
-            <Text>{dismissShortcut} close</Text>
+            <Text>{t('diff.back')}</Text>
+            <Text>{t('diff.close', { shortcut: dismissShortcut })}</Text>
           </Byline>
         )
       }

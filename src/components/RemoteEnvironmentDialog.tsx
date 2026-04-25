@@ -16,6 +16,7 @@ import type { EnvironmentResource } from '../utils/teleport/environments.js'
 import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js'
 import { Select } from './CustomSelect/select.js'
 import { Byline, Dialog, KeyboardShortcutHint, LoadingState } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 
 const DIALOG_TITLE = 'Select Remote Environment'
 const SETUP_HINT = `Configure environments at: https://claude.ai/code`
@@ -89,7 +90,7 @@ export function RemoteEnvironmentDialog({ onDone }: Props): React.ReactNode {
   if (loadingState === 'loading') {
     return (
       <Dialog title={DIALOG_TITLE} onCancel={onDone} hideInputGuide>
-        <LoadingState message="Loading environments…" />
+        <LoadingState message={t('remoteEnv.loading')} />
       </Dialog>
     )
   }
@@ -107,7 +108,7 @@ export function RemoteEnvironmentDialog({ onDone }: Props): React.ReactNode {
   if (!selectedEnvironment) {
     return (
       <Dialog title={DIALOG_TITLE} subtitle={SETUP_HINT} onCancel={onDone}>
-        <Text>No remote environments available.</Text>
+        <Text>{t('remoteEnv.noEnvironments')}</Text>
       </Dialog>
     )
   }
@@ -182,12 +183,12 @@ function MultipleEnvironmentsContent({
 }): React.ReactNode {
   const sourceSuffix =
     selectedEnvironmentSource && selectedEnvironmentSource !== 'localSettings'
-      ? ` (from ${getSettingSourceName(selectedEnvironmentSource)} settings)`
+      ? t('remoteEnv.fromSettings', { source: getSettingSourceName(selectedEnvironmentSource) })
       : ''
 
   const subtitle = (
     <Text>
-      Currently using: <Text bold>{selectedEnvironment.name}</Text>
+      {t('remoteEnv.currentlyUsing')}<Text bold>{selectedEnvironment.name}</Text>
       {sourceSuffix}
     </Text>
   )
@@ -201,7 +202,7 @@ function MultipleEnvironmentsContent({
     >
       <Text dimColor>{SETUP_HINT}</Text>
       {loadingState === 'updating' ? (
-        <LoadingState message="Updating…" />
+        <LoadingState message={t('remoteEnv.updating')} />
       ) : (
         <Select
           options={environments.map(env => ({

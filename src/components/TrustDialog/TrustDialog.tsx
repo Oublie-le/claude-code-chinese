@@ -15,6 +15,7 @@ import {
 import { getCwd } from '../../utils/cwd.js'
 import { getFsImplementation } from '../../utils/fsOperations.js'
 import { gracefulShutdownSync } from '../../utils/gracefulShutdown.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/index.js'
 import { PermissionDialog } from '../permissions/PermissionDialog.js'
 import {
@@ -187,31 +188,24 @@ export function TrustDialog({ onDone, commands }: Props): React.ReactNode {
     <PermissionDialog
       color="warning"
       titleColor="warning"
-      title="Accessing workspace:"
+      title={t('trust.title')}
     >
       <Box flexDirection="column" gap={1} paddingTop={1}>
         <Text bold>{getFsImplementation().cwd()}</Text>
 
-        <Text>
-          Quick safety check: Is this a project you created or one you trust?
-          (Like your own code, a well-known open source project, or work from
-          your team). If not, take a moment to review what{"'"}s in this folder
-          first.
-        </Text>
-        <Text>
-          Claude Code{"'"}ll be able to read, edit, and execute files here.
-        </Text>
+        <Text>{t('trust.safetyCheck')}</Text>
+        <Text>{t('trust.canReadEditExec')}</Text>
 
         <Text dimColor>
           <Link url="https://code.claude.com/docs/en/security">
-            Security guide
+            {t('trust.securityGuide')}
           </Link>
         </Text>
 
         <Select
           options={[
-            { label: 'Yes, I trust this folder', value: 'enable_all' },
-            { label: 'No, exit', value: 'exit' },
+            { label: t('trust.yes'), value: 'enable_all' },
+            { label: t('trust.no'), value: 'exit' },
           ]}
           onChange={value => onChange(value as 'enable_all' | 'exit')}
           onCancel={() => onChange('exit')}
@@ -219,9 +213,9 @@ export function TrustDialog({ onDone, commands }: Props): React.ReactNode {
 
         <Text dimColor>
           {exitState.pending ? (
-            <>Press {exitState.keyName} again to exit</>
+            <>{t('help.exitAgain', { key: exitState.keyName ?? '' })}</>
           ) : (
-            <>Enter to confirm · Esc to cancel</>
+            <>{t('trust.enterConfirmEsc')}</>
           )}
         </Text>
       </Box>

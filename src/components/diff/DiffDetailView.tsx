@@ -7,6 +7,7 @@ import { getCwd } from '../../utils/cwd.js'
 import { readFileSafe } from '../../utils/file.js'
 import { Divider } from '@anthropic/ink'
 import { StructuredDiff } from '../StructuredDiff.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   filePath: string
@@ -52,15 +53,15 @@ export function DiffDetailView({
       <Box flexDirection="column" width="100%">
         <Box>
           <Text bold>{filePath}</Text>
-          <Text dimColor> (untracked)</Text>
+          <Text dimColor> {t('diff.untracked')}</Text>
         </Box>
         <Divider padding={4} />
         <Box flexDirection="column">
           <Text dimColor italic>
-            New file not yet staged.
+            {t('diff.newFileNotStaged')}
           </Text>
           <Text dimColor italic>
-            Run `git add {filePath}` to see line counts.
+            {t('diff.gitAddHint', { filePath })}
           </Text>
         </Box>
       </Box>
@@ -77,7 +78,7 @@ export function DiffDetailView({
         <Divider padding={4} />
         <Box flexDirection="column">
           <Text dimColor italic>
-            Binary file - cannot display diff
+            {t('diff.binaryCannotDisplay')}
           </Text>
         </Box>
       </Box>
@@ -94,7 +95,7 @@ export function DiffDetailView({
         <Divider padding={4} />
         <Box flexDirection="column">
           <Text dimColor italic>
-            Large file - diff exceeds 1 MB limit
+            {t('diff.largeFileLimit')}
           </Text>
         </Box>
       </Box>
@@ -108,13 +109,13 @@ export function DiffDetailView({
     <Box flexDirection="column" width="100%">
       <Box>
         <Text bold>{filePath}</Text>
-        {isTruncated && <Text dimColor> (truncated)</Text>}
+        {isTruncated && <Text dimColor> {t('diff.truncated')}</Text>}
       </Box>
 
       <Divider padding={4} />
       <Box flexDirection="column">
         {hunks.length === 0 ? (
-          <Text dimColor>No diff content</Text>
+          <Text dimColor>{t('diff.noDiffContent')}</Text>
         ) : (
           hunks.map((hunk, index) => (
             <StructuredDiff
@@ -132,7 +133,7 @@ export function DiffDetailView({
 
       {isTruncated && (
         <Text dimColor italic>
-          … diff truncated (exceeded 400 line limit)
+          {t('diff.diffTruncated')}
         </Text>
       )}
     </Box>

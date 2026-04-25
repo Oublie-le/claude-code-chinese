@@ -33,6 +33,7 @@ import {
 } from '../../../utils/permissions/permissions.js'
 import type { UnreachableRule } from '../../../utils/permissions/shadowedRuleDetection.js'
 import { jsonStringify } from '../../../utils/slowOperations.js'
+import { t } from '../../../utils/language.js'
 import { Pane, Tab, Tabs, useTabHeaderFocus, useTabsWidth } from '@anthropic/ink'
 import { SearchBox } from '../../SearchBox.js'
 import type { Option } from '../../ui/option.js'
@@ -53,7 +54,7 @@ function RuleSourceText({ rule }: RuleSourceTextProps): React.ReactNode {
   return (
     <Text
       dimColor
-    >{`From ${permissionRuleSourceDisplayString(rule.source)}`}</Text>
+    >{t('perm.ruleSource', { source: permissionRuleSourceDisplayString(rule.source) })}</Text>
   )
 }
 
@@ -96,7 +97,7 @@ function RuleDetails({
       {exitState.pending ? (
         <Text dimColor>Press {exitState.keyName} again to exit</Text>
       ) : (
-        <Text dimColor>Esc to cancel</Text>
+        <Text dimColor>{t('perm.escToCancel')}</Text>
       )}
     </Box>
   )
@@ -114,13 +115,11 @@ function RuleDetails({
           borderColor="permission"
         >
           <Text bold color="permission">
-            Rule details
+            {t('perm.ruleDetails')}
           </Text>
           {ruleDescription}
           <Text italic>
-            This rule is configured by managed settings and cannot be modified.
-            {'\n'}
-            Contact your system administrator for more information.
+            {t('perm.managedRule')}
           </Text>
         </Box>
         {footer}
@@ -139,16 +138,16 @@ function RuleDetails({
         borderColor="error"
       >
         <Text bold color="error">
-          Delete {getRuleBehaviorLabel(rule.ruleBehavior)} tool?
+          {t('perm.deleteRule', { behavior: getRuleBehaviorLabel(rule.ruleBehavior) })}
         </Text>
         {ruleDescription}
-        <Text>Are you sure you want to delete this permission rule?</Text>
+        <Text>{t('perm.areYouSure')}</Text>
         <Select
           onChange={_ => (_ === 'yes' ? onDelete() : onCancel())}
           onCancel={onCancel}
           options={[
-            { label: 'Yes', value: 'yes' },
-            { label: 'No', value: 'no' },
+            { label: t('perm.yes'), value: 'yes' },
+            { label: t('perm.no'), value: 'no' },
           ]}
         />
       </Box>
@@ -230,9 +229,9 @@ function PermissionRulesTab({
       <Text>
         {
           {
-            allow: "Claude Code won't ask before using allowed tools.",
-            ask: 'Claude Code will always ask for confirmation before using these tools.',
-            deny: 'Claude Code will always reject requests to use denied tools.',
+            allow: t('perm.allowDesc'),
+            ask: t('perm.askDesc'),
+            deny: t('perm.denyDesc'),
           }[tab]
         }
       </Text>
@@ -351,7 +350,7 @@ export function PermissionRuleList({
       // Only show "Add a new rule" for allow and deny tabs (and not when searching)
       if (tab !== 'workspace' && tab !== 'recent' && !query) {
         options.push({
-          label: `Add a new rule${figures.ellipsis}`,
+          label: t('perm.addNewRule'),
           value: 'add-new-rule',
         })
       }
@@ -753,8 +752,7 @@ export function PermissionRuleList({
           <Tab id="workspace" title="Workspace">
             <Box flexDirection="column">
               <Text>
-                Claude Code can read files in the workspace, and make edits when
-                auto-accept edits is on.
+                {t('perm.workspaceDesc')}
               </Text>
               <WorkspaceTab
                 onExit={onExit}
@@ -771,18 +769,13 @@ export function PermissionRuleList({
             {exitState.pending ? (
               <>Press {exitState.keyName} again to exit</>
             ) : headerFocused ? (
-              <>←/→ tab switch · ↓ return · Esc cancel</>
+              <>{t('perm.tabSwitchHint')}</>
             ) : isSearchMode ? (
-              <>Type to filter · Enter/↓ select · ↑ tabs · Esc clear</>
+              <>{t('perm.searchModeHint')}</>
             ) : hasDenials && defaultTab === 'recent' ? (
-              <>
-                Enter approve · r retry · ↑↓ navigate · ←/→ switch · Esc cancel
-              </>
+              <>{t('perm.denialNavHint')}</>
             ) : (
-              <>
-                ↑↓ navigate · Enter select · Type to search · ←/→ switch · Esc
-                cancel
-              </>
+              <>{t('perm.navHint')}</>
             )}
           </Text>
         </Box>

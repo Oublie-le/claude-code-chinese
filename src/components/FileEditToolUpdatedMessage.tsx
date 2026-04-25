@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useTerminalSize } from '../hooks/useTerminalSize.js'
 import { Box, Text } from '@anthropic/ink'
 import { count } from '../utils/array.js'
+import { t } from '../utils/language.js'
 import { MessageResponse } from './MessageResponse.js'
 import { StructuredDiffList } from './StructuredDiffList.js'
 
@@ -39,15 +40,15 @@ export function FileEditToolUpdatedMessage({
     <Text>
       {numAdditions > 0 ? (
         <>
-          Added <Text bold>{numAdditions}</Text>{' '}
-          {numAdditions > 1 ? 'lines' : 'line'}
+          {t('fileedit.added')} <Text bold>{numAdditions}</Text>{' '}
+          {numAdditions > 1 ? t('fileedit.lines') : t('fileedit.line')}
         </>
       ) : null}
       {numAdditions > 0 && numRemovals > 0 ? ', ' : null}
       {numRemovals > 0 ? (
         <>
-          {numAdditions === 0 ? 'R' : 'r'}emoved <Text bold>{numRemovals}</Text>{' '}
-          {numRemovals > 1 ? 'lines' : 'line'}
+          {numAdditions === 0 ? t('fileedit.removed') : t('fileedit.removedLower')} <Text bold>{numRemovals}</Text>{' '}
+          {numRemovals > 1 ? t('fileedit.lines') : t('fileedit.line')}
         </>
       ) : null}
     </Text>

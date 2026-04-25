@@ -3,6 +3,7 @@ import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithK
 import { Box, Text } from '@anthropic/ink'
 import { useKeybinding } from '../../keybindings/useKeybinding.js'
 import type { SettingsJson } from '../../utils/settings/types.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/index.js'
 import { PermissionDialog } from '../permissions/PermissionDialog.js'
 import {
@@ -40,17 +41,15 @@ export function ManagedSettingsSecurityDialog({
     <PermissionDialog
       color="warning"
       titleColor="warning"
-      title="Managed settings require approval"
+      title={t('managed.title')}
     >
       <Box flexDirection="column" gap={1} paddingTop={1}>
         <Text>
-          Your organization has configured managed settings that could allow
-          execution of arbitrary code or interception of your prompts and
-          responses.
+          {t('managed.body')}
         </Text>
 
         <Box flexDirection="column">
-          <Text dimColor>Settings requiring approval:</Text>
+          <Text dimColor>{t('managed.settings.label')}</Text>
           {settingsList.map((item, index) => (
             <Box key={index} paddingLeft={2}>
               <Text>
@@ -62,14 +61,13 @@ export function ManagedSettingsSecurityDialog({
         </Box>
 
         <Text>
-          Only accept if you trust your organization&apos;s IT administration
-          and expect these settings to be configured.
+          {t('managed.trust')}
         </Text>
 
         <Select
           options={[
-            { label: 'Yes, I trust these settings', value: 'accept' },
-            { label: 'No, exit Claude Code', value: 'exit' },
+            { label: t('managed.accept'), value: 'accept' },
+            { label: t('managed.exit'), value: 'exit' },
           ]}
           onChange={value => onChange(value as 'accept' | 'exit')}
           onCancel={() => onChange('exit')}
@@ -77,9 +75,9 @@ export function ManagedSettingsSecurityDialog({
 
         <Text dimColor>
           {exitState.pending ? (
-            <>Press {exitState.keyName} again to exit</>
+            <>{t('exit.pressAgain', { key: exitState.keyName ?? '' })}</>
           ) : (
-            <>Enter to confirm · Esc to exit</>
+            <>{t('managed.footer')}</>
           )}
         </Text>
       </Box>

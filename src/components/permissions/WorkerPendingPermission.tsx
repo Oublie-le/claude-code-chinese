@@ -7,6 +7,7 @@ import {
 } from '../../utils/teammate.js'
 import { Spinner } from '../Spinner.js'
 import { WorkerBadge } from './WorkerBadge.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   toolName: string
@@ -36,7 +37,7 @@ export function WorkerPendingPermission({
         <Spinner />
         <Text color="warning" bold>
           {' '}
-          Waiting for team lead approval
+          {t('worker.waiting')}
         </Text>
       </Box>
 
@@ -47,21 +48,19 @@ export function WorkerPendingPermission({
       )}
 
       <Box>
-        <Text dimColor>Tool: </Text>
+        <Text dimColor>{t('worker.tool')}</Text>
         <Text>{toolName}</Text>
       </Box>
 
       <Box>
-        <Text dimColor>Action: </Text>
+        <Text dimColor>{t('worker.action')}</Text>
         <Text>{description}</Text>
       </Box>
 
       {teamName && (
         <Box marginTop={1}>
           <Text dimColor>
-            Permission request sent to team {'"'}
-            {teamName}
-            {'"'} leader
+            {t('worker.sentTo', { team: teamName })}
           </Text>
         </Box>
       )}

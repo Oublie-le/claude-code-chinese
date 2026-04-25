@@ -2,6 +2,7 @@ import partition from 'lodash-es/partition.js'
 import React, { useCallback } from 'react'
 import { logEvent } from 'src/services/analytics/index.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import {
   getSettings_DEPRECATED,
   updateSettingsForSource,
@@ -77,8 +78,8 @@ export function MCPServerMultiselectDialog({
   return (
     <>
       <Dialog
-        title={`${serverNames.length} new MCP servers found in .mcp.json`}
-        subtitle="Select any you wish to enable."
+        title={t('mcpMulti.title', { count: String(serverNames.length) })}
+        subtitle={t('mcpMulti.subtitle')}
         color="warning"
         onCancel={handleEscRejectAll}
         hideInputGuide
@@ -105,7 +106,7 @@ export function MCPServerMultiselectDialog({
               action="confirm:no"
               context="Confirmation"
               fallback="Esc"
-              description="reject all"
+            description={t('mcpMulti.rejectAll')}
             />
           </Byline>
         </Text>

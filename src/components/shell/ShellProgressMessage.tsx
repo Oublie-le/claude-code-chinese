@@ -5,6 +5,7 @@ import { formatFileSize } from '../../utils/format.js'
 import { MessageResponse } from '../MessageResponse.js'
 import { OffscreenFreeze } from '../OffscreenFreeze.js'
 import { ShellTimeDisplay } from './ShellTimeDisplay.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   output: string
@@ -39,7 +40,7 @@ export function ShellProgressMessage({
     return (
       <MessageResponse>
         <OffscreenFreeze>
-          <Text dimColor>Running… </Text>
+          <Text dimColor>{t('shellProgress.running')}</Text>
           <ShellTimeDisplay
             elapsedTimeSeconds={elapsedTimeSeconds}
             timeoutMs={timeoutMs}

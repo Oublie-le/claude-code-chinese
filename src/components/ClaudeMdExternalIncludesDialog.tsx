@@ -4,6 +4,7 @@ import { Box, Dialog, Link, Text } from '@anthropic/ink'
 import type { ExternalClaudeMdInclude } from '../utils/claudemd.js'
 import { saveCurrentProjectConfig } from '../utils/config.js'
 import { Select } from './CustomSelect/index.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   onDone(): void
@@ -51,20 +52,19 @@ export function ClaudeMdExternalIncludesDialog({
 
   return (
     <Dialog
-      title="Allow external CLAUDE.md file imports?"
+      title={t('claudemd.external.title')}
       color="warning"
       onCancel={handleEscape}
       hideBorder={!isStandaloneDialog}
       hideInputGuide={!isStandaloneDialog}
     >
       <Text>
-        This project&apos;s CLAUDE.md imports files outside the current working
-        directory. Never allow this for third-party repositories.
+        {t('claudemd.external.body')}
       </Text>
 
       {externalIncludes && externalIncludes.length > 0 && (
         <Box flexDirection="column">
-          <Text dimColor>External imports:</Text>
+          <Text dimColor>{t('claudemd.external.imports.label')}</Text>
           {externalIncludes.map((include, i) => (
             <Text key={i} dimColor>
               {'  '}
@@ -75,15 +75,14 @@ export function ClaudeMdExternalIncludesDialog({
       )}
 
       <Text dimColor>
-        Important: Only use Claude Code with files you trust. Accessing
-        untrusted files may pose security risks{' '}
+        {t('claudemd.external.security')}{' '}
         <Link url="https://code.claude.com/docs/en/security" />{' '}
       </Text>
 
       <Select
         options={[
-          { label: 'Yes, allow external imports', value: 'yes' },
-          { label: 'No, disable external imports', value: 'no' },
+          { label: t('claudemd.external.yes'), value: 'yes' },
+          { label: t('claudemd.external.no'), value: 'no' },
         ]}
         onChange={value => handleSelection(value as 'yes' | 'no')}
       />

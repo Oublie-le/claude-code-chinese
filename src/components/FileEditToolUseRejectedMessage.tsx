@@ -4,6 +4,7 @@ import * as React from 'react'
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js'
 import { getCwd } from 'src/utils/cwd.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { HighlightedCode } from './HighlightedCode.js'
 import { MessageResponse } from './MessageResponse.js'
 import { StructuredDiffList } from './StructuredDiffList.js'
@@ -36,7 +37,7 @@ export function FileEditToolUseRejectedMessage({
   const { columns } = useTerminalSize()
   const text = (
     <Box flexDirection="row">
-      <Text color="subtle">User rejected {operation} to </Text>
+      <Text color="subtle">{t('fileedit.rejected', { operation: operation === 'write' ? t('fileedit.op.write') : t('fileedit.op.update') })} </Text>
       <Text bold color="subtle">
         {verbose ? file_path : relative(getCwd(), file_path)}
       </Text>
@@ -62,7 +63,7 @@ export function FileEditToolUseRejectedMessage({
         <Box flexDirection="column">
           {text}
           <HighlightedCode
-            code={truncatedContent || '(No content)'}
+            code={truncatedContent || t('fileedit.noContent')}
             filePath={file_path}
             width={columns - 12}
             dim

@@ -9,6 +9,7 @@ import type {
   ScopedMcpServerConfig,
 } from '../services/mcp/types.js'
 import { plural } from '../utils/stringUtils.js'
+import { t } from '../utils/language.js'
 import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js'
 import { SelectMulti } from './CustomSelect/SelectMulti.js'
 
@@ -67,10 +68,10 @@ export function MCPServerDesktopImportDialog({
     (importedCount: number) => {
       if (importedCount > 0) {
         writeToStdout(
-          `\n${color('success', theme)(`Successfully imported ${importedCount} MCP ${plural(importedCount, 'server')} to ${scope} config.`)}\n`,
+          `\n${color('success', theme)(t('mcp.desktop.importedSuccess', { count: String(importedCount), servers: plural(importedCount, 'server'), scope }))}\n`,
         )
       } else {
-        writeToStdout('\nNo servers were imported.')
+        writeToStdout(`\n${t('mcp.desktop.noneImported')}`)
       }
       onDone()
 
@@ -87,7 +88,7 @@ export function MCPServerDesktopImportDialog({
   return (
     <>
       <Dialog
-        title="Import MCP Servers from Claude Desktop"
+        title={t('mcp.desktop.title')}
         subtitle={`Found ${serverNames.length} MCP ${plural(serverNames.length, 'server')} in Claude Desktop.`}
         color="success"
         onCancel={handleEscCancel}
@@ -95,15 +96,14 @@ export function MCPServerDesktopImportDialog({
       >
         {collisions.length > 0 && (
           <Text color="warning">
-            Note: Some servers already exist with the same name. If selected,
-            they will be imported with a numbered suffix.
+            {t('mcp.desktop.collision')}
           </Text>
         )}
-        <Text>Please select the servers you want to import:</Text>
+        <Text>{t('mcp.desktop.select')}</Text>
 
         <SelectMulti
           options={serverNames.map(server => ({
-            label: `${server}${collisions.includes(server) ? ' (already exists)' : ''}`,
+            label: `${server}${collisions.includes(server) ? t('mcp.desktop.alreadyExists') : ''}`,
             value: server,
           }))}
           defaultValue={serverNames.filter(name => !collisions.includes(name))} // Only preselect non-colliding servers

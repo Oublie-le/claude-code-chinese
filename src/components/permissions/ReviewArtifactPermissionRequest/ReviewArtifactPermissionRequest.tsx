@@ -5,6 +5,7 @@ import { usePermissionRequestLogging } from '../hooks.js'
 import { PermissionDialog } from '../PermissionDialog.js'
 import type { PermissionRequestProps } from '../PermissionRequest.js'
 import { logUnaryPermissionEvent } from '../utils.js'
+import { t } from '../../../utils/language.js'
 
 export function ReviewArtifactPermissionRequest({
   toolUseConfirm,
@@ -42,27 +43,26 @@ export function ReviewArtifactPermissionRequest({
   return (
     <PermissionDialog
       color="permission"
-      title="Review artifact?"
+      title={t('reviewArtifact.title')}
       workerBadge={workerBadge}
     >
       <Box flexDirection="column" marginTop={1} paddingX={1}>
         <Text>
-          Claude wants to review{title ? `: ${title}` : ' an artifact'}.
+          {t('reviewArtifact.wants')}{title ? `: ${title}` : t('reviewArtifact.anArtifact')}.
         </Text>
 
         <Box marginTop={1} flexDirection="column">
           <Text dimColor>
-            {annotationCount} annotation{annotationCount !== 1 ? 's' : ''} will
-            be presented.
+            {t('reviewArtifact.annotations', { count: String(annotationCount), s: annotationCount !== 1 ? 's' : '' })}
           </Text>
-          {summary ? <Text dimColor>Summary: {summary}</Text> : null}
+          {summary ? <Text dimColor>{t('reviewArtifact.summary', { summary })}</Text> : null}
         </Box>
 
         <Box marginTop={1}>
           <Select
             options={[
-              { label: 'Yes, show review', value: 'yes' as const },
-              { label: 'No, skip', value: 'no' as const },
+              { label: t('reviewArtifact.yes'), value: 'yes' as const },
+              { label: t('reviewArtifact.no'), value: 'no' as const },
             ]}
             onChange={handleResponse}
             onCancel={() => handleResponse('no')}

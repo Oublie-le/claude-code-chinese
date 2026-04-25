@@ -30,6 +30,7 @@ import {
 import { resolveThemeSetting } from '../utils/systemTheme.js'
 import { getTheme, themeColorToAnsi } from '../utils/theme.js'
 import { Spinner } from './Spinner.js'
+import { t } from '../utils/language.js'
 
 function formatPeakDay(dateStr: string): string {
   const date = new Date(dateStr)
@@ -92,7 +93,7 @@ export function Stats({ onClose }: Props): React.ReactNode {
       fallback={
         <Box marginTop={1}>
           <Spinner />
-          <Text> Loading your Claude Code stats…</Text>
+          <Text> {t('stats.loading')}</Text>
         </Box>
       }
     >
@@ -196,7 +197,7 @@ function StatsContent({
   if (allTimeResult.type === 'error') {
     return (
       <Box marginTop={1}>
-        <Text color="error">Failed to load stats: {allTimeResult.message}</Text>
+        <Text color="error">{t('stats.failed', { msg: allTimeResult.message })}</Text>
       </Box>
     )
   }
@@ -205,7 +206,7 @@ function StatsContent({
     return (
       <Box marginTop={1}>
         <Text color="warning">
-          No stats available yet. Start using Claude Code!
+          {t('stats.noStats')}
         </Text>
       </Box>
     )
@@ -215,7 +216,7 @@ function StatsContent({
     return (
       <Box marginTop={1}>
         <Spinner />
-        <Text> Loading stats…</Text>
+        <Text> {t('stats.loadingStats')}</Text>
       </Box>
     )
   }
@@ -243,7 +244,7 @@ function StatsContent({
       </Box>
       <Box paddingLeft={2}>
         <Text dimColor>
-          Esc to cancel · r to cycle dates · ctrl+s to copy
+          {t('stats.controls')}
           {copyStatus ? ` · ${copyStatus}` : ''}
         </Text>
       </Box>
@@ -369,7 +370,7 @@ function OverviewTab({
         <Box flexDirection="column" width={28}>
           {favoriteModel && (
             <Text wrap="truncate">
-              Favorite model:{' '}
+              {t('stats.favoriteModel')}{' '}
               <Text color="claude" bold>
                 {renderModelName(favoriteModel[0])}
               </Text>
@@ -378,7 +379,7 @@ function OverviewTab({
         </Box>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Total tokens:{' '}
+            {t('stats.totalTokens')}{' '}
             <Text color="claude">{formatNumber(totalTokens)}</Text>
           </Text>
         </Box>
@@ -388,14 +389,14 @@ function OverviewTab({
       <Box flexDirection="row" gap={4}>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Sessions:{' '}
+            {t('stats.sessions')}{' '}
             <Text color="claude">{formatNumber(stats.totalSessions)}</Text>
           </Text>
         </Box>
         <Box flexDirection="column" width={28}>
           {stats.longestSession && (
             <Text wrap="truncate">
-              Longest session:{' '}
+              {t('stats.longestSession')}{' '}
               <Text color="claude">
                 {formatDuration(stats.longestSession.duration)}
               </Text>
@@ -408,17 +409,17 @@ function OverviewTab({
       <Box flexDirection="row" gap={4}>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Active days: <Text color="claude">{stats.activeDays}</Text>
+            {t('stats.activeDays')} <Text color="claude">{stats.activeDays}</Text>
             <Text color="subtle">/{rangeDays}</Text>
           </Text>
         </Box>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Longest streak:{' '}
+            {t('stats.longestStreak')}{' '}
             <Text color="claude" bold>
               {stats.streaks.longestStreak}
             </Text>{' '}
-            {stats.streaks.longestStreak === 1 ? 'day' : 'days'}
+            {stats.streaks.longestStreak === 1 ? t('stats.day') : t('stats.days')}
           </Text>
         </Box>
       </Box>
@@ -428,18 +429,18 @@ function OverviewTab({
         <Box flexDirection="column" width={28}>
           {stats.peakActivityDay && (
             <Text wrap="truncate">
-              Most active day:{' '}
+              {t('stats.mostActiveDay')}{' '}
               <Text color="claude">{formatPeakDay(stats.peakActivityDay)}</Text>
             </Text>
           )}
         </Box>
         <Box flexDirection="column" width={28}>
           <Text wrap="truncate">
-            Current streak:{' '}
+            {t('stats.currentStreak')}{' '}
             <Text color="claude" bold>
               {allTimeStats.streaks.currentStreak}
             </Text>{' '}
-            {allTimeStats.streaks.currentStreak === 1 ? 'day' : 'days'}
+            {allTimeStats.streaks.currentStreak === 1 ? t('stats.day') : t('stats.days')}
           </Text>
         </Box>
       </Box>
@@ -450,7 +451,7 @@ function OverviewTab({
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                Speculation saved:{' '}
+                {t('stats.speculationSaved')}{' '}
                 <Text color="claude">
                   {formatDuration(stats.totalSpeculationTimeSavedMs)}
                 </Text>
@@ -463,7 +464,7 @@ function OverviewTab({
       {shotStatsData && (
         <>
           <Box marginTop={1}>
-            <Text>Shot distribution</Text>
+            <Text>{t('stats.shotDistribution')}</Text>
           </Box>
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
@@ -500,7 +501,7 @@ function OverviewTab({
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                Avg/session:{' '}
+                {t('stats.avgPerSession')}{' '}
                 <Text color="claude">{shotStatsData.avgShots}</Text>
               </Text>
             </Box>
@@ -647,7 +648,7 @@ function ModelsTab({
   if (modelEntries.length === 0) {
     return (
       <Box>
-        <Text color="subtle">No model usage data available</Text>
+        <Text color="subtle">{t('stats.noModelData')}</Text>
       </Box>
     )
   }
@@ -682,7 +683,7 @@ function ModelsTab({
       {/* Token usage chart */}
       {chartOutput && (
         <Box flexDirection="column" marginBottom={1}>
-          <Text bold>Tokens per Day</Text>
+          <Text bold>{t('stats.tokensPerDay')}</Text>
           <Ansi>{chartOutput.chart}</Ansi>
           <Text color="subtle">{chartOutput.xAxisLabels}</Text>
           <Box>
@@ -728,9 +729,12 @@ function ModelsTab({
         <Box marginTop={1}>
           <Text color="subtle">
             {canScrollUp ? figures.arrowUp : ' '}{' '}
-            {canScrollDown ? figures.arrowDown : ' '} {scrollOffset + 1}-
-            {Math.min(scrollOffset + VISIBLE_MODELS, modelEntries.length)} of{' '}
-            {modelEntries.length} models (↑↓ to scroll)
+            {canScrollDown ? figures.arrowDown : ' '}{' '}
+            {t('stats.modelsRange', {
+              n: String(scrollOffset + 1),
+              m: String(Math.min(scrollOffset + VISIBLE_MODELS, modelEntries.length)),
+              total: String(modelEntries.length),
+            })}
           </Text>
         </Box>
       )}

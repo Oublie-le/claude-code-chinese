@@ -38,6 +38,7 @@ import { MemoryUsageIndicator } from '../MemoryUsageIndicator.js'
 import { SentryErrorBoundary } from '../SentryErrorBoundary.js'
 import { TokenWarning } from '../TokenWarning.js'
 import { SandboxPromptFooterHint } from './SandboxPromptFooterHint.js'
+import { t } from '../../utils/language.js'
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const VoiceIndicator: typeof import('./VoiceIndicator.js').VoiceIndicator =
@@ -299,14 +300,14 @@ function NotificationContent({
       {isInOverageMode && !isTeamOrEnterprise && (
         <Box>
           <Text dimColor wrap="truncate">
-            Now using extra usage
+            {t('notifications.extraUsage')}
           </Text>
         </Box>
       )}
       {apiKeyHelperSlow && (
         <Box>
           <Text color="warning" wrap="truncate">
-            apiKeyHelper is taking a while{' '}
+            {t('notifications.apiKeyHelperSlow')}{' '}
           </Text>
           <Text dimColor wrap="truncate">
             ({apiKeyHelperSlow})
@@ -317,22 +318,22 @@ function NotificationContent({
         <Box>
           <Text color="error" wrap="truncate">
             {isEnvTruthy(process.env.CLAUDE_CODE_REMOTE)
-              ? 'Authentication error · Try again'
-              : 'Not logged in · Run /login'}
+              ? t('notifications.authError')
+              : t('notifications.notLoggedIn')}
           </Text>
         </Box>
       )}
       {debug && (
         <Box>
           <Text color="warning" wrap="truncate">
-            Debug mode
+            {t('notifications.debugMode')}
           </Text>
         </Box>
       )}
       {apiKeyStatus !== 'invalid' && apiKeyStatus !== 'missing' && verbose && (
         <Box>
           <Text dimColor wrap="truncate">
-            {tokenUsage} tokens
+            {t('notifications.tokenUsage', { count: String(tokenUsage) })}
           </Text>
         </Box>
       )}

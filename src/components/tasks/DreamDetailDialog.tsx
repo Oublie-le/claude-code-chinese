@@ -6,6 +6,7 @@ import { useKeybindings } from '../../keybindings/useKeybinding.js'
 import type { DreamTaskState } from '../../tasks/DreamTask/DreamTask.js'
 import { plural } from '../../utils/stringUtils.js'
 import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 
 type Props = {
   task: DeepImmutable<DreamTaskState>
@@ -60,7 +61,7 @@ export function DreamDetailDialog({
       onKeyDown={handleKeyDown}
     >
       <Dialog
-        title="Memory consolidation"
+        title={t('dream.title')}
         subtitle={
           <Text dimColor>
             {elapsedTime} · reviewing {task.sessionsReviewing}{' '}
@@ -92,9 +93,9 @@ export function DreamDetailDialog({
       >
         <Box flexDirection="column" gap={1}>
           <Text>
-            <Text bold>Status:</Text>{' '}
+            <Text bold>{t('dream.status')}</Text>{' '}
             {task.status === 'running' ? (
-              <Text color="background">running</Text>
+              <Text color="background">{t('dream.running')}</Text>
             ) : task.status === 'completed' ? (
               <Text color="success">{task.status}</Text>
             ) : (
@@ -104,7 +105,7 @@ export function DreamDetailDialog({
 
           {shown.length === 0 ? (
             <Text dimColor>
-              {task.status === 'running' ? 'Starting…' : '(no text output)'}
+              {task.status === 'running' ? t('dream.starting') : t('dream.noOutput')}
             </Text>
           ) : (
             <>

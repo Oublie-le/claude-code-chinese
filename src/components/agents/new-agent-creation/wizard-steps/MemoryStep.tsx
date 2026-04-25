@@ -7,6 +7,7 @@ import {
   loadAgentMemoryPrompt,
 } from '@claude-code-best/builtin-tools/tools/AgentTool/agentMemory.js'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
+import { t } from '../../../../utils/language.js'
 import { Select } from '../../../CustomSelect/select.js'
 import { useWizard } from '../../../wizard/index.js'
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js'
@@ -30,21 +31,21 @@ export function MemoryStep(): ReactNode {
   const memoryOptions: MemoryOption[] = isUserScope
     ? [
         {
-          label: 'User scope (~/.claude/agent-memory/) (Recommended)',
+          label: t('wizard.memory.userRecommended'),
           value: 'user',
         },
-        { label: 'None (no persistent memory)', value: 'none' },
-        { label: 'Project scope (.claude/agent-memory/)', value: 'project' },
-        { label: 'Local scope (.claude/agent-memory-local/)', value: 'local' },
+        { label: t('wizard.memory.none'), value: 'none' },
+        { label: t('wizard.memory.project'), value: 'project' },
+        { label: t('wizard.memory.local'), value: 'local' },
       ]
     : [
         {
-          label: 'Project scope (.claude/agent-memory/) (Recommended)',
+          label: t('wizard.memory.projectRecommended'),
           value: 'project',
         },
-        { label: 'None (no persistent memory)', value: 'none' },
-        { label: 'User scope (~/.claude/agent-memory/)', value: 'user' },
-        { label: 'Local scope (.claude/agent-memory-local/)', value: 'local' },
+        { label: t('wizard.memory.none'), value: 'none' },
+        { label: t('wizard.memory.user'), value: 'user' },
+        { label: t('wizard.memory.local'), value: 'local' },
       ]
 
   const handleSelect = (value: string): void => {
@@ -73,7 +74,7 @@ export function MemoryStep(): ReactNode {
 
   return (
     <WizardDialogLayout
-      subtitle="Configure agent memory"
+      subtitle={t('wizard.memory.subtitle')}
       footerText={
         <Byline>
           <KeyboardShortcutHint shortcut="↑↓" action="navigate" />

@@ -26,6 +26,7 @@ import { getRelativeSettingsFilePathForSource } from '../../../utils/settings/se
 import { plural } from '../../../utils/stringUtils.js'
 import type { OptionWithDescription } from '../../CustomSelect/select.js'
 import { PermissionRuleDescription } from './PermissionRuleDescription.js'
+import { t } from '../../../utils/language.js'
 
 export function optionForPermissionSaveDestination(
   saveDestination: EditableSettingSource,
@@ -33,19 +34,19 @@ export function optionForPermissionSaveDestination(
   switch (saveDestination) {
     case 'localSettings':
       return {
-        label: 'Project settings (local)',
+        label: t('addRules.dest.local'),
         description: `Saved in ${getRelativeSettingsFilePathForSource('localSettings')}`,
         value: saveDestination,
       }
     case 'projectSettings':
       return {
-        label: 'Project settings',
+        label: t('addRules.dest.project'),
         description: `Checked in at ${getRelativeSettingsFilePathForSource('projectSettings')}`,
         value: saveDestination,
       }
     case 'userSettings':
       return {
-        label: 'User settings',
+        label: t('addRules.dest.user'),
         description: `Saved in at ~/.claude/settings.json`,
         value: saveDestination,
       }
@@ -154,8 +155,8 @@ export function AddPermissionRules({
       <Box flexDirection="column" marginY={1}>
         <Text>
           {ruleValues.length === 1
-            ? 'Where should this rule be saved?'
-            : 'Where should these rules be saved?'}
+            ? t('addRules.saveWhere.single')
+            : t('addRules.saveWhere.multi')}
         </Text>
         <Select options={allOptions} onChange={onSelect} />
       </Box>

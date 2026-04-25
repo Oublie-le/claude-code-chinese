@@ -21,6 +21,7 @@ import {
   saveCustomTitle,
 } from '../utils/sessionStorage.js'
 import { getTheme } from '../utils/theme.js'
+import { t } from '../utils/language.js'
 import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js'
 import { Select } from './CustomSelect/select.js'
 import { SearchBox } from './SearchBox.js'
@@ -138,7 +139,7 @@ function buildLogLabel(
 
   const sessionCountSuffix =
     isGroupHeader && forkCount > 0
-      ? ` (+${forkCount} other ${forkCount === 1 ? 'session' : 'sessions'})`
+      ? ` (+${forkCount} other ${forkCount === 1 ? t('logselector.session') : t('logselector.sessions')})`
       : ''
 
   const sidechainSuffix = log.isSidechain ? ' (sidechain)' : ''
@@ -654,10 +655,10 @@ export function LogSelector({
     const isChildNode = sessionLogs.indexOf(focusedLog) > 0
 
     if (isChildNode) {
-      return '← to collapse'
+      return t('logselector.collapseLeft')
     }
 
-    return isExpanded ? '← to collapse' : '→ to expand'
+    return isExpanded ? t('logselector.collapseLeft') : t('logselector.expandRight')
   }
 
   const handleRenameSubmit = React.useCallback(async () => {
@@ -1051,7 +1052,7 @@ export function LogSelector({
       ) : (
         <Box flexShrink={0}>
           <Text bold color="suggestion">
-            Resume Session
+            {t('logselector.resumeSession')}
             {viewMode === 'list' && displayedLogs.length > visibleCount && (
               <Text dimColor>
                 {' '}
@@ -1082,7 +1083,7 @@ export function LogSelector({
       {agenticSearchState.status === 'searching' && (
         <Box paddingLeft={1} flexShrink={0}>
           <Spinner />
-          <Text> Searching…</Text>
+          <Text> {t('logselector.searching')}</Text>
         </Box>
       )}
 
@@ -1091,7 +1092,7 @@ export function LogSelector({
         agenticSearchState.results.length > 0 && (
           <Box paddingLeft={1} marginBottom={1} flexShrink={0}>
             <Text dimColor italic>
-              Claude found these results:
+              {t('logselector.claudeResults')}
             </Text>
           </Box>
         )}
@@ -1102,7 +1103,7 @@ export function LogSelector({
         filteredLogs.length === 0 && (
           <Box paddingLeft={1} marginBottom={1} flexShrink={0}>
             <Text dimColor italic>
-              No matching sessions found.
+              {t('logselector.noResults')}
             </Text>
           </Box>
         )}
@@ -1111,7 +1112,7 @@ export function LogSelector({
       {agenticSearchState.status === 'error' && filteredLogs.length === 0 && (
         <Box paddingLeft={1} marginBottom={1} flexShrink={0}>
           <Text dimColor italic>
-            No matching sessions found.
+            {t('logselector.noResults')}
           </Text>
         </Box>
       )}
@@ -1134,7 +1135,7 @@ export function LogSelector({
                 color={isAgenticSearchOptionFocused ? 'suggestion' : undefined}
                 bold={isAgenticSearchOptionFocused}
               >
-                Search deeply using Claude →
+                {t('logselector.deepSearch')}
               </Text>
             </Box>
             <Box height={1} />
@@ -1145,7 +1146,7 @@ export function LogSelector({
       {agenticSearchState.status === 'searching' ? null : viewMode ===
           'rename' && focusedLog ? (
         <Box paddingLeft={2} flexDirection="column">
-          <Text bold>Rename session:</Text>
+          <Text bold>{t('logselector.rename')}</Text>
           <Box paddingTop={1}>
             <TextInput
               value={renameValue}
@@ -1153,7 +1154,7 @@ export function LogSelector({
               onSubmit={handleRenameSubmit}
               placeholder={getLogDisplayTitle(
                 focusedLog!,
-                'Enter new session name',
+                t('logselector.renamePlaceholder'),
               )}
               columns={columns}
               cursorOffset={renameCursorOffset}
@@ -1250,7 +1251,7 @@ export function LogSelector({
         ) : agenticSearchState.status === 'searching' ? (
           <Text dimColor>
             <Byline>
-              <Text>Searching with Claude…</Text>
+              <Text>{t('logselector.searchingWithClaude')}</Text>
               <ConfigurableShortcutHint
                 action="confirm:no"
                 context="Confirmation"
@@ -1277,8 +1278,8 @@ export function LogSelector({
             <Byline>
               <Text>
                 {isSearching && isDeepSearchEnabled
-                  ? 'Searching…'
-                  : 'Type to Search'}
+                  ? t('logselector.searching')
+                  : t('logselector.typeToSearch')}
               </Text>
               <KeyboardShortcutHint shortcut="Enter" action="select" />
               <ConfigurableShortcutHint
@@ -1295,24 +1296,24 @@ export function LogSelector({
               {onToggleAllProjects && (
                 <KeyboardShortcutHint
                   shortcut="Ctrl+A"
-                  action={`show ${showAllProjects ? 'current dir' : 'all projects'}`}
+                  action={`show ${showAllProjects ? t('logselector.showCurrentDir') : t('logselector.showAllProjects')}`}
                 />
               )}
               {currentBranch && (
                 <KeyboardShortcutHint
                   shortcut="Ctrl+B"
-                  action="toggle branch"
+                  action={t('logselector.toggleBranch')}
                 />
               )}
               {hasMultipleWorktrees && (
                 <KeyboardShortcutHint
                   shortcut="Ctrl+W"
-                  action={`show ${showAllWorktrees ? 'current worktree' : 'all worktrees'}`}
+                  action={`show ${showAllWorktrees ? t('logselector.showCurrentWorktree') : t('logselector.showAllWorktrees')}`}
                 />
               )}
-              <KeyboardShortcutHint shortcut="Ctrl+V" action="preview" />
-              <KeyboardShortcutHint shortcut="Ctrl+R" action="rename" />
-              <Text>Type to search</Text>
+              <KeyboardShortcutHint shortcut="Ctrl+V" action={t('logselector.preview')} />
+              <KeyboardShortcutHint shortcut="Ctrl+R" action={t('logselector.rename.action')} />
+              <Text>{t('logselector.typeToSearchHint')}</Text>
               <ConfigurableShortcutHint
                 action="confirm:no"
                 context="Confirmation"

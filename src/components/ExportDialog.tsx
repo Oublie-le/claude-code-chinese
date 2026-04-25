@@ -5,6 +5,7 @@ import { useTerminalSize } from '../hooks/useTerminalSize.js'
 import { setClipboard, Box, Text, Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
 import { useKeybinding } from '../keybindings/useKeybinding.js'
 import { getCwd } from '../utils/cwd.js'
+import { t } from '../utils/language.js'
 import { writeFileSync_DEPRECATED } from '../utils/slowOperations.js'
 import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js'
 import { Select } from './CustomSelect/select.js'
@@ -42,7 +43,7 @@ export function ExportDialog({
       // Copy to clipboard immediately
       const raw = await setClipboard(content)
       if (raw) process.stdout.write(raw)
-      onDone({ success: true, message: 'Conversation copied to clipboard' })
+      onDone({ success: true, message: t('export.copied') })
     } else if (value === 'file') {
       setSelectedOption('file')
       setShowFilenameInput(true)
@@ -62,12 +63,12 @@ export function ExportDialog({
       })
       onDone({
         success: true,
-        message: `Conversation exported to: ${filepath}`,
+        message: t('export.saved', { path: filepath }),
       })
     } catch (error) {
       onDone({
         success: false,
-        message: `Failed to export conversation: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: t('export.failed', { error: error instanceof Error ? error.message : '未知错误' }),
       })
     }
   }
@@ -78,20 +79,20 @@ export function ExportDialog({
     if (showFilenameInput) {
       handleGoBack()
     } else {
-      onDone({ success: false, message: 'Export cancelled' })
+      onDone({ success: false, message: t('export.cancelled') })
     }
   }, [showFilenameInput, handleGoBack, onDone])
 
   const options = [
     {
-      label: 'Copy to clipboard',
+      label: t('export.clipboard.label'),
       value: 'clipboard',
-      description: 'Copy the conversation to your system clipboard',
+      description: t('export.clipboard.desc'),
     },
     {
-      label: 'Save to file',
+      label: t('export.file.label'),
       value: 'file',
-      description: 'Save the conversation to a file in the current directory',
+      description: t('export.file.desc'),
     },
   ]
 
@@ -133,8 +134,8 @@ export function ExportDialog({
 
   return (
     <Dialog
-      title="Export Conversation"
-      subtitle="Select export method:"
+      title={t('export.title')}
+      subtitle={t('export.subtitle')}
       color="permission"
       onCancel={handleCancel}
       inputGuide={renderInputGuide}
@@ -148,7 +149,7 @@ export function ExportDialog({
         />
       ) : (
         <Box flexDirection="column">
-          <Text>Enter filename:</Text>
+          <Text>{t('export.enterFilename')}</Text>
           <Box flexDirection="row" gap={1} marginTop={1}>
             <Text>&gt;</Text>
             <TextInput

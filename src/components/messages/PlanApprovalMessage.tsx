@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Markdown } from '../../components/Markdown.js'
 import { Box, Text } from '@anthropic/ink'
 import { jsonParse } from '../../utils/slowOperations.js'
+import { t } from '../../utils/language.js'
 import {
   type IdleNotificationMessage,
   isIdleNotification,
@@ -34,7 +35,7 @@ export function PlanApprovalRequestDisplay({
       >
         <Box marginBottom={1}>
           <Text color="planMode" bold>
-            Plan Approval Request from {request.from}
+            {t('plan.approvalRequest', { from: request.from })}
           </Text>
         </Box>
         <Box
@@ -48,7 +49,7 @@ export function PlanApprovalRequestDisplay({
         >
           <Markdown>{request.planContent}</Markdown>
         </Box>
-        <Text dimColor>Plan file: {request.planFilePath}</Text>
+        <Text dimColor>{t('plan.fileLabel')}{request.planFilePath}</Text>
       </Box>
     </Box>
   )
@@ -78,13 +79,12 @@ export function PlanApprovalResponseDisplay({
         >
           <Box>
             <Text color="success" bold>
-              ✓ Plan Approved by {senderName}
+              {t('plan.approved', { name: senderName })}
             </Text>
           </Box>
           <Box marginTop={1}>
             <Text>
-              You can now proceed with implementation. Your plan mode
-              restrictions have been lifted.
+              {t('plan.approvedBody')}
             </Text>
           </Box>
         </Box>
@@ -103,7 +103,7 @@ export function PlanApprovalResponseDisplay({
       >
         <Box>
           <Text color="error" bold>
-            ✗ Plan Rejected by {senderName}
+            {t('plan.rejected', { name: senderName })}
           </Text>
         </Box>
         {response.feedback && (
@@ -115,13 +115,12 @@ export function PlanApprovalResponseDisplay({
             borderRight={false}
             paddingX={1}
           >
-            <Text>Feedback: {response.feedback}</Text>
+            <Text>{t('plan.feedbackLabel')}{response.feedback}</Text>
           </Box>
         )}
         <Box marginTop={1}>
           <Text dimColor>
-            Please revise your plan based on the feedback and call ExitPlanMode
-            again.
+            {t('plan.revise')}
           </Text>
         </Box>
       </Box>

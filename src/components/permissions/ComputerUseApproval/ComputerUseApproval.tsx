@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react'
 import { Box, Text } from '@anthropic/ink'
 import { execFileNoThrow } from '../../../utils/execFileNoThrow.js'
 import { plural } from '../../../utils/stringUtils.js'
+import { t } from '../../../utils/language.js'
 import type { OptionWithDescription } from '../../CustomSelect/select.js'
 import { Select } from '../../CustomSelect/select.js'
 import { Dialog } from '@anthropic/ink'
@@ -60,17 +61,17 @@ function ComputerUseTccPanel({
     const opts: OptionWithDescription<TccOption>[] = []
     if (!tccState.accessibility) {
       opts.push({
-        label: 'Open System Settings → Accessibility',
+        label: t('computerUse.openAccessibility'),
         value: 'open_accessibility',
       })
     }
     if (!tccState.screenRecording) {
       opts.push({
-        label: 'Open System Settings → Screen Recording',
+        label: t('computerUse.openScreenRecording'),
         value: 'open_screen_recording',
       })
     }
-    opts.push({ label: 'Try again', value: 'retry' })
+    opts.push({ label: t('computerUse.tryAgain'), value: 'retry' })
     return opts
   }, [tccState.accessibility, tccState.screenRecording])
 
@@ -103,26 +104,24 @@ function ComputerUseTccPanel({
   }
 
   return (
-    <Dialog title="Computer Use needs macOS permissions" onCancel={onDone}>
+    <Dialog title={t('computerUse.tccTitle')} onCancel={onDone}>
       <Box flexDirection="column" paddingX={1} paddingY={1} gap={1}>
         <Box flexDirection="column">
           <Text>
-            Accessibility:{' '}
+            {t('computerUse.accessibility')}:{' '}
             {tccState.accessibility
-              ? `${figures.tick} granted`
-              : `${figures.cross} not granted`}
+              ? `${figures.tick} ${t('computerUse.granted')}`
+              : `${figures.cross} ${t('computerUse.notGranted')}`}
           </Text>
           <Text>
-            Screen Recording:{' '}
+            {t('computerUse.screenRecording')}:{' '}
             {tccState.screenRecording
-              ? `${figures.tick} granted`
-              : `${figures.cross} not granted`}
+              ? `${figures.tick} ${t('computerUse.granted')}`
+              : `${figures.cross} ${t('computerUse.notGranted')}`}
           </Text>
         </Box>
         <Text dimColor>
-          Grant the missing permissions in System Settings, then select
-          &quot;Try again&quot;. macOS may require you to restart Claude Code
-          after granting Screen Recording.
+          {t('computerUse.tccInstructions')}
         </Text>
         <Select options={options} onChange={onChange} onCancel={onDone} />
       </Box>
@@ -180,7 +179,7 @@ function ComputerUseAppListPanel({
       {
         label: (
           <Text>
-            Deny, and tell Claude what to do differently <Text bold>(esc)</Text>
+            {t('computerUse.deny')} <Text bold>(esc)</Text>
           </Text>
         ),
         value: 'deny',
@@ -224,7 +223,7 @@ function ComputerUseAppListPanel({
 
   return (
     <Dialog
-      title="Computer Use wants to control these apps"
+      title={t('computerUse.appTitle')}
       onCancel={() => respond(false)}
     >
       <Box flexDirection="column" paddingX={1} paddingY={1} gap={1}>
@@ -238,7 +237,7 @@ function ComputerUseAppListPanel({
                 <Text key={a.requestedName} dimColor>
                   {'  '}
                   {figures.circle} {a.requestedName}{' '}
-                  <Text dimColor>(not installed)</Text>
+                  <Text dimColor>({t('computerUse.notInstalled')})</Text>
                 </Text>
               )
             }
@@ -247,7 +246,7 @@ function ComputerUseAppListPanel({
                 <Text key={resolved.bundleId} dimColor>
                   {'  '}
                   {figures.tick} {resolved.displayName}{' '}
-                  <Text dimColor>(already granted)</Text>
+                  <Text dimColor>({t('computerUse.alreadyGranted')})</Text>
                 </Text>
               )
             }
@@ -273,7 +272,7 @@ function ComputerUseAppListPanel({
 
         {requestedFlagKeys.length > 0 ? (
           <Box flexDirection="column">
-            <Text dimColor>Also requested:</Text>
+            <Text dimColor>{t('computerUse.alsoRequested')}</Text>
             {requestedFlagKeys.map(flag => (
               <Text key={flag} dimColor>
                 {'  '}· {flag}

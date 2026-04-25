@@ -8,6 +8,7 @@ import {
 } from '../../../utils/autoModeDenials.js'
 import { Select } from '../../CustomSelect/select.js'
 import { StatusIcon } from '@anthropic/ink'
+import { t } from '../../../utils/language.js'
 
 type Props = {
   onHeaderFocusChange?: (focused: boolean) => void
@@ -78,8 +79,7 @@ export function RecentDenialsTab({
   if (denials.length === 0) {
     return (
       <Text dimColor>
-        No recent denials. Commands denied by the auto mode classifier will
-        appear here.
+        {t('recentDenials.empty')}
       </Text>
     )
   }
@@ -101,7 +101,7 @@ export function RecentDenialsTab({
 
   return (
     <Box flexDirection="column">
-      <Text>Commands recently denied by the auto mode classifier.</Text>
+      <Text>{t('recentDenials.desc')}</Text>
       <Box marginTop={1}>
         <Select
           options={options}

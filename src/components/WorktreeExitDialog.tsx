@@ -3,6 +3,7 @@ import type { CommandResultDisplay } from 'src/commands.js'
 import { logEvent } from 'src/services/analytics/index.js'
 import { logForDebugging } from 'src/utils/debug.js'
 import { Box, Text, Dialog } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { execFileNoThrow } from '../utils/execFileNoThrow.js'
 import { getPlansDirectory } from '../utils/plans.js'
 import { setCwd } from '../utils/Shell.js'
@@ -203,7 +204,7 @@ export function WorktreeExitDialog({
     return (
       <Box flexDirection="row" marginY={1}>
         <Spinner />
-        <Text>Keeping worktree…</Text>
+        <Text>{t('worktree.keeping')}</Text>
       </Box>
     )
   }
@@ -212,7 +213,7 @@ export function WorktreeExitDialog({
     return (
       <Box flexDirection="row" marginY={1}>
         <Spinner />
-        <Text>Removing worktree…</Text>
+        <Text>{t('worktree.removing')}</Text>
       </Box>
     )
   }
@@ -223,14 +224,26 @@ export function WorktreeExitDialog({
 
   let subtitle = ''
   if (hasUncommitted && hasCommits) {
-    subtitle = `You have ${changes.length} uncommitted ${changes.length === 1 ? 'file' : 'files'} and ${commitCount} ${commitCount === 1 ? 'commit' : 'commits'} on ${branchName}. All will be lost if you remove.`
+    subtitle = t('worktree.subtitle.bothChanges', {
+      files: String(changes.length),
+      fileNoun: changes.length === 1 ? t('worktree.noun.file') : t('worktree.noun.files'),
+      commits: String(commitCount),
+      commitNoun: commitCount === 1 ? t('worktree.noun.commit') : t('worktree.noun.commits'),
+      branch: branchName ?? '',
+    })
   } else if (hasUncommitted) {
-    subtitle = `You have ${changes.length} uncommitted ${changes.length === 1 ? 'file' : 'files'}. These will be lost if you remove the worktree.`
+    subtitle = t('worktree.subtitle.uncommitted', {
+      files: String(changes.length),
+      fileNoun: changes.length === 1 ? t('worktree.noun.file') : t('worktree.noun.files'),
+    })
   } else if (hasCommits) {
-    subtitle = `You have ${commitCount} ${commitCount === 1 ? 'commit' : 'commits'} on ${branchName}. The branch will be deleted if you remove the worktree.`
+    subtitle = t('worktree.subtitle.commits', {
+      commits: String(commitCount),
+      commitNoun: commitCount === 1 ? t('worktree.noun.commit') : t('worktree.noun.commits'),
+      branch: branchName ?? '',
+    })
   } else {
-    subtitle =
-      'You are working in a worktree. Keep it to continue working there, or remove it to clean up.'
+    subtitle = t('worktree.subtitle.noChanges')
   }
 
   function handleCancel() {
@@ -245,37 +258,37 @@ export function WorktreeExitDialog({
 
   const removeDescription =
     hasUncommitted || hasCommits
-      ? 'All changes and commits will be lost.'
-      : 'Clean up the worktree directory.'
+      ? t('worktree.removeAllLost')
+      : t('worktree.removeCleanup')
 
   const hasTmuxSession = Boolean(worktreeSession.tmuxSessionName)
 
   const options = hasTmuxSession
     ? [
         {
-          label: 'Keep worktree and tmux session',
+          label: t('worktree.keepWithTmux'),
           value: 'keep-with-tmux',
           description: `Stays at ${worktreeSession.worktreePath}. Reattach with: tmux attach -t ${worktreeSession.tmuxSessionName}`,
         },
         {
-          label: 'Keep worktree, kill tmux session',
+          label: t('worktree.keepKillTmux'),
           value: 'keep-kill-tmux',
           description: `Keeps worktree at ${worktreeSession.worktreePath}, terminates tmux session.`,
         },
         {
-          label: 'Remove worktree and tmux session',
+          label: t('worktree.removeWithTmux'),
           value: 'remove-with-tmux',
           description: removeDescription,
         },
       ]
     : [
         {
-          label: 'Keep worktree',
+          label: t('worktree.keep'),
           value: 'keep',
           description: `Stays at ${worktreeSession.worktreePath}`,
         },
         {
-          label: 'Remove worktree',
+          label: t('worktree.remove'),
           value: 'remove',
           description: removeDescription,
         },
@@ -285,7 +298,7 @@ export function WorktreeExitDialog({
 
   return (
     <Dialog
-      title="Exiting worktree session"
+      title={t('worktree.exit.title')}
       subtitle={subtitle}
       onCancel={handleCancel}
     >

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Box, Text } from '@anthropic/ink'
 import { useKeybinding } from '../keybindings/useKeybinding.js'
 import TextInput from './TextInput.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   initialLanguage: string | undefined
@@ -31,7 +32,7 @@ export function LanguagePicker({
 
   return (
     <Box flexDirection="column" gap={1}>
-      <Text>Enter your preferred response and voice language:</Text>
+      <Text>{t('languagePicker.prompt')}</Text>
       <Box flexDirection="row" gap={1}>
         <Text>{figures.pointer}</Text>
         <TextInput
@@ -40,13 +41,13 @@ export function LanguagePicker({
           onSubmit={handleSubmit}
           focus={true}
           showCursor={true}
-          placeholder={`e.g., Japanese, 日本語, Español${figures.ellipsis}`}
+          placeholder={t('languagePicker.placeholder')}
           columns={60}
           cursorOffset={cursorOffset}
           onChangeCursorOffset={setCursorOffset}
         />
       </Box>
-      <Text dimColor>Leave empty for default (English)</Text>
+      <Text dimColor>{t('languagePicker.empty')}</Text>
     </Box>
   )
 }

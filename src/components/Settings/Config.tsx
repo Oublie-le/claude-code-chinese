@@ -50,6 +50,7 @@ import { UILanguagePicker } from '../UILanguagePicker.js';
 import {
   type PreferredLanguage,
   getLanguageDisplayName,
+  t,
 } from '../../utils/language.js';
 import {
   type MemoryFileInfo,
@@ -311,7 +312,7 @@ export function Config({
     // Global settings
     {
       id: 'autoCompactEnabled',
-      label: 'Auto-compact',
+      label: t('config.autoCompact'),
       value: globalConfig.autoCompactEnabled,
       type: 'boolean' as const,
       onChange(autoCompactEnabled: boolean) {
@@ -324,7 +325,7 @@ export function Config({
     },
     {
       id: 'spinnerTipsEnabled',
-      label: 'Show tips',
+      label: t('config.showTips'),
       value: settingsData?.spinnerTipsEnabled ?? true,
       type: 'boolean' as const,
       onChange(spinnerTipsEnabled: boolean) {
@@ -343,7 +344,7 @@ export function Config({
     },
     {
       id: 'prefersReducedMotion',
-      label: 'Reduce motion',
+      label: t('config.reduceMotion'),
       value: settingsData?.prefersReducedMotion ?? false,
       type: 'boolean' as const,
       onChange(prefersReducedMotion: boolean) {
@@ -366,7 +367,7 @@ export function Config({
     },
     {
       id: 'thinkingEnabled',
-      label: 'Thinking mode',
+      label: t('config.thinkingMode'),
       value: thinkingEnabled ?? true,
       type: 'boolean' as const,
       onChange(enabled: boolean) {
@@ -382,7 +383,7 @@ export function Config({
       ? [
           {
             id: 'fastMode',
-            label: `Fast mode (${FAST_MODE_MODEL_DISPLAY} only)`,
+            label: t('config.fastMode', { model: FAST_MODE_MODEL_DISPLAY }),
             value: !!isFastMode,
             type: 'boolean' as const,
             onChange(enabled: boolean) {
@@ -417,7 +418,7 @@ export function Config({
       ? [
           {
             id: 'promptSuggestionEnabled',
-            label: 'Prompt suggestions',
+            label: t('config.promptSuggestions'),
             value: promptSuggestionEnabled,
             type: 'boolean' as const,
             onChange(enabled: boolean) {
@@ -436,7 +437,7 @@ export function Config({
       ? [
           {
             id: 'poorMode',
-            label: 'Poor mode (save tokens)',
+            label: t('config.poorMode'),
             value: (() => {
               const PoorMode =
                 require('../../commands/poor/poorMode.js') as typeof import('../../commands/poor/poorMode.js');
@@ -460,7 +461,7 @@ export function Config({
       ? [
           {
             id: 'speculationEnabled',
-            label: 'Speculative execution',
+            label: t('config.speculation'),
             value: globalConfig.speculationEnabled ?? true,
             type: 'boolean' as const,
             onChange(enabled: boolean) {
@@ -486,7 +487,7 @@ export function Config({
       ? [
           {
             id: 'fileCheckpointingEnabled',
-            label: 'Rewind code (checkpoints)',
+            label: t('config.fileCheckpointing'),
             value: globalConfig.fileCheckpointingEnabled,
             type: 'boolean' as const,
             onChange(enabled: boolean) {
@@ -507,14 +508,14 @@ export function Config({
       : []),
     {
       id: 'verbose',
-      label: 'Verbose output',
+      label: t('config.verboseOutput'),
       value: verbose,
       type: 'boolean',
       onChange: onChangeVerbose,
     },
     {
       id: 'terminalProgressBarEnabled',
-      label: 'Terminal progress bar',
+      label: t('config.terminalProgressBar'),
       value: globalConfig.terminalProgressBarEnabled,
       type: 'boolean' as const,
       onChange(terminalProgressBarEnabled: boolean) {
@@ -532,7 +533,7 @@ export function Config({
       ? [
           {
             id: 'showStatusInTerminalTab',
-            label: 'Show status in terminal tab',
+            label: t('config.showTerminalTab'),
             value: globalConfig.showStatusInTerminalTab ?? false,
             type: 'boolean' as const,
             onChange(showStatusInTerminalTab: boolean) {
@@ -553,7 +554,7 @@ export function Config({
       : []),
     {
       id: 'showTurnDuration',
-      label: 'Show turn duration',
+      label: t('config.showTurnDuration'),
       value: globalConfig.showTurnDuration,
       type: 'boolean' as const,
       onChange(showTurnDuration: boolean) {
@@ -566,7 +567,7 @@ export function Config({
     },
     {
       id: 'defaultPermissionMode',
-      label: 'Default permission mode',
+      label: t('config.defaultPermissionMode'),
       value: settingsData?.permissions?.defaultMode || 'default',
       options: (() => {
         const priorityOrder: PermissionMode[] = ['default', 'plan'];
@@ -619,7 +620,7 @@ export function Config({
       ? [
           {
             id: 'useAutoModeDuringPlan',
-            label: 'Use auto mode during plan',
+            label: t('config.autoModeDuringPlan'),
             value: (settingsData as { useAutoModeDuringPlan?: boolean } | undefined)?.useAutoModeDuringPlan ?? true,
             type: 'boolean' as const,
             onChange(useAutoModeDuringPlan: boolean) {
@@ -648,7 +649,7 @@ export function Config({
       : []),
     {
       id: 'respectGitignore',
-      label: 'Respect .gitignore in file picker',
+      label: t('config.respectGitignore'),
       value: globalConfig.respectGitignore,
       type: 'boolean' as const,
       onChange(respectGitignore: boolean) {
@@ -661,7 +662,7 @@ export function Config({
     },
     {
       id: 'copyFullResponse',
-      label: 'Always copy full response (skip /copy picker)',
+      label: t('config.copyFullResponse'),
       value: globalConfig.copyFullResponse,
       type: 'boolean' as const,
       onChange(copyFullResponse: boolean) {
@@ -679,7 +680,7 @@ export function Config({
       ? [
           {
             id: 'copyOnSelect',
-            label: 'Copy on select',
+            label: t('config.copyOnSelect'),
             value: globalConfig.copyOnSelect ?? true,
             type: 'boolean' as const,
             onChange(copyOnSelect: boolean) {
@@ -697,14 +698,14 @@ export function Config({
     autoUpdaterDisabledReason
       ? {
           id: 'autoUpdatesChannel',
-          label: 'Auto-update channel',
+          label: t('config.autoUpdatesChannel'),
           value: 'disabled',
           type: 'managedEnum' as const,
           onChange() {},
         }
       : {
           id: 'autoUpdatesChannel',
-          label: 'Auto-update channel',
+          label: t('config.autoUpdatesChannel'),
           value: settingsData?.autoUpdatesChannel ?? 'latest',
           type: 'managedEnum' as const,
           onChange() {
@@ -713,14 +714,14 @@ export function Config({
         },
     {
       id: 'theme',
-      label: 'Theme',
+      label: t('config.themeLabel'),
       value: themeSetting,
       type: 'managedEnum',
       onChange: setTheme,
     },
     {
       id: 'notifChannel',
-      label: feature('KAIROS') || feature('KAIROS_PUSH_NOTIFICATION') ? 'Local notifications' : 'Notifications',
+      label: feature('KAIROS') || feature('KAIROS_PUSH_NOTIFICATION') ? t('config.localNotifications') : t('config.notifications'),
       value: globalConfig.preferredNotifChannel,
       options: ['auto', 'iterm2', 'terminal_bell', 'iterm2_with_bell', 'kitty', 'ghostty', 'notifications_disabled'],
       type: 'enum',
@@ -739,7 +740,7 @@ export function Config({
       ? [
           {
             id: 'taskCompleteNotifEnabled',
-            label: 'Push when idle',
+            label: t('config.pushWhenIdle'),
             value: globalConfig.taskCompleteNotifEnabled ?? false,
             type: 'boolean' as const,
             onChange(taskCompleteNotifEnabled: boolean) {
@@ -755,7 +756,7 @@ export function Config({
           },
           {
             id: 'inputNeededNotifEnabled',
-            label: 'Push when input needed',
+            label: t('config.pushWhenInput'),
             value: globalConfig.inputNeededNotifEnabled ?? false,
             type: 'boolean' as const,
             onChange(inputNeededNotifEnabled: boolean) {
@@ -771,7 +772,7 @@ export function Config({
           },
           {
             id: 'agentPushNotifEnabled',
-            label: 'Push when Claude decides',
+            label: t('config.pushWhenDecides'),
             value: globalConfig.agentPushNotifEnabled ?? false,
             type: 'boolean' as const,
             onChange(agentPushNotifEnabled: boolean) {
@@ -789,7 +790,7 @@ export function Config({
       : []),
     {
       id: 'outputStyle',
-      label: 'Output style',
+      label: t('config.outputStyle'),
       value: currentOutputStyle,
       type: 'managedEnum' as const,
       onChange: () => {}, // handled by OutputStylePicker submenu
@@ -798,7 +799,7 @@ export function Config({
       ? [
           {
             id: 'defaultView',
-            label: 'What you see by default',
+            label: t('config.defaultView'),
             // 'default' means the setting is unset — currently resolves to
             // transcript (main.tsx falls through when defaultView !== 'chat').
             // String() narrows the conditional-schema-spread union to string.
@@ -829,21 +830,21 @@ export function Config({
       : []),
     {
       id: 'language',
-      label: 'Language',
-      value: currentLanguage ?? 'Default (English)',
+      label: t('config.languageLabel'),
+      value: currentLanguage ?? t('config.defaultLanguage'),
       type: 'managedEnum' as const,
       onChange: () => {}, // handled by LanguagePicker submenu
     },
     {
       id: 'uiLanguage',
-      label: 'UI Language',
+      label: t('config.uiLanguage'),
       value: getLanguageDisplayName(currentUILanguage),
       type: 'managedEnum' as const,
       onChange: () => {}, // handled by UILanguagePicker submenu
     },
     {
       id: 'editorMode',
-      label: 'Editor mode',
+      label: t('config.editorMode'),
       // Convert 'emacs' to 'normal' for backward compatibility
       value: globalConfig.editorMode === 'emacs' ? 'normal' : globalConfig.editorMode || 'normal',
       options: ['normal', 'vim'],
@@ -866,7 +867,7 @@ export function Config({
     },
     {
       id: 'prStatusFooterEnabled',
-      label: 'Show PR status footer',
+      label: t('config.prStatusFooter'),
       value: globalConfig.prStatusFooterEnabled ?? true,
       type: 'boolean' as const,
       onChange(enabled: boolean) {
@@ -888,8 +889,8 @@ export function Config({
     },
     {
       id: 'model',
-      label: 'Model',
-      value: mainLoopModel === null ? 'Default (recommended)' : mainLoopModel,
+      label: t('config.modelLabel'),
+      value: mainLoopModel === null ? t('config.defaultModel') : mainLoopModel,
       type: 'managedEnum' as const,
       onChange: onChangeMainModelConfig,
     },
@@ -897,7 +898,7 @@ export function Config({
       ? [
           {
             id: 'diffTool',
-            label: 'Diff tool',
+            label: t('config.diffTool'),
             value: globalConfig.diffTool ?? 'auto',
             options: ['terminal', 'auto'],
             type: 'enum' as const,
@@ -923,7 +924,7 @@ export function Config({
       ? [
           {
             id: 'autoConnectIde',
-            label: 'Auto-connect to IDE (external terminal)',
+            label: t('config.autoConnectIde'),
             value: globalConfig.autoConnectIde ?? false,
             type: 'boolean' as const,
             onChange(autoConnectIde: boolean) {
@@ -942,7 +943,7 @@ export function Config({
       ? [
           {
             id: 'autoInstallIdeExtension',
-            label: 'Auto-install IDE extension',
+            label: t('config.autoInstallIde'),
             value: globalConfig.autoInstallIdeExtension ?? true,
             type: 'boolean' as const,
             onChange(autoInstallIdeExtension: boolean) {
@@ -962,7 +963,7 @@ export function Config({
       : []),
     {
       id: 'claudeInChromeDefaultEnabled',
-      label: 'Claude in Chrome enabled by default',
+      label: t('config.claudeInChrome'),
       value: globalConfig.claudeInChromeDefaultEnabled ?? true,
       type: 'boolean' as const,
       onChange(enabled: boolean) {
@@ -1019,7 +1020,7 @@ export function Config({
             },
             {
               id: 'teammateDefaultModel',
-              label: 'Default teammate model',
+              label: t('config.teammateDefaultModel'),
               value: teammateModelDisplayString(globalConfig.teammateDefaultModel),
               type: 'managedEnum' as const,
               onChange() {},
@@ -1032,7 +1033,7 @@ export function Config({
       ? [
           {
             id: 'remoteControlAtStartup',
-            label: 'Enable Remote Control for all sessions',
+            label: t('config.remoteControl'),
             value:
               globalConfig.remoteControlAtStartup === undefined
                 ? 'default'
@@ -1081,7 +1082,7 @@ export function Config({
       ? [
           {
             id: 'showExternalIncludesDialog',
-            label: 'External CLAUDE.md includes',
+            label: t('config.externalIncludes'),
             value: (() => {
               const projectConfig = getCurrentProjectConfig();
               if (projectConfig.hasClaudeMdExternalIncludesApproved) {
@@ -1103,10 +1104,10 @@ export function Config({
             id: 'apiKey',
             label: (
               <Text>
-                Use custom API key: <Text bold>{normalizeApiKeyForConfig(process.env.ANTHROPIC_API_KEY)}</Text>
+                {t('config.useCustomApiKey')} <Text bold>{normalizeApiKeyForConfig(process.env.ANTHROPIC_API_KEY)}</Text>
               </Text>
             ),
-            searchText: 'Use custom API key',
+            searchText: t('config.useCustomApiKey'),
             value: Boolean(
               process.env.ANTHROPIC_API_KEY &&
                 globalConfig.customApiKeyResponses?.approved?.includes(
@@ -1859,7 +1860,7 @@ export function Config({
         </>
       ) : showSubmenu === 'EnableAutoUpdates' ? (
         <Dialog
-          title="Enable Auto-Updates"
+          title={t('config.enableAutoUpdates')}
           onCancel={() => {
             setShowSubmenu(null);
             setTabsHidden(false);
@@ -1871,22 +1872,22 @@ export function Config({
             <>
               <Text>
                 {autoUpdaterDisabledReason?.type === 'env'
-                  ? 'Auto-updates are controlled by an environment variable and cannot be changed here.'
-                  : 'Auto-updates are disabled in development builds.'}
+                  ? t('config.autoUpdatesEnvControlled')
+                  : t('config.autoUpdatesDevBuild')}
               </Text>
               {autoUpdaterDisabledReason?.type === 'env' && (
-                <Text dimColor>Unset {autoUpdaterDisabledReason.envVar} to re-enable auto-updates.</Text>
+                <Text dimColor>{t('config.autoUpdatesUnset', { envVar: autoUpdaterDisabledReason.envVar })}</Text>
               )}
             </>
           ) : (
             <Select
               options={[
                 {
-                  label: 'Enable with latest channel',
+                  label: t('config.enableLatest'),
                   value: 'latest',
                 },
                 {
-                  label: 'Enable with stable channel',
+                  label: t('config.enableStable'),
                   value: 'stable',
                 },
               ]}
@@ -1961,18 +1962,18 @@ export function Config({
             isFocused={isSearchMode && !headerFocused}
             isTerminalFocused={isTerminalFocused}
             cursorOffset={searchCursorOffset}
-            placeholder="Search settings…"
+            placeholder={t('config.searchPlaceholder')}
           />
           <Box flexDirection="column">
             {filteredSettingsItems.length === 0 ? (
               <Text dimColor italic>
-                No settings match &quot;{searchQuery}&quot;
+                {t('config.noMatch', { query: searchQuery })}
               </Text>
             ) : (
               <>
                 {scrollOffset > 0 && (
                   <Text dimColor>
-                    {figures.arrowUp} {scrollOffset} more above
+                    {figures.arrowUp} {scrollOffset} {t('config.moreAbove')}
                   </Text>
                 )}
                 {filteredSettingsItems.slice(scrollOffset, scrollOffset + maxVisible).map((setting, i) => {
@@ -1994,7 +1995,7 @@ export function Config({
                               {showThinkingWarning && setting.id === 'thinkingEnabled' && (
                                 <Text color="warning">
                                   {' '}
-                                  Changing thinking mode mid-conversation will increase latency and may reduce quality.
+                                  {t('config.thinkingWarning')}
                                 </Text>
                               )}
                             </>
@@ -2012,7 +2013,7 @@ export function Config({
                             </Text>
                           ) : setting.id === 'autoUpdatesChannel' && autoUpdaterDisabledReason ? (
                             <Box flexDirection="column">
-                              <Text color={isSelected ? 'suggestion' : undefined}>disabled</Text>
+                              <Text color={isSelected ? 'suggestion' : undefined}>{t('config.disabled')}</Text>
                               <Text dimColor>({formatAutoUpdaterDisabledReason(autoUpdaterDisabledReason)})</Text>
                             </Box>
                           ) : (
@@ -2025,7 +2026,7 @@ export function Config({
                 })}
                 {scrollOffset + maxVisible < filteredSettingsItems.length && (
                   <Text dimColor>
-                    {figures.arrowDown} {filteredSettingsItems.length - scrollOffset - maxVisible} more below
+                    {figures.arrowDown} {filteredSettingsItems.length - scrollOffset - maxVisible} {t('config.moreBelow')}
                   </Text>
                 )}
               </>
@@ -2042,7 +2043,7 @@ export function Config({
           ) : isSearchMode ? (
             <Text dimColor>
               <Byline>
-                <Text>Type to filter</Text>
+                <Text>{t('config.typeToFilter')}</Text>
                 <KeyboardShortcutHint shortcut="Enter/↓" action="select" />
                 <KeyboardShortcutHint shortcut="↑" action="tabs" />
                 <ConfigurableShortcutHint action="confirm:no" context="Settings" fallback="Esc" description="clear" />
@@ -2083,24 +2084,24 @@ function teammateModelDisplayString(value: string | null | undefined): string {
   if (value === undefined) {
     return modelDisplayString(getHardcodedTeammateModelFallback());
   }
-  if (value === null) return "Default (leader's model)";
+  if (value === null) return t('config.teammateLeaderModel');
   return modelDisplayString(value);
 }
 
 const THEME_LABELS: Record<string, string> = {
-  auto: 'Auto (match terminal)',
-  dark: 'Dark mode',
-  light: 'Light mode',
-  'dark-daltonized': 'Dark mode (colorblind-friendly)',
-  'light-daltonized': 'Light mode (colorblind-friendly)',
-  'dark-ansi': 'Dark mode (ANSI colors only)',
-  'light-ansi': 'Light mode (ANSI colors only)',
+  auto: t('theme.autoMatch'),
+  dark: t('theme.dark'),
+  light: t('theme.light'),
+  'dark-daltonized': t('theme.darkColorblind'),
+  'light-daltonized': t('theme.lightColorblind'),
+  'dark-ansi': t('theme.darkAnsi'),
+  'light-ansi': t('theme.lightAnsi'),
 };
 
 function NotifChannelLabel({ value }: { value: string }): React.ReactNode {
   switch (value) {
     case 'auto':
-      return 'Auto';
+      return t('config.notifAuto');
     case 'iterm2':
       return (
         <Text>
@@ -2110,7 +2111,7 @@ function NotifChannelLabel({ value }: { value: string }): React.ReactNode {
     case 'terminal_bell':
       return (
         <Text>
-          Terminal Bell <Text dimColor>(\a)</Text>
+          {t('config.notifTerminalBell')} <Text dimColor>(\a)</Text>
         </Text>
       );
     case 'kitty':
@@ -2126,9 +2127,9 @@ function NotifChannelLabel({ value }: { value: string }): React.ReactNode {
         </Text>
       );
     case 'iterm2_with_bell':
-      return 'iTerm2 w/ Bell';
+      return t('config.notifIterm2Bell');
     case 'notifications_disabled':
-      return 'Disabled';
+      return t('config.notifDisabled');
     default:
       return value;
   }

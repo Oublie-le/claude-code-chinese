@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import type { Root } from '@anthropic/ink'
 import { Box, Text, useAnimationFrame } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { AppStateProvider } from '../state/AppState.js'
 import {
   checkOutTeleportedSessionBranch,
@@ -20,10 +21,10 @@ type Props = {
 const SPINNER_FRAMES = ['◐', '◓', '◑', '◒']
 
 const STEPS: { key: TeleportProgressStep; label: string }[] = [
-  { key: 'validating', label: 'Validating session' },
-  { key: 'fetching_logs', label: 'Fetching session logs' },
-  { key: 'fetching_branch', label: 'Getting branch info' },
-  { key: 'checking_out', label: 'Checking out branch' },
+  { key: 'validating', label: t('teleport.step.validating') },
+  { key: 'fetching_logs', label: t('teleport.step.fetchingLogs') },
+  { key: 'fetching_branch', label: t('teleport.step.fetchingBranch') },
+  { key: 'checking_out', label: t('teleport.step.checkingOut') },
 ]
 
 export function TeleportProgress({
@@ -39,7 +40,7 @@ export function TeleportProgress({
     <Box ref={ref} flexDirection="column" paddingX={1} paddingY={1}>
       <Box marginBottom={1}>
         <Text bold color="claude">
-          {SPINNER_FRAMES[frame]} Teleporting session…
+          {SPINNER_FRAMES[frame]} {t('teleport.progress.title')}
         </Text>
       </Box>
 

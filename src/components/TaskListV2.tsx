@@ -12,6 +12,7 @@ import { isAgentSwarmsEnabled } from '../utils/agentSwarmsEnabled.js'
 import { count } from '../utils/array.js'
 import { summarizeRecentActivities } from '../utils/collapseReadSearch.js'
 import { truncateToWidth } from '../utils/format.js'
+import { t } from '../utils/language.js'
 import { isTodoV2Enabled, type Task } from '../utils/tasks.js'
 import type { Theme } from '../utils/theme.js'
 import ThemedText from './design-system/ThemedText.js'
@@ -204,13 +205,13 @@ export function TaskListV2({
     const hiddenInProgress = count(hiddenTasks, t => t.status === 'in_progress')
     const hiddenCompleted = count(hiddenTasks, t => t.status === 'completed')
     if (hiddenInProgress > 0) {
-      parts.push(`${hiddenInProgress} in progress`)
+      parts.push(t('taskList.hidden.inProgress', { count: String(hiddenInProgress) }))
     }
     if (hiddenPending > 0) {
-      parts.push(`${hiddenPending} pending`)
+      parts.push(t('taskList.hidden.pending', { count: String(hiddenPending) }))
     }
     if (hiddenCompleted > 0) {
-      parts.push(`${hiddenCompleted} completed`)
+      parts.push(t('taskList.hidden.completed', { count: String(hiddenCompleted) }))
     }
     hiddenSummary = ` … +${parts.join(', ')}`
   }
@@ -238,17 +239,11 @@ export function TaskListV2({
         <Box>
           <Text dimColor>
             <Text bold>{tasks.length}</Text>
-            {' tasks ('}
-            <Text bold>{completedCount}</Text>
-            {' done, '}
-            {inProgressCount > 0 && (
-              <>
-                <Text bold>{inProgressCount}</Text>
-                {' in progress, '}
-              </>
-            )}
-            <Text bold>{pendingCount}</Text>
-            {' open)'}
+            {t('taskList.header', {
+              done: String(completedCount),
+              inProgress: inProgressCount > 0 ? t('taskList.inProgressPart', { count: String(inProgressCount) }) : '',
+              open: t('taskList.openPart', { count: String(pendingCount) }),
+            })}
           </Text>
         </Box>
         {content}
@@ -338,7 +333,7 @@ function TaskItem({
         {isBlocked && (
           <Text dimColor>
             {' '}
-            {figures.pointerSmall} blocked by{' '}
+            {figures.pointerSmall} {t('taskList.blockedBy')}{' '}
             {[...openBlockers]
               .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
               .map(id => `#${id}`)

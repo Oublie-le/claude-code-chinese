@@ -33,6 +33,7 @@ import {
 } from '../utils/model/model.js';
 import { getModelOptions } from '../utils/model/modelOptions.js';
 import { getSettingsForSource, updateSettingsForSource } from '../utils/settings/settings.js';
+import { t } from '../utils/language.js';
 import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
 import { Select } from './CustomSelect/index.js';
 import { Byline, KeyboardShortcutHint, Pane } from '@anthropic/ink';
@@ -117,7 +118,7 @@ export function ModelPicker({
         {
           value: initial,
           label: modelDisplayString(initial),
-          description: 'Current model',
+          description: t('model.currentModel'),
         },
       ];
     }
@@ -225,16 +226,14 @@ export function ModelPicker({
       <Box flexDirection="column">
         <Box marginBottom={1} flexDirection="column">
           <Text color="remember" bold>
-            Select model
+            {t('model.select')}
           </Text>
           <Text dimColor>
-            {headerText ??
-              'Switch between Claude models. Applies to this session and future Claude Code sessions. For other/previous model names, specify with --model.'}
+            {headerText ?? t('model.select.desc')}
           </Text>
           {sessionModel && (
             <Text dimColor>
-              Currently using {modelDisplayString(sessionModel)} for this session (set by plan mode). Selecting a model
-              will undo this.
+              {t('model.sessionModel', { model: modelDisplayString(sessionModel) })}
             </Text>
           )}
         </Box>
@@ -253,7 +252,7 @@ export function ModelPicker({
           </Box>
           {hiddenCount > 0 && (
             <Box paddingLeft={3}>
-              <Text dimColor>and {hiddenCount} more…</Text>
+              <Text dimColor>{t('model.hiddenCount', { count: String(hiddenCount) })}</Text>
             </Box>
           )}
         </Box>
@@ -261,24 +260,23 @@ export function ModelPicker({
         <Box marginBottom={1} flexDirection="column">
           {focusedSupportsEffort ? (
             <Text dimColor>
-              <EffortLevelIndicator effort={displayEffort} /> {capitalize(displayEffort)} effort
-              {displayEffort === focusedDefaultEffort ? ` (default)` : ``} <Text color="subtle">← → to adjust</Text>
+              <EffortLevelIndicator effort={displayEffort} /> {t(displayEffort === focusedDefaultEffort ? 'model.effort.default' : 'model.effort.nonDefault', { effort: capitalize(displayEffort ?? '') })} <Text color="subtle">{t('model.effort.adjust')}</Text>
             </Text>
           ) : (
             <Text color="subtle">
-              <EffortLevelIndicator effort={undefined} /> Effort not supported
-              {focusedModelName ? ` for ${focusedModelName}` : ''}
+              <EffortLevelIndicator effort={undefined} /> {t('model.effortNotSupported')}
+              {focusedModelName ? t('model.effortForModel', { model: focusedModelName }) : ''}
             </Text>
           )}
           {is1MMarked ? (
             <Text dimColor>
-              <EffortLevelIndicator effort={'high'} /> 1M context on
-              <Text color="subtle"> · Space to toggle</Text>
+              <EffortLevelIndicator effort={'high'} /> {t('model.1m.on')}
+              <Text color="subtle">{t('model.1m.toggle')}</Text>
             </Text>
           ) : (
             <Text color="subtle">
-              <EffortLevelIndicator effort={undefined} /> 1M context off
-              {focusedModelName ? ` for ${focusedModelName}` : ''}
+              <EffortLevelIndicator effort={undefined} /> {t('model.1m.off')}
+              {focusedModelName ? t('model.effortForModel', { model: focusedModelName }) : ''}
             </Text>
           )}
         </Box>
@@ -287,14 +285,13 @@ export function ModelPicker({
           showFastModeNotice ? (
             <Box marginBottom={1}>
               <Text dimColor>
-                Fast mode is <Text bold>ON</Text> and available with {FAST_MODE_MODEL_DISPLAY} only (/fast). Switching
-                to other models turn off fast mode.
+                {t('model.fastMode.on', { model: FAST_MODE_MODEL_DISPLAY })}
               </Text>
             </Box>
           ) : isFastModeAvailable() && !isFastModeCooldown() ? (
             <Box marginBottom={1}>
               <Text dimColor>
-                Use <Text bold>/fast</Text> to turn on Fast mode ({FAST_MODE_MODEL_DISPLAY} only).
+                {t('model.fastMode.hint', { model: FAST_MODE_MODEL_DISPLAY })}
               </Text>
             </Box>
           ) : null

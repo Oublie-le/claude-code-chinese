@@ -13,6 +13,7 @@ import {
   markGroveNoticeViewed,
   updateGroveSettings,
 } from '../../services/api/grove.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/index.js'
 import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
 
@@ -227,18 +228,17 @@ export function GroveDialog({
   const acceptOptions = groveConfig?.domain_excluded
     ? [
         {
-          label:
-            'Accept terms · Help improve Claude: OFF (for emails with your domain)',
+          label: t('grove.acceptOptOutDomain'),
           value: 'accept_opt_out',
         },
       ]
     : [
         {
-          label: 'Accept terms · Help improve Claude: ON',
+          label: t('grove.acceptOptIn'),
           value: 'accept_opt_in',
         },
         {
-          label: 'Accept terms · Help improve Claude: OFF',
+          label: t('grove.acceptOptOut'),
           value: 'accept_opt_out',
         },
       ]
@@ -253,12 +253,12 @@ export function GroveDialog({
 
   return (
     <Dialog
-      title="Updates to Consumer Terms and Policies"
+      title={t('grove.dialogTitle')}
       color="professionalBlue"
       onCancel={handleCancel}
       inputGuide={exitState =>
         exitState.pending ? (
-          <Text>Press {exitState.keyName} again to exit</Text>
+          <Text>{t('grove.pressAgainToExit', { keyName: exitState.keyName ?? '' })}</Text>
         ) : (
           <Byline>
             <KeyboardShortcutHint shortcut="Enter" action="confirm" />
@@ -282,8 +282,8 @@ export function GroveDialog({
 
       <Box flexDirection="column" gap={1}>
         <Box flexDirection="column">
-          <Text bold>Please select how you&apos;d like to continue</Text>
-          <Text>Your choice takes effect immediately upon confirmation.</Text>
+          <Text bold>{t('grove.pleaseSelect')}</Text>
+          <Text>{t('grove.choiceImmediateEffect')}</Text>
         </Box>
 
         <Select
@@ -291,7 +291,7 @@ export function GroveDialog({
             ...acceptOptions,
             // Only show "Not now" if in grace period
             ...(groveConfig?.notice_is_grace_period
-              ? [{ label: 'Not now', value: 'defer' }]
+              ? [{ label: t('grove.notNow'), value: 'defer' }]
               : []),
           ]}
           onChange={value =>
@@ -341,12 +341,12 @@ export function PrivacySettingsDialog({
 
   return (
     <Dialog
-      title="Data Privacy"
+      title={t('grove.dataPrivacyTitle')}
       color="professionalBlue"
       onCancel={onDone}
       inputGuide={exitState =>
         exitState.pending ? (
-          <Text>Press {exitState.keyName} again to exit</Text>
+          <Text>{t('grove.pressAgainToExit', { keyName: exitState.keyName ?? '' })}</Text>
         ) : domainExcluded ? (
           <KeyboardShortcutHint shortcut="Esc" action="cancel" />
         ) : (
@@ -364,7 +364,7 @@ export function PrivacySettingsDialog({
 
       <Box>
         <Box width={44}>
-          <Text bold>Help improve Claude</Text>
+          <Text bold>{t('grove.helpImprove')}</Text>
         </Box>
         <Box>{valueComponent}</Box>
       </Box>

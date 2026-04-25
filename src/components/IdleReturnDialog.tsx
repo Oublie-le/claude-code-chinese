@@ -3,6 +3,7 @@ import { Box, Text } from '@anthropic/ink'
 import { formatTokens } from '../utils/format.js'
 import { Select } from './CustomSelect/index.js'
 import { Dialog } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 
 type IdleReturnAction = 'continue' | 'clear' | 'dismiss' | 'never'
 
@@ -22,27 +23,27 @@ export function IdleReturnDialog({
 
   return (
     <Dialog
-      title={`You've been away ${formattedIdle} and this conversation is ${formattedTokens} tokens.`}
+      title={t('idle.return.title', { idle: formattedIdle, tokens: formattedTokens })}
       onCancel={() => onDone('dismiss')}
     >
       <Box flexDirection="column">
         <Text>
-          If this is a new task, clearing context will save usage and be faster.
+          {t('idle.return.hint')}
         </Text>
       </Box>
       <Select
         options={[
           {
             value: 'continue' as const,
-            label: 'Continue this conversation',
+            label: t('idle.return.continue'),
           },
           {
             value: 'clear' as const,
-            label: 'Send message as a new conversation',
+            label: t('idle.return.clear'),
           },
           {
             value: 'never' as const,
-            label: "Don't ask me again",
+            label: t('idle.return.never'),
           },
         ]}
         onChange={(value: IdleReturnAction) => onDone(value)}

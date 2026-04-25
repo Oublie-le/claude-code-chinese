@@ -7,6 +7,7 @@ import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js'
 import { Select } from '../CustomSelect/select.js'
 import { DesktopHandoff } from '../DesktopHandoff.js'
 import { PermissionDialog } from '../permissions/PermissionDialog.js'
+import { t } from '../../utils/language.js'
 
 type DesktopUpsellConfig = {
   enable_shortcut_tip: boolean
@@ -83,18 +84,17 @@ export function DesktopUpsellStartup({ onDone }: Props): React.ReactNode {
   }
 
   const options = [
-    { label: 'Open in Claude Code Desktop', value: 'try' as const },
-    { label: 'Not now', value: 'not-now' as const },
-    { label: "Don't ask again", value: 'never' as const },
+    { label: t('desktop.upsell.open'), value: 'try' as const },
+    { label: t('desktop.upsell.notNow'), value: 'not-now' as const },
+    { label: t('desktop.upsell.never'), value: 'never' as const },
   ]
 
   return (
-    <PermissionDialog title="Try Claude Code Desktop">
+    <PermissionDialog title={t('desktop.upsell.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1}>
           <Text>
-            Same Claude Code with visual diffs, live app preview, parallel
-            sessions, and more.
+            {t('desktop.upsell.desc')}
           </Text>
         </Box>
         <Select

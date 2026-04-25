@@ -5,6 +5,7 @@ import { env } from '../../../utils/env.js'
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js'
 import { truncateToLines } from '../../../utils/stringUtils.js'
 import { logUnaryEvent } from '../../../utils/unaryLogging.js'
+import { t } from '../../../utils/language.js'
 import { PermissionDialog } from '../PermissionDialog.js'
 import {
   PermissionPrompt,
@@ -42,7 +43,7 @@ export function MonitorPermissionRequest({
   const options: PermissionPromptOption<OptionValue>[] = useMemo(() => {
     const opts: PermissionPromptOption<OptionValue>[] = [
       {
-        label: 'Yes',
+        label: t('monitor.yes'),
         value: 'yes',
         feedbackConfig: { type: 'accept' as const },
       },
@@ -51,7 +52,7 @@ export function MonitorPermissionRequest({
       opts.push({
         label: (
           <Text>
-            Yes, and don{'\u2019'}t ask again for{' '}
+            {t('monitor.dontAskAgain')}{' '}
             <Text bold>{toolUseConfirm.tool.name}</Text> commands
           </Text>
         ),
@@ -59,7 +60,7 @@ export function MonitorPermissionRequest({
       })
     }
     opts.push({
-      label: 'No',
+      label: t('monitor.no'),
       value: 'no',
       feedbackConfig: { type: 'reject' as const },
     })
@@ -138,7 +139,7 @@ export function MonitorPermissionRequest({
 
   return (
     <PermissionDialog
-      title="Monitor"
+      title={t('monitor.title')}
       workerBadge={workerBadge}
     >
       <Box flexDirection="column" gap={1}>

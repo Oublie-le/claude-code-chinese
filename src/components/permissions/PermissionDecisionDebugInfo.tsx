@@ -16,6 +16,7 @@ import { permissionRuleValueToString } from '../../utils/permissions/permissionR
 import { detectUnreachableRules } from '../../utils/permissions/shadowedRuleDetection.js'
 import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js'
 import { getSettingSourceDisplayNameLowercase } from '../../utils/settings/constants.js'
+import { t } from '../../utils/language.js'
 
 type PermissionDecisionInfoItemProps = {
   title?: string
@@ -39,7 +40,7 @@ function decisionReasonDisplayString(
     case 'mode':
       return `${permissionModeTitle(decisionReason.mode)} mode`
     case 'sandboxOverride':
-      return 'Requires permission to bypass sandbox'
+      return t('permDebug.requiresSandboxBypass')
     case 'workingDir':
       return decisionReason.reason
     case 'safetyCheck':
@@ -178,9 +179,9 @@ function SuggestionDisplay({
     return (
       <Box flexDirection="row">
         <Box justifyContent="flex-end" minWidth={width}>
-          <Text dimColor>Suggestions </Text>
+          <Text dimColor>{t('permDebug.suggestions')} </Text>
         </Box>
-        <Text>None</Text>
+        <Text>{t('permDebug.none')}</Text>
       </Box>
     )
   }
@@ -194,9 +195,9 @@ function SuggestionDisplay({
     return (
       <Box flexDirection="row">
         <Box justifyContent="flex-end" minWidth={width}>
-          <Text dimColor>Suggestion </Text>
+          <Text dimColor>{t('permDebug.suggestion')} </Text>
         </Box>
-        <Text>None</Text>
+        <Text>{t('permDebug.none')}</Text>
       </Box>
     )
   }
@@ -205,7 +206,7 @@ function SuggestionDisplay({
     <Box flexDirection="column">
       <Box flexDirection="row">
         <Box justifyContent="flex-end" minWidth={width}>
-          <Text dimColor>Suggestions </Text>
+          <Text dimColor>{t('permDebug.suggestions')} </Text>
         </Box>
         <Text> </Text>
       </Box>
@@ -301,21 +302,21 @@ export function PermissionDecisionDebugInfo({
     <Box flexDirection="column">
       <Box flexDirection="row">
         <Box justifyContent="flex-end" minWidth={WIDTH}>
-          <Text dimColor>Behavior </Text>
+          <Text dimColor>{t('permDebug.behavior')} </Text>
         </Box>
         <Text>{permissionResult.behavior}</Text>
       </Box>
       {permissionResult.behavior !== 'allow' && (
         <Box flexDirection="row">
           <Box justifyContent="flex-end" minWidth={WIDTH}>
-            <Text dimColor>Message </Text>
+            <Text dimColor>{t('permDebug.message')} </Text>
           </Box>
           <Text>{permissionResult.message}</Text>
         </Box>
       )}
       <Box flexDirection="row">
         <Box justifyContent="flex-end" minWidth={WIDTH}>
-          <Text dimColor>Reason </Text>
+          <Text dimColor>{t('permDebug.reason')} </Text>
         </Box>
         {decisionReason === undefined ? (
           <Text>undefined</Text>

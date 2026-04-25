@@ -27,6 +27,7 @@ import {
   renderModelName,
 } from '../../utils/model/model.js'
 import { isMacOsKeychainLocked } from '../../utils/secureStorage/macOsKeychainStorage.js'
+import { t } from '../../utils/language.js'
 import { CtrlOToExpand } from '../CtrlOToExpand.js'
 import { InterruptedByUser } from '../InterruptedByUser.js'
 import { Markdown } from '../Markdown.js'
@@ -54,7 +55,7 @@ function InvalidApiKeyMessage(): React.ReactNode {
         <Text color="error">{INVALID_API_KEY_ERROR_MESSAGE}</Text>
         {isKeychainLocked && (
           <Text dimColor>
-            · Run in another terminal: security unlock-keychain
+            {t('assistant.keychainLocked')}
           </Text>
         )}
       </Box>
@@ -96,7 +97,7 @@ export function AssistantTextMessage({
       return (
         <MessageResponse height={1}>
           <Text color="error">
-            Context limit reached · /compact or /clear to continue
+            {t('assistant.contextLimit')}
             {upgradeHint ? ` · ${upgradeHint}` : ''}
           </Text>
         </MessageResponse>
@@ -107,8 +108,7 @@ export function AssistantTextMessage({
       return (
         <MessageResponse height={1}>
           <Text color="error">
-            Credit balance too low &middot; Add funds:
-            https://platform.claude.com/settings/billing
+            {t('assistant.creditLow')}
           </Text>
         </MessageResponse>
       )
@@ -159,11 +159,10 @@ export function AssistantTextMessage({
         <MessageResponse>
           <Box flexDirection="column" gap={1}>
             <Text color="error">
-              We are experiencing high demand for Opus 4.
+              {t('assistant.opusDemand')}
             </Text>
             <Text>
-              To continue immediately, use /model to switch to{' '}
-              {renderModelName(getDefaultSonnetModel())} and continue coding.
+              {t('assistant.opusSwitchHint', { model: renderModelName(getDefaultSonnetModel()) })}
             </Text>
           </Box>
         </MessageResponse>
@@ -185,7 +184,7 @@ export function AssistantTextMessage({
             <Box flexDirection="column">
               <Text color="error">
                 {text === API_ERROR_MESSAGE_PREFIX
-                  ? `${API_ERROR_MESSAGE_PREFIX}: Please wait a moment and try again.`
+                  ? `${API_ERROR_MESSAGE_PREFIX}${t('assistant.apiErrorRetry')}`
                   : truncated
                     ? text.slice(0, MAX_API_ERROR_CHARS) + '…'
                     : text}

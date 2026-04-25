@@ -11,6 +11,7 @@ import {
 } from '@claude-code-best/builtin-tools/tools/AgentTool/agentDisplay.js'
 import type { AgentDefinition } from '@claude-code-best/builtin-tools/tools/AgentTool/loadAgentsDir.js'
 import { count } from '../../utils/array.js'
+import { t } from '../../utils/language.js'
 import { Dialog, Divider } from '@anthropic/ink'
 import { getAgentSourceDisplayName } from './utils.js'
 
@@ -55,7 +56,7 @@ export function AgentsList({
           {isCreateNewSelected ? `${figures.pointer} ` : '  '}
         </Text>
         <Text color={isCreateNewSelected ? 'suggestion' : undefined}>
-          Create new agent
+          {t('agents.createNew')}
         </Text>
       </Box>
     )
@@ -92,7 +93,7 @@ export function AgentsList({
         {agent.memory && (
           <Text dimColor={true} color={textColor}>
             {' · '}
-            {agent.memory} memory
+            {agent.memory} {t('agents.memory')}
           </Text>
         )}
         {overriddenBy && (
@@ -101,7 +102,7 @@ export function AgentsList({
             color={isSelected ? 'warning' : undefined}
           >
             {' '}
-            {figures.warning} shadowed by {getOverrideSourceLabel(overriddenBy)}
+            {figures.warning} {t('agents.shadowedBy')} {getOverrideSourceLabel(overriddenBy)}
           </Text>
         )}
       </Box>
@@ -193,7 +194,7 @@ export function AgentsList({
   }
 
   const renderBuiltInAgentsSection = (
-    title = 'Built-in (always available):',
+    title = t('agents.builtInAvailable'),
   ) => {
     const builtInAgents = sortedAgents.filter(a => a.source === 'built-in')
     return (
@@ -236,7 +237,7 @@ export function AgentsList({
     return (
       <Dialog
         title={sourceTitle}
-        subtitle="No agents found"
+        subtitle={t('agents.noAgents')}
         onCancel={onBack}
         hideInputGuide
       >
@@ -249,16 +250,13 @@ export function AgentsList({
         >
           {onCreateNew && <Box>{renderCreateNewOption()}</Box>}
           <Text dimColor>
-            No agents found. Create specialized subagents that Claude can
-            delegate to.
+            {t('agents.noAgentsDesc')}
           </Text>
           <Text dimColor>
-            Each subagent has its own context window, custom system prompt, and
-            specific tools.
+            {t('agents.contextWindow')}
           </Text>
           <Text dimColor>
-            Try creating: Code Reviewer, Code Simplifier, Security Reviewer,
-            Tech Lead, or UX Reviewer.
+            {t('agents.trySuggestions')}
           </Text>
           {source !== 'built-in' &&
             sortedAgents.some(a => a.source === 'built-in') && (
@@ -275,7 +273,7 @@ export function AgentsList({
   return (
     <Dialog
       title={sourceTitle}
-      subtitle={`${count(sortedAgents, a => !a.overriddenBy)} agents`}
+      subtitle={t('agents.count', { count: String(count(sortedAgents, a => !a.overriddenBy)) })}
       onCancel={onBack}
       hideInputGuide
     >
@@ -306,7 +304,7 @@ export function AgentsList({
             {builtInAgents.length > 0 && (
               <Box flexDirection="column" marginBottom={1} paddingLeft={2}>
                 <Text dimColor>
-                  <Text bold>Built-in agents</Text> (always available)
+                  <Text bold>{t('agents.builtInAgents')}</Text> {t('agents.builtInAlwaysAvailable')}
                 </Text>
                 {builtInAgents.map(renderAgent)}
               </Box>
@@ -315,7 +313,7 @@ export function AgentsList({
         ) : source === 'built-in' ? (
           <>
             <Text dimColor italic>
-              Built-in agents are provided by default and cannot be modified.
+              {t('agents.builtInCannotModify')}
             </Text>
             <Box marginTop={1} flexDirection="column">
               {sortedAgents.map(agent => renderAgent(agent))}

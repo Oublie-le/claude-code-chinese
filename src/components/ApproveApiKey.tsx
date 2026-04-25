@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, Dialog } from '@anthropic/ink'
 import { saveGlobalConfig } from '../utils/config.js'
 import { Select } from './CustomSelect/index.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   customApiKeyTruncated: string
@@ -47,7 +48,7 @@ export function ApproveApiKey({
 
   return (
     <Dialog
-      title="Detected a custom API key in your environment"
+      title={t('apikey.detected.title')}
       color="warning"
       onCancel={() => onChange('no')}
     >
@@ -55,16 +56,16 @@ export function ApproveApiKey({
         <Text bold>ANTHROPIC_API_KEY</Text>
         <Text>: sk-ant-...{customApiKeyTruncated}</Text>
       </Text>
-      <Text>Do you want to use this API key?</Text>
+      <Text>{t('apikey.use')}</Text>
       <Select
         defaultValue="no"
         defaultFocusValue="no"
         options={[
-          { label: 'Yes', value: 'yes' },
+          { label: t('apikey.yes'), value: 'yes' },
           {
             label: (
               <Text>
-                No (<Text bold>recommended</Text>)
+                {t('apikey.no.recommended')}
               </Text>
             ),
             value: 'no',

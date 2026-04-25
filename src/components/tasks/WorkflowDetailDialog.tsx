@@ -7,6 +7,7 @@ import type { LocalWorkflowTaskState } from '../../tasks/LocalWorkflowTask/Local
 import { Byline } from '../design-system/Byline.js'
 import { Dialog } from '../design-system/Dialog.js'
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   workflow: DeepImmutable<LocalWorkflowTaskState>
@@ -58,7 +59,7 @@ export function WorkflowDetailDialog({
   return (
     <Box flexDirection="column" tabIndex={0} borderStyle="round" onKeyDown={handleKeyDown}>
       <Dialog
-        title="Workflow"
+        title={t('workflowDetail.title')}
         subtitle={
           <Text dimColor>
             {elapsedTime} · {workflow.workflowName}
@@ -79,9 +80,9 @@ export function WorkflowDetailDialog({
       >
         <Box flexDirection="column" gap={1}>
           <Text>
-            <Text bold>Status:</Text>{' '}
+            <Text bold>{t('workflowDetail.status')}</Text>{' '}
             {workflow.status === 'running' ? (
-              <Text color="ansi:green">running</Text>
+              <Text color="ansi:green">{t('workflowDetail.running')}</Text>
             ) : workflow.status === 'completed' ? (
               <Text color="ansi:green">{workflow.status}</Text>
             ) : (
@@ -89,22 +90,22 @@ export function WorkflowDetailDialog({
             )}
           </Text>
           <Text>
-            <Text bold>Description:</Text> {workflow.description}
+            <Text bold>{t('workflowDetail.desc')}</Text> {workflow.description}
           </Text>
           <Text>
-            <Text bold>Workflow:</Text> {workflow.workflowName}
+            <Text bold>{t('workflowDetail.name')}</Text> {workflow.workflowName}
           </Text>
           <Text>
-            <Text bold>File:</Text> {workflow.workflowFile}
+            <Text bold>{t('workflowDetail.file')}</Text> {workflow.workflowFile}
           </Text>
           {workflow.summary && (
             <Text>
-              <Text bold>Summary:</Text> {workflow.summary}
+              <Text bold>{t('workflowDetail.summary')}</Text> {workflow.summary}
             </Text>
           )}
           {workflow.output && (
             <Box flexDirection="column">
-              <Text bold>Output:</Text>
+              <Text bold>{t('workflowDetail.output')}</Text>
               <Text dimColor>{workflow.output}</Text>
             </Box>
           )}

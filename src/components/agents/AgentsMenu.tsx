@@ -18,6 +18,7 @@ import {
 } from '@claude-code-best/builtin-tools/tools/AgentTool/loadAgentsDir.js'
 import { toError } from '../../utils/errors.js'
 import { logError } from '../../utils/log.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/select.js'
 import { Dialog } from '@anthropic/ink'
 import { AgentDetail } from './AgentDetail.js'
@@ -135,9 +136,9 @@ export function AgentsMenu({ tools, onExit }: Props): React.ReactNode {
             onBack={() => {
               const exitMessage =
                 changes.length > 0
-                  ? `Agent changes:\n${changes.join('\n')}`
+                  ? `${t('agents.menu.changes')}\n${changes.join('\n')}`
                   : undefined
-              onExit(exitMessage ?? 'Agents dialog dismissed', {
+              onExit(exitMessage ?? t('agents.menu.dismissed'), {
                 display: changes.length === 0 ? 'system' : undefined,
               })
             }}
@@ -180,14 +181,14 @@ export function AgentsMenu({ tools, onExit }: Props): React.ReactNode {
         agentToUse.source !== 'plugin' &&
         agentToUse.source !== 'flagSettings'
       const menuItems = [
-        { label: 'View agent', value: 'view' },
+        { label: t('agents.menu.viewAgent'), value: 'view' },
         ...(isEditable
           ? [
-              { label: 'Edit agent', value: 'edit' },
-              { label: 'Delete agent', value: 'delete' },
+              { label: t('agents.menu.editAgent'), value: 'edit' },
+              { label: t('agents.menu.deleteAgent'), value: 'delete' },
             ]
           : []),
-        { label: 'Back', value: 'back' },
+        { label: t('agents.menu.back'), value: 'back' },
       ]
 
       const handleMenuSelect = (value: string): void => {
@@ -279,21 +280,21 @@ export function AgentsMenu({ tools, onExit }: Props): React.ReactNode {
               }
             />
           </Dialog>
-          <AgentNavigationFooter instructions="Press Enter or Esc to go back" />
+          <AgentNavigationFooter instructions={t('agents.menu.pressEnterOrEsc')} />
         </>
       )
     }
 
     case 'delete-confirm': {
       const deleteOptions = [
-        { label: 'Yes, delete', value: 'yes' },
-        { label: 'No, cancel', value: 'no' },
+        { label: t('agents.menu.deleteYes'), value: 'yes' },
+        { label: t('agents.menu.deleteNo'), value: 'no' },
       ]
 
       return (
         <>
           <Dialog
-            title="Delete agent"
+            title={t('agents.menu.deleteTitle')}
             onCancel={() => {
               if ('previousMode' in modeState)
                 setModeState(modeState.previousMode)
@@ -301,11 +302,11 @@ export function AgentsMenu({ tools, onExit }: Props): React.ReactNode {
             color="error"
           >
             <Text>
-              Are you sure you want to delete the agent{' '}
+              {t('agents.menu.deleteConfirm')}{' '}
               <Text bold>{modeState.agent.agentType}</Text>?
             </Text>
             <Box marginTop={1}>
-              <Text dimColor>Source: {modeState.agent.source}</Text>
+              <Text dimColor>{t('agents.menu.source')} {modeState.agent.source}</Text>
             </Box>
             <Box marginTop={1}>
               <Select
@@ -327,7 +328,7 @@ export function AgentsMenu({ tools, onExit }: Props): React.ReactNode {
               />
             </Box>
           </Dialog>
-          <AgentNavigationFooter instructions="Press ↑↓ to navigate, Enter to select, Esc to cancel" />
+          <AgentNavigationFooter instructions={t('agents.menu.navHint')} />
         </>
       )
     }
@@ -344,7 +345,7 @@ export function AgentsMenu({ tools, onExit }: Props): React.ReactNode {
       return (
         <>
           <Dialog
-            title={`Edit agent: ${agentToEdit.agentType}`}
+            title={`${t('agents.menu.editTitle')} ${agentToEdit.agentType}`}
             onCancel={() => setModeState(modeState.previousMode)}
             hideInputGuide
           >

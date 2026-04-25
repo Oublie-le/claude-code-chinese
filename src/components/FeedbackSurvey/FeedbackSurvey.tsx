@@ -4,6 +4,7 @@ import {
   logEvent,
 } from 'src/services/analytics/index.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import {
   FeedbackSurveyView,
   isValidResponseInput,
@@ -59,7 +60,7 @@ export function FeedbackSurvey({
     return (
       <Box marginTop={1}>
         <Text color="success">
-          {'\u2713'} Thanks for sharing your transcript!
+          {'\u2713'} {t('survey.transcriptShared')}
         </Text>
       </Box>
     )
@@ -68,7 +69,7 @@ export function FeedbackSurvey({
   if (state === 'submitting') {
     return (
       <Box marginTop={1}>
-        <Text dimColor>Sharing transcript{'\u2026'}</Text>
+        <Text dimColor>{t('survey.transcriptSharing')}</Text>
       </Box>
     )
   }
@@ -148,18 +149,17 @@ function FeedbackSurveyThanks({
 
   return (
     <Box marginTop={1} flexDirection="column">
-      <Text color="success">Thanks for the feedback!</Text>
+      <Text color="success">{t('survey.thanks')}</Text>
       {showFollowUp ? (
         <Text dimColor>
-          (Optional) Press [<Text color="ansi:cyan">1</Text>] to tell us what
-          went well {' \u00b7 '}
+          {t('survey.followUp.pre')}<Text color="ansi:cyan">1</Text>{t('survey.followUp.post')} {' \u00b7 '}
           {feedbackCommand}
         </Text>
       ) : lastResponse === 'bad' ? (
-        <Text dimColor>Use /issue to report model behavior issues.</Text>
+        <Text dimColor>{t('survey.usageIssue')}</Text>
       ) : (
         <Text dimColor>
-          Use {feedbackCommand} to share detailed feedback anytime.
+          {t('survey.usageFeedback', { cmd: feedbackCommand })}
         </Text>
       )}
     </Box>

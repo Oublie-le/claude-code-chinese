@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Markdown } from 'src/components/Markdown.js'
 import { MessageResponse } from 'src/components/MessageResponse.js'
+import { t } from 'src/utils/language.js'
 import { Box, Text } from '@anthropic/ink'
 
 type Props = {
@@ -11,7 +12,7 @@ export function RejectedPlanMessage({ plan }: Props): React.ReactNode {
   return (
     <MessageResponse>
       <Box flexDirection="column">
-        <Text color="subtle">User rejected Claude&apos;s plan:</Text>
+        <Text color="subtle">{t('rejectedPlan.label')}</Text>
         <Box
           borderStyle="round"
           borderColor="planMode"

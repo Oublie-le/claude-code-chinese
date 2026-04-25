@@ -4,6 +4,7 @@ import * as React from 'react'
 import { TEAMMATE_MESSAGE_TAG } from '../../constants/xml.js'
 import { Ansi, Box, Text, type TextProps } from '@anthropic/ink'
 import { toInkColor } from '../../utils/ink.js'
+import { t } from '../../utils/language.js'
 
 import { jsonParse } from '../../utils/slowOperations.js'
 import { isShutdownApproved } from '../../utils/teammateMailbox.js'
@@ -145,7 +146,7 @@ export function UserTeammateMessage({
                 <Text color="success">✓</Text>
                 <Text>
                   {' '}
-                  Completed task #{taskCompleted.taskId}
+                  {t('teammate.completed_task', { taskId: taskCompleted.taskId })}
                   {taskCompleted.taskSubject && (
                     <Text dimColor> ({taskCompleted.taskSubject})</Text>
                   )}

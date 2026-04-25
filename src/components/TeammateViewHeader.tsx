@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Box, Text, KeyboardShortcutHint } from '@anthropic/ink'
 import { toInkColor } from '../utils/ink.js'
+import { t } from '../utils/language.js'
 import { useAppState } from '../state/AppState.js'
 import { getViewedTeammateTask } from '../state/selectors.js'
 
@@ -23,7 +24,7 @@ export function TeammateViewHeader(): React.ReactNode {
     <OffscreenFreeze>
       <Box flexDirection="column" marginBottom={1}>
         <Box>
-          <Text>Viewing </Text>
+          <Text>{t('teammate.viewing')} </Text>
           <Text color={nameColor} bold>
             @{viewedTeammate.identity.agentName}
           </Text>

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import {
   isShutdownApproved,
   isShutdownRejected,
@@ -29,12 +30,12 @@ export function ShutdownRequestDisplay({
       >
         <Box marginBottom={1}>
           <Text color="warning" bold>
-            Shutdown request from {request.from}
+            {t('shutdown.requestFrom', { from: request.from })}
           </Text>
         </Box>
         {request.reason && (
           <Box>
-            <Text>Reason: {request.reason}</Text>
+            <Text>{t('shutdown.reasonLabel')}{request.reason}</Text>
           </Box>
         )}
       </Box>
@@ -62,7 +63,7 @@ export function ShutdownRejectedDisplay({
         paddingY={1}
       >
         <Text color="subtle" bold>
-          Shutdown rejected by {response.from}
+          {t('shutdown.rejectedBy', { from: response.from })}
         </Text>
         <Box
           marginTop={1}
@@ -72,12 +73,11 @@ export function ShutdownRejectedDisplay({
           borderRight={false}
           paddingX={1}
         >
-          <Text>Reason: {response.reason}</Text>
+          <Text>{t('shutdown.reasonLabel')}{response.reason}</Text>
         </Box>
         <Box marginTop={1}>
           <Text dimColor>
-            Teammate is continuing to work. You may request shutdown again
-            later.
+            {t('shutdown.continuing')}
           </Text>
         </Box>
       </Box>

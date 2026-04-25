@@ -11,6 +11,7 @@ import { PermissionDialog } from '../PermissionDialog.js'
 import type { PermissionRequestProps } from '../PermissionRequest.js'
 import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js'
 import { logUnaryPermissionEvent } from '../utils.js'
+import { t } from '../../../utils/language.js'
 
 function inputToPermissionRuleContent(input: { [k: string]: unknown }): string {
   try {
@@ -52,7 +53,7 @@ export function WebFetchPermissionRequest({
   const options = useMemo((): OptionWithDescription<string>[] => {
     const result: OptionWithDescription<string>[] = [
       {
-        label: 'Yes',
+        label: t('sandbox.permission.yes'),
         value: 'yes',
       },
     ]
@@ -61,7 +62,7 @@ export function WebFetchPermissionRequest({
       result.push({
         label: (
           <Text>
-            Yes, and don&apos;t ask again for <Text bold>{hostname}</Text>
+            {t('sandbox.permission.yes')}, and don&apos;t ask again for <Text bold>{hostname}</Text>
           </Text>
         ),
         value: 'yes-dont-ask-again-domain',
@@ -71,7 +72,7 @@ export function WebFetchPermissionRequest({
     result.push({
       label: (
         <Text>
-          No, and tell Claude what to do differently <Text bold>(esc)</Text>
+          {t('sandbox.permission.no')} <Text bold>(esc)</Text>
         </Text>
       ),
       value: 'no',
@@ -136,7 +137,7 @@ export function WebFetchPermissionRequest({
           permissionResult={toolUseConfirm.permissionResult}
           toolType="tool"
         />
-        <Text>Do you want to allow Claude to fetch this content?</Text>
+        <Text>{t('webfetch.allow')}</Text>
         <Select
           options={options}
           onChange={onChange}

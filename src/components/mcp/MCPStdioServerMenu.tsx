@@ -15,6 +15,7 @@ import {
 import { useAppState } from '../../state/AppState.js'
 import { errorMessage } from '../../utils/errors.js'
 import { capitalize } from '../../utils/stringUtils.js'
+import { t } from '../../utils/language.js'
 import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js'
 import { Select } from '../CustomSelect/index.js'
 import { Byline, KeyboardShortcutHint } from '@anthropic/ink'
@@ -81,7 +82,7 @@ export function MCPStdioServerMenu({
   // Only show "View tools" if server is not disabled and has tools
   if (server.client.type !== 'disabled' && serverToolsCount > 0) {
     menuOptions.push({
-      label: 'View tools',
+      label: t('mcpStdio.viewTools'),
       value: 'tools',
     })
   }
@@ -89,20 +90,20 @@ export function MCPStdioServerMenu({
   // Only show reconnect option if the server is not disabled
   if (server.client.type !== 'disabled') {
     menuOptions.push({
-      label: 'Reconnect',
+      label: t('mcpStdio.reconnect'),
       value: 'reconnectMcpServer',
     })
   }
 
   menuOptions.push({
-    label: server.client.type !== 'disabled' ? 'Disable' : 'Enable',
+    label: server.client.type !== 'disabled' ? t('mcpStdio.disable') : t('mcpStdio.enable'),
     value: 'toggle-enabled',
   })
 
   // If there are no other options, add a back option so Select handles escape
   if (menuOptions.length === 0) {
     menuOptions.push({
-      label: 'Back',
+      label: t('mcpStdio.back'),
       value: 'back',
     })
   }
@@ -111,13 +112,13 @@ export function MCPStdioServerMenu({
     return (
       <Box flexDirection="column" gap={1} padding={1}>
         <Text color="text">
-          Reconnecting to <Text bold>{server.name}</Text>
+          {t('mcpStdio.reconnectingTo', { name: server.name })}
         </Text>
         <Box>
           <Spinner />
-          <Text> Restarting MCP server process</Text>
+          <Text>{t('mcpStdio.restartingProcess')}</Text>
         </Box>
-        <Text dimColor>This may take a few moments.</Text>
+        <Text dimColor>{t('mcpStdio.mayTakeMoments')}</Text>
       </Box>
     )
   }
@@ -137,33 +138,33 @@ export function MCPStdioServerMenu({
           <Box>
             <Text bold>Status: </Text>
             {server.client.type === 'disabled' ? (
-              <Text>{color('inactive', theme)(figures.radioOff)} disabled</Text>
+              <Text>{color('inactive', theme)(figures.radioOff)} {t('mcpStdio.statusDisabled')}</Text>
             ) : server.client.type === 'connected' ? (
-              <Text>{color('success', theme)(figures.tick)} connected</Text>
+              <Text>{color('success', theme)(figures.tick)} {t('mcpStdio.statusConnected')}</Text>
             ) : server.client.type === 'pending' ? (
               <>
                 <Text dimColor>{figures.radioOff}</Text>
-                <Text> connecting…</Text>
+                <Text> {t('mcpStdio.statusConnecting')}</Text>
               </>
             ) : (
-              <Text>{color('error', theme)(figures.cross)} failed</Text>
+              <Text>{color('error', theme)(figures.cross)} {t('mcpStdio.statusFailed')}</Text>
             )}
           </Box>
 
           <Box>
-            <Text bold>Command: </Text>
+            <Text bold>{t('mcpStdio.commandLabel')}</Text>
             <Text dimColor>{server.config.command}</Text>
           </Box>
 
           {server.config.args && server.config.args.length > 0 && (
             <Box>
-              <Text bold>Args: </Text>
+              <Text bold>{t('mcpStdio.argsLabel')}</Text>
               <Text dimColor>{server.config.args.join(' ')}</Text>
             </Box>
           )}
 
           <Box>
-            <Text bold>Config location: </Text>
+            <Text bold>{t('mcpStdio.configLocation')}</Text>
             <Text dimColor>
               {describeMcpConfigFilePath(
                 getMcpConfigByName(server.name)?.scope ?? 'dynamic',
@@ -181,8 +182,8 @@ export function MCPStdioServerMenu({
 
           {server.client.type === 'connected' && serverToolsCount > 0 && (
             <Box>
-              <Text bold>Tools: </Text>
-              <Text dimColor>{serverToolsCount} tools</Text>
+              <Text bold>{t('mcpStdio.toolsLabel')}</Text>
+              <Text dimColor>{t('mcpStdio.toolsCount', { count: String(serverToolsCount) })}</Text>
             </Box>
           )}
         </Box>

@@ -78,6 +78,7 @@ import { useAppState } from '../../state/AppState.js'
 import { getEffortSuffix } from '../../utils/effort.js'
 import { useMainLoopModel } from '../../hooks/useMainLoopModel.js'
 import { renderModelSetting } from '../../utils/model/model.js'
+import { t } from '../../utils/language.js'
 
 const LEFT_PANEL_MAX_WIDTH = 50
 
@@ -191,7 +192,7 @@ export function LogoV2(): React.ReactNode {
         {ChannelsNoticeModule && <ChannelsNoticeModule.ChannelsNotice />}
         {isDebugMode() && (
           <Box paddingLeft={2} flexDirection="column">
-            <Text color="warning">Debug mode enabled</Text>
+            <Text color="warning">{t('logo.debugMode')}</Text>
             <Text dimColor>
               Logging to: {isDebugToStdErr() ? 'stderr' : getDebugLogPath()}
             </Text>
@@ -213,16 +214,14 @@ export function LogoV2(): React.ReactNode {
         {announcement && (
           <Box paddingLeft={2} flexDirection="column">
             {!process.env.IS_DEMO && config.oauthAccount?.organizationName && (
-              <Text dimColor>
-                Message from {config.oauthAccount.organizationName}:
-              </Text>
+            <Text dimColor>{t('logo.orgMessage', { org: config.oauthAccount.organizationName })}</Text>
             )}
             <Text>{announcement}</Text>
           </Box>
         )}
         {process.env.USER_TYPE === 'ant' && !process.env.DEMO_VERSION && (
           <Box paddingLeft={2} flexDirection="column">
-            <Text dimColor>Use /issue to report model behavior issues</Text>
+            <Text dimColor>{t('logo.issueHint')}</Text>
           </Box>
         )}
         {process.env.USER_TYPE === 'ant' && !process.env.DEMO_VERSION && (

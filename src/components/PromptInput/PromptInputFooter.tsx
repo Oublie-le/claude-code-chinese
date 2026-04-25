@@ -34,6 +34,7 @@ import { PromptInputFooterLeftSide } from './PromptInputFooterLeftSide.js'
 // Inline pipe status is shown only after /pipes sets pipeIpc.statusVisible.
 import { PromptInputFooterSuggestions, type SuggestionItem } from './PromptInputFooterSuggestions.js'
 import { PromptInputHelpMenu } from './PromptInputHelpMenu.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   apiKeyStatus: VerificationStatus;
@@ -244,7 +245,7 @@ function BridgeStatusIndicator({ bridgeSelected }: BridgeStatusProps): React.Rea
   return (
     <Text color={bridgeSelected ? 'background' : status.color} inverse={bridgeSelected} wrap="truncate">
       {status.label}
-      {bridgeSelected && <Text dimColor> · Enter to view</Text>}
+      {bridgeSelected && <Text dimColor>{t('footer.bridge.enterToView')}</Text>}
     </Text>
   );
 }
@@ -348,7 +349,7 @@ function PipeStatusInline(): React.ReactNode {
         {pipeIpc.localIp && <Text dimColor>{pipeIpc.localIp}</Text>}
         {allPipes.length > 0 && (
           <Text color={selectedRouteActive ? 'success' : undefined} dimColor={selectedPipes.length === 0}>
-            {selectedPipes.length}/{allPipes.length} selected
+            {t('pipe.selected', { n: String(selectedPipes.length), total: String(allPipes.length) })}
           </Text>
         )}
         {pipeIpc && isPipeControlled(pipeIpc) && pipeIpc.attachedBy && (
@@ -360,8 +361,8 @@ function PipeStatusInline(): React.ReactNode {
         {allPipes.length > 0 && (
           <Text color={selectedRouteActive ? 'success' : undefined} dimColor={!selectedRouteActive}>
             {selectedPipes.length > 0
-              ? `${routeMode === 'local' ? 'local main' : 'selected pipes only'} · ←/→ switch · Shift+↓ edit`
-              : 'local main · Shift+↓ select'}
+              ? `${routeMode === 'local' ? t('pipe.routeLocal') : t('pipe.routeSelected')}${t('pipe.routeSwitchEdit')}`
+              : t('pipe.routeLocalSelect')}
           </Text>
         )}
       </Box>
@@ -376,7 +377,7 @@ function PipeStatusInline(): React.ReactNode {
         <Text bold>{pipeIpc.serverName}</Text>
         <Text dimColor>({displayRole})</Text>
         {pipeIpc.localIp && <Text dimColor>{pipeIpc.localIp}</Text>}
-        <Text color="warning">↑↓ move Space select ←/→ or m route Enter/Esc close Shift+↓ toggle</Text>
+        <Text color="warning">{t('pipe.controls')}</Text>
       </Box>
       <Box height={1} paddingLeft={2}>
         <Text dimColor>
@@ -400,7 +401,7 @@ function PipeStatusInline(): React.ReactNode {
               dimColor={!isConnected && !isCursor}
             >
               {isSelected ? '☑' : '☐'} {name}
-              {isConnected ? '' : ' [offline]'}
+              {isConnected ? '' : t('pipe.offline')}
               {label ? ` (${label})` : ''}
             </Text>
           </Box>
@@ -408,7 +409,7 @@ function PipeStatusInline(): React.ReactNode {
       })}
       {allPipes.length === 0 && (
         <Box height={1} paddingLeft={2}>
-          <Text dimColor>No other pipes found. Start another instance.</Text>
+          <Text dimColor>{t('pipe.noPipes')}</Text>
         </Box>
       )}
     </Box>

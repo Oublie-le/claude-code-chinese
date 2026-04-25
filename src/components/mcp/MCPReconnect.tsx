@@ -4,6 +4,7 @@ import type { CommandResultDisplay } from '../../commands.js'
 import { Box, color, Text, useTheme } from '@anthropic/ink'
 import { useMcpReconnect } from '../../services/mcp/MCPConnectionManager.js'
 import { useAppStateStore } from '../../state/AppState.js'
+import { t } from '../../utils/language.js'
 import { Spinner } from '../Spinner.js'
 
 type Props = {
@@ -79,11 +80,11 @@ export function MCPReconnect({
     return (
       <Box flexDirection="column" gap={1} padding={1}>
         <Text color="text">
-          Reconnecting to <Text bold>{serverName}</Text>
+          {t('mcpReconnect.reconnectingTo', { name: serverName })}
         </Text>
         <Box>
           <Spinner />
-          <Text> Establishing connection to MCP server</Text>
+          <Text>{t('mcpReconnect.establishing')}</Text>
         </Box>
       </Box>
     )
@@ -94,9 +95,9 @@ export function MCPReconnect({
       <Box flexDirection="column" gap={1} padding={1}>
         <Box>
           <Text>{color('error', theme)(figures.cross)} </Text>
-          <Text color="error">Failed to reconnect to {serverName}</Text>
+          <Text color="error">{t('mcpReconnect.failedTo', { name: serverName })}</Text>
         </Box>
-        <Text dimColor>Error: {error}</Text>
+        <Text dimColor>{t('mcpReconnect.errorLabel', { error })}</Text>
       </Box>
     )
   }

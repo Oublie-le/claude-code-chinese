@@ -24,6 +24,7 @@ import type { PermissionRequestProps } from '../PermissionRequest.js'
 import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js'
 import { useShellPermissionFeedback } from '../useShellPermissionFeedback.js'
 import { logUnaryPermissionEvent } from '../utils.js'
+import { t } from '../../../utils/language.js'
 import { powershellToolUseOptions } from './powershellToolUseOptions.js'
 
 export function PowerShellPermissionRequest(
@@ -242,7 +243,7 @@ export function PowerShellPermissionRequest(
   }
 
   return (
-    <PermissionDialog workerBadge={workerBadge} title="PowerShell command">
+    <PermissionDialog workerBadge={workerBadge} title={t('powershell.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Text dimColor={explainerState.visible}>
           {PowerShellTool.renderToolUseMessage(
@@ -266,7 +267,7 @@ export function PowerShellPermissionRequest(
           />
           {toolUseContext.options.debug && (
             <Box justifyContent="flex-end" marginTop={1}>
-              <Text dimColor>Ctrl-D to hide debug info</Text>
+              <Text dimColor>{t('powershell.ctrlDHide')}</Text>
             </Box>
           )}
         </>
@@ -282,7 +283,7 @@ export function PowerShellPermissionRequest(
                 <Text color="warning">{destructiveWarning}</Text>
               </Box>
             )}
-            <Text>Do you want to proceed?</Text>
+            <Text>{t('powershell.doYouWantToProceed')}</Text>
             <Select
               options={options}
               inlineDescriptions
@@ -302,7 +303,7 @@ export function PowerShellPermissionRequest(
                 ` · ctrl+e to ${explainerState.visible ? 'hide' : 'explain'}`}
             </Text>
             {toolUseContext.options.debug && (
-              <Text dimColor>Ctrl+d to show debug info</Text>
+              <Text dimColor>{t('powershell.ctrlDShow')}</Text>
             )}
           </Box>
         </>

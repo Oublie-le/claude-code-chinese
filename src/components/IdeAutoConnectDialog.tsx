@@ -3,6 +3,7 @@ import { Text, Dialog } from '@anthropic/ink'
 import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js'
 import { isSupportedTerminal } from '../utils/ide.js'
 import { Select } from './CustomSelect/index.js'
+import { t } from '../utils/language.js'
 
 type IdeAutoConnectDialogProps = {
   onComplete: () => void
@@ -28,19 +29,19 @@ export function IdeAutoConnectDialog({
   )
 
   const options = [
-    { label: 'Yes', value: 'yes' },
-    { label: 'No', value: 'no' },
+    { label: t('common.yes'), value: 'yes' },
+    { label: t('common.no'), value: 'no' },
   ]
 
   return (
     <Dialog
-      title="Do you wish to enable auto-connect to IDE?"
+      title={t('ide.autoConnect.enable.title')}
       color="ide"
       onCancel={onComplete}
     >
       <Select options={options} onChange={handleSelect} defaultValue={'yes'} />
       <Text dimColor>
-        You can also configure this in /config or with the --ide flag
+        {t('ide.autoConnect.enable.hint')}
       </Text>
     </Dialog>
   )
@@ -83,14 +84,14 @@ export function IdeDisableAutoConnectDialog({
   }, [onComplete])
 
   const options = [
-    { label: 'No', value: 'no' },
-    { label: 'Yes', value: 'yes' },
+    { label: t('common.no'), value: 'no' },
+    { label: t('common.yes'), value: 'yes' },
   ]
 
   return (
     <Dialog
-      title="Do you wish to disable auto-connect to IDE?"
-      subtitle="You can also configure this in /config"
+      title={t('ide.autoConnect.disable.title')}
+      subtitle={t('ide.autoConnect.disable.subtitle')}
       onCancel={handleCancel}
       color="ide"
     >

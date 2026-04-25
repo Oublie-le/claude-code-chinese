@@ -30,6 +30,7 @@ import {
   getSettings_DEPRECATED,
   getSettingsForSource,
 } from '../../utils/settings/settings.js'
+import { t } from '../../utils/language.js'
 import { plural } from '../../utils/stringUtils.js'
 import { Dialog } from '@anthropic/ink'
 import { SelectEventMode } from './SelectEventMode.js'
@@ -212,32 +213,31 @@ export function HooksConfigMenu({ toolNames, onExit }: Props): React.ReactNode {
   if (hooksDisabled) {
     return (
       <Dialog
-        title="Hook Configuration - Disabled"
+        title={t('hooks.disabledTitle')}
         onCancel={handleExit}
-        inputGuide={() => <Text>Esc to close</Text>}
+        inputGuide={() => <Text>{t('hooks.escToClose')}</Text>}
       >
         <Box flexDirection="column" gap={1}>
           <Box flexDirection="column">
             <Text>
               All hooks are currently <Text bold>disabled</Text>
-              {disabledByPolicy && ' by a managed settings file'}. You have{' '}
+              {disabledByPolicy && t('hooks.byManagedSettings')}. You have{' '}
               <Text bold>{totalHooksCount}</Text> configured{' '}
               {plural(totalHooksCount, 'hook')} that{' '}
               {plural(totalHooksCount, 'is', 'are')} not running.
             </Text>
             <Box marginTop={1}>
-              <Text dimColor>When hooks are disabled:</Text>
+              <Text dimColor>{t('hooks.whenDisabled')}</Text>
             </Box>
-            <Text dimColor>· No hook commands will execute</Text>
-            <Text dimColor>· StatusLine will not be displayed</Text>
+            <Text dimColor>{t('hooks.noCommandsExecute')}</Text>
+            <Text dimColor>{t('hooks.noStatusLine')}</Text>
             <Text dimColor>
-              · Tool operations will proceed without hook validation
+              {t('hooks.noValidation')}
             </Text>
           </Box>
           {!disabledByPolicy && (
             <Text dimColor>
-              To re-enable hooks, remove &quot;disableAllHooks&quot; from
-              settings.json or ask Claude.
+              {t('hooks.reEnableHint')}
             </Text>
           )}
         </Box>

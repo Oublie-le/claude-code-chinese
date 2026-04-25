@@ -2,6 +2,7 @@ import React, { type ReactNode } from 'react'
 import { Box, Byline, KeyboardShortcutHint } from '@anthropic/ink'
 import type { SettingSource } from '../../../../utils/settings/constants.js'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
+import { t } from '../../../../utils/language.js'
 import { Select } from '../../../CustomSelect/select.js'
 import { useWizard } from '../../../wizard/index.js'
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js'
@@ -12,18 +13,18 @@ export function LocationStep(): ReactNode {
 
   const locationOptions = [
     {
-      label: 'Project (.claude/agents/)',
+      label: t('wizard.location.project'),
       value: 'projectSettings' as SettingSource,
     },
     {
-      label: 'Personal (~/.claude/agents/)',
+      label: t('wizard.location.personal'),
       value: 'userSettings' as SettingSource,
     },
   ]
 
   return (
     <WizardDialogLayout
-      subtitle="Choose location"
+      subtitle={t('wizard.location.subtitle')}
       footerText={
         <Byline>
           <KeyboardShortcutHint shortcut="↑↓" action="navigate" />

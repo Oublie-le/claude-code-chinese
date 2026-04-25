@@ -4,6 +4,7 @@ import type { DiffFile } from '../../hooks/useDiffData.js'
 import { useTerminalSize } from '../../hooks/useTerminalSize.js'
 import { Box, Text } from '@anthropic/ink'
 import { truncateStartToWidth } from '../../utils/format.js'
+import { t } from '../../utils/language.js'
 import { plural } from '../../utils/stringUtils.js'
 
 const MAX_VISIBLE_FILES = 5
@@ -36,7 +37,7 @@ export function DiffFileList({ files, selectedIndex }: Props): React.ReactNode {
   }, [files.length, selectedIndex])
 
   if (files.length === 0) {
-    return <Text dimColor>No changed files</Text>
+    return <Text dimColor>{t('diff.noChangedFiles')}</Text>
   }
 
   const visibleFiles = files.slice(startIndex, endIndex)
@@ -115,21 +116,21 @@ function FileStats({
   if (file.isUntracked) {
     return (
       <Text dimColor={!isSelected} italic>
-        untracked
+        {t('diff.fileStatusUntracked')}
       </Text>
     )
   }
   if (file.isBinary) {
     return (
       <Text dimColor={!isSelected} italic>
-        Binary file
+        {t('diff.fileStatusBinary')}
       </Text>
     )
   }
   if (file.isLargeFile) {
     return (
       <Text dimColor={!isSelected} italic>
-        Large file modified
+        {t('diff.fileStatusLarge')}
       </Text>
     )
   }
@@ -147,7 +148,7 @@ function FileStats({
           -{file.linesRemoved}
         </Text>
       )}
-      {file.isTruncated && <Text dimColor={!isSelected}> (truncated)</Text>}
+      {file.isTruncated && <Text dimColor={!isSelected}> {t('diff.truncated')}</Text>}
     </Text>
   )
 }

@@ -1,5 +1,6 @@
 import React, { type ReactNode } from 'react'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
+import { t } from '../../../../utils/language.js'
 import { Byline, KeyboardShortcutHint } from '@anthropic/ink'
 import { useWizard } from '../../../wizard/index.js'
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js'
@@ -17,7 +18,7 @@ export function ModelStep(): ReactNode {
 
   return (
     <WizardDialogLayout
-      subtitle="Select model"
+      subtitle={t('wizard.model.subtitle')}
       footerText={
         <Byline>
           <KeyboardShortcutHint shortcut="↑↓" action="navigate" />

@@ -2,6 +2,7 @@ import * as React from 'react'
 import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js'
 import type { buildMessageLookups } from 'src/utils/messages.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import { MessageResponse } from '../MessageResponse.js'
 
 type Props = {
@@ -38,7 +39,7 @@ export function HookProgressMessage({
               {hookEvent}
             </Text>
             <Text dimColor>
-              {inProgressHookCount === 1 ? ' hook' : ' hooks'} ran
+              {' '}{inProgressHookCount === 1 ? t('hook.ranSingular') : t('hook.ranPlural')}
             </Text>
           </Box>
         </MessageResponse>
@@ -60,7 +61,7 @@ export function HookProgressMessage({
         <Text dimColor bold>
           {hookEvent}
         </Text>
-        <Text dimColor>{inProgressHookCount === 1 ? ' hook…' : ' hooks…'}</Text>
+        <Text dimColor>{inProgressHookCount === 1 ? ` ${t('hook.runningSingular')}` : ` ${t('hook.runningPlural')}`}</Text>
       </Box>
     </MessageResponse>
   )

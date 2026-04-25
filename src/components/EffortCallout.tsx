@@ -15,6 +15,7 @@ import {
 } from '../utils/effort.js'
 import { parseUserSpecifiedModel } from '../utils/model/model.js'
 import { updateSettingsForSource } from '../utils/settings/settings.js'
+import { t } from '../utils/language.js'
 import type { OptionWithDescription } from './CustomSelect/select.js'
 import { Select } from './CustomSelect/select.js'
 import { effortLevelToSymbol } from './EffortIndicator.js'
@@ -70,11 +71,11 @@ export function EffortCallout({ model, onDone }: Props): React.ReactNode {
 
   const options: OptionWithDescription<EffortLevel>[] = [
     {
-      label: <EffortOptionLabel level="medium" text="Medium (recommended)" />,
+      label: <EffortOptionLabel level="medium" text={t('effort.medium')} />,
       value: 'medium',
     },
-    { label: <EffortOptionLabel level="high" text="High" />, value: 'high' },
-    { label: <EffortOptionLabel level="low" text="Low" />, value: 'low' },
+    { label: <EffortOptionLabel level="high" text={t('effort.high')} />, value: 'high' },
+    { label: <EffortOptionLabel level="low" text={t('effort.low')} />, value: 'low' },
   ]
 
   return (

@@ -4,6 +4,7 @@ import {
   type AwsAuthStatus,
   AwsAuthStatusManager,
 } from '../utils/awsAuthStatusManager.js'
+import { t } from '../utils/language.js'
 
 const URL_RE = /https?:\/\/\S+/
 
@@ -37,7 +38,7 @@ export function AwsAuthStatusBox(): React.ReactNode {
       marginY={1}
     >
       <Text bold color="permission">
-        Cloud Authentication
+        {t('aws.auth.title')}
       </Text>
 
       {status.output.length > 0 && (

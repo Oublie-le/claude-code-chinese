@@ -3,6 +3,7 @@ import { formatCost } from '../cost-tracker.js';
 import { Box, Text, ProgressBar } from '@anthropic/ink';
 import { formatTokens } from '../utils/format.js';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
+import { t } from '../utils/language.js';
 
 type RateLimitBucket = {
   utilization: number;
@@ -27,7 +28,7 @@ type BuiltinStatusLineProps = {
  */
 export function formatCountdown(epochSeconds: number): string {
   const diff = epochSeconds - Date.now() / 1000;
-  if (diff <= 0) return 'now';
+  if (diff <= 0) return t('status.now');
 
   const days = Math.floor(diff / 86400);
   const hours = Math.floor((diff % 86400) / 3600);
@@ -87,7 +88,7 @@ function BuiltinStatusLineInner({
 
       {/* Context usage with token counts */}
       <Separator />
-      <Text dimColor>Context </Text>
+      <Text dimColor>{t('status.context')}</Text>
       <Text>{contextUsedPct}%</Text>
       {!narrow && <Text dimColor> ({tokenDisplay})</Text>}
 
@@ -95,7 +96,7 @@ function BuiltinStatusLineInner({
       {hasFiveHour && (
         <>
           <Separator />
-          <Text dimColor>Session </Text>
+          <Text dimColor>{t('status.session')}</Text>
           {wide && (
             <>
               <ProgressBar
@@ -118,7 +119,7 @@ function BuiltinStatusLineInner({
       {hasSevenDay && (
         <>
           <Separator />
-          <Text dimColor>Weekly </Text>
+          <Text dimColor>{t('status.weekly')}</Text>
           {wide && (
             <>
               <ProgressBar

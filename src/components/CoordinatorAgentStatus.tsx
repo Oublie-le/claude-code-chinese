@@ -8,6 +8,7 @@
 
 import figures from 'figures'
 import * as React from 'react'
+import { t } from '../utils/language.js'
 import { BLACK_CIRCLE, PAUSE_ICON, PLAY_ICON } from '../constants/figures.js'
 import { useTerminalSize } from '../hooks/useTerminalSize.js'
 import { Box, Text, stringWidth, wrapText } from '@anthropic/ink'
@@ -149,7 +150,7 @@ function MainLine({
     >
       <Text dimColor={!isSelected && !isViewed && !hover} bold={isViewed}>
         {prefix}
-        {bullet} main
+        {bullet} {t('coordinator.main')}
       </Text>
     </Box>
   )
@@ -194,7 +195,7 @@ function AgentLine({
       : ''
 
   const queuedCount = task.pendingMessages.length
-  const queuedText = queuedCount > 0 ? ` · ${queuedCount} queued` : ''
+  const queuedText = queuedCount > 0 ? t('coordinator.queued', { count: String(queuedCount) }) : ''
 
   // Precedence: AI summary > static description (no tool-call activity noise)
   const displayDescription = task.progress?.summary || task.description
@@ -210,7 +211,7 @@ function AgentLine({
   // Agent tool prompt asks for "one or two words, lowercase").
   const namePart = name ? `${name}: ` : ''
   const hintPart =
-    isSelected && !isViewed ? ` · x to ${isRunning ? 'stop' : 'clear'}` : ''
+    isSelected && !isViewed ? t(isRunning ? 'coordinator.stopHint' : 'coordinator.clearHint') : ''
   const suffixPart = ` ${sep} ${elapsed}${tokenText}${queuedText}${hintPart}`
   const availableForDesc =
     columns -

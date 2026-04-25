@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Dialog, wrappedRender as render, Text } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { KeybindingSetup } from '../keybindings/KeybindingProviderSetup.js'
 import { AppStateProvider } from '../state/AppState.js'
 import type { ConfigParseError } from '../utils/errors.js'
@@ -41,20 +42,19 @@ function InvalidConfigDialog({
   }
 
   return (
-    <Dialog title="Configuration Error" color="error" onCancel={onExit}>
+    <Dialog title={t('invalidConfig.title')} color="error" onCancel={onExit}>
       <Box flexDirection="column" gap={1}>
         <Text>
-          The configuration file at <Text bold>{filePath}</Text> contains
-          invalid JSON.
+          {t('invalidConfig.file')} <Text bold>{filePath}</Text> {t('invalidConfig.invalidJson')}
         </Text>
         <Text>{errorDescription}</Text>
       </Box>
       <Box flexDirection="column">
-        <Text bold>Choose an option:</Text>
+        <Text bold>{t('invalidConfig.chooseAction')}</Text>
         <Select
           options={[
-            { label: 'Exit and fix manually', value: 'exit' },
-            { label: 'Reset with default configuration', value: 'reset' },
+            { label: t('invalidSettings.exit'), value: 'exit' },
+            { label: t('invalidConfig.reset'), value: 'reset' },
           ]}
           onChange={handleSelect}
           onCancel={onExit}

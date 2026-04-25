@@ -3,6 +3,7 @@ import { Box, Byline, KeyboardShortcutHint, Text } from '@anthropic/ink'
 import { useKeybinding } from '../../../../keybindings/useKeybinding.js'
 import { editPromptInEditor } from '../../../../utils/promptEditor.js'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
+import { t } from '../../../../utils/language.js'
 import TextInput from '../../../TextInput.js'
 import { useWizard } from '../../../wizard/index.js'
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js'
@@ -35,7 +36,7 @@ export function PromptStep(): ReactNode {
   const handleSubmit = (): void => {
     const trimmedPrompt = systemPrompt.trim()
     if (!trimmedPrompt) {
-      setError('System prompt is required')
+      setError(t('wizard.prompt.error'))
       return
     }
 
@@ -46,7 +47,7 @@ export function PromptStep(): ReactNode {
 
   return (
     <WizardDialogLayout
-      subtitle="System prompt"
+      subtitle={t('wizard.prompt.subtitle')}
       footerText={
         <Byline>
           <KeyboardShortcutHint shortcut="Type" action="enter text" />
@@ -67,15 +68,15 @@ export function PromptStep(): ReactNode {
       }
     >
       <Box flexDirection="column">
-        <Text>Enter the system prompt for your agent:</Text>
-        <Text dimColor>Be comprehensive for best results</Text>
+        <Text>{t('wizard.prompt.enter')}</Text>
+        <Text dimColor>{t('wizard.prompt.comprehensive')}</Text>
 
         <Box marginTop={1}>
           <TextInput
             value={systemPrompt}
             onChange={setSystemPrompt}
             onSubmit={handleSubmit}
-            placeholder="You are a helpful code reviewer who..."
+            placeholder={t('wizard.prompt.placeholder')}
             columns={80}
             cursorOffset={cursorOffset}
             onChangeCursorOffset={setCursorOffset}

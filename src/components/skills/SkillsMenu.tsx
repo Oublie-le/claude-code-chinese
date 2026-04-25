@@ -23,6 +23,7 @@ import {
 import { plural } from '../../utils/stringUtils.js'
 import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js'
 import { Dialog } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 
 // Skills are always PromptCommands with CommandBase properties
 type SkillCommand = CommandBase & PromptCommand
@@ -120,13 +121,13 @@ export function SkillsMenu({ onExit, commands }: Props): React.ReactNode {
   if (skills.length === 0) {
     return (
       <Dialog
-        title="Skills"
-        subtitle="No skills found"
+        title={t('skills.noSkills')}
+        subtitle={t('skills.empty')}
         onCancel={handleCancel}
         hideInputGuide
       >
         <Text dimColor>
-          Create skills in .claude/skills/ or ~/.claude/skills/
+          {t('skills.empty')}
         </Text>
         <Text dimColor italic>
           <ConfigurableShortcutHint
@@ -173,8 +174,7 @@ export function SkillsMenu({ onExit, commands }: Props): React.ReactNode {
 
         )}
         <Text dimColor>
-          {pluginName ? ` · ${pluginName}` : ''} · {tokenDisplay} description
-          tokens
+          {pluginName ? ` · ${pluginName}` : ''} · {tokenDisplay} {t('skills.tokenDesc')}
         </Text>
       </Box>
     )
@@ -202,7 +202,7 @@ export function SkillsMenu({ onExit, commands }: Props): React.ReactNode {
 
   return (
     <Dialog
-      title="Skills"
+      title={t('skills.noSkills')}
       subtitle={`${skills.length} ${plural(skills.length, 'skill')}`}
       onCancel={handleCancel}
       hideInputGuide

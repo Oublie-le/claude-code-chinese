@@ -2,6 +2,7 @@ import setWith from 'lodash-es/setWith.js'
 import * as React from 'react'
 import { Box, Text, useTheme } from '@anthropic/ink'
 import type { ValidationError } from '../utils/settings/validation.js'
+import { t } from '../utils/language.js'
 import { type TreeNode, treeify } from '../utils/treeify.js'
 
 /**
@@ -83,7 +84,7 @@ export function ValidationErrorsList({
   // Group errors by file
   const errorsByFile = errors.reduce<Record<string, ValidationError[]>>(
     (acc, error) => {
-      const file = error.file || '(file not specified)'
+      const file = error.file || t('validation.fileNotSpecified')
       if (!acc[file]) {
         acc[file] = []
       }
@@ -163,7 +164,7 @@ export function ValidationErrorsList({
                     )}
                     {pair.docLink && (
                       <Text dimColor wrap="wrap">
-                        Learn more: {pair.docLink}
+                        {t('validation.learnMore')} {pair.docLink}
                       </Text>
                     )}
                   </Box>

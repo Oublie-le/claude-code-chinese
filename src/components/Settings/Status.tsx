@@ -7,6 +7,7 @@ import { useIsInsideModal } from '../../context/modalContext.js'
 import { Box, Text, useTheme } from '@anthropic/ink'
 import { type AppState, useAppState } from '../../state/AppState.js'
 import { getCwd } from '../../utils/cwd.js'
+import { t } from '../../utils/language.js'
 import { getCurrentSessionTitle } from '../../utils/sessionStorage.js'
 import {
   buildAccountProperties,
@@ -33,7 +34,7 @@ type Props = {
 function buildPrimarySection(): Property[] {
   const sessionId = getSessionId()
   const customTitle = getCurrentSessionTitle(sessionId)
-  const nameValue = customTitle ?? <Text dimColor>/rename to add a name</Text>
+  const nameValue = customTitle ?? <Text dimColor>{t('status.renameHint')}</Text>
 
   return [
     { label: 'Version', value: MACRO.VERSION },
@@ -176,7 +177,7 @@ function Diagnostics({
   if (diagnostics.length === 0) return null
   return (
     <Box flexDirection="column" paddingBottom={1}>
-      <Text bold>System Diagnostics</Text>
+      <Text bold>{t('status.systemDiagnostics')}</Text>
       {diagnostics.map((diagnostic, i) => (
         <Box key={i} flexDirection="row" gap={1} paddingX={1}>
           <Text color="error">{figures.warning}</Text>

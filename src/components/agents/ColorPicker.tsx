@@ -8,6 +8,7 @@ import {
   type AgentColorName,
 } from '@claude-code-best/builtin-tools/tools/AgentTool/agentColorManager.js'
 import { capitalize } from '../../utils/stringUtils.js'
+import { t } from '../../utils/language.js'
 
 type ColorOption = AgentColorName | 'automatic'
 
@@ -66,7 +67,7 @@ export function ColorPicker({
               </Text>
 
               {option === 'automatic' ? (
-                <Text bold={isSelected}>Automatic color</Text>
+                <Text bold={isSelected}>{t('colorPicker.automatic')}</Text>
               ) : (
                 <Box gap={1}>
                   <Text
@@ -84,7 +85,7 @@ export function ColorPicker({
       </Box>
 
       <Box marginTop={1}>
-        <Text>Preview: </Text>
+        <Text>{t('colorPicker.preview')} </Text>
         {selectedValue === undefined || selectedValue === 'automatic' ? (
           <Text inverse bold>
             {' '}

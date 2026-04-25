@@ -219,6 +219,7 @@ import { usePromptInputPlaceholder } from './usePromptInputPlaceholder.js'
 import { useShowFastIconHint } from './useShowFastIconHint.js'
 import { useSwarmBanner } from './useSwarmBanner.js'
 import { isNonSpacePrintable, isVimModeEnabled } from './utils.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   debug: boolean
@@ -1027,7 +1028,7 @@ function PromptInput({
     if (thinkTriggers.length && isUltrathinkEnabled()) {
       addNotification({
         key: 'ultrathink-active',
-        text: 'Effort set to high for this turn',
+        text: t('promptInput.effortHigh'),
         priority: 'immediate',
         timeoutMs: 5000,
       })
@@ -1040,7 +1041,7 @@ function PromptInput({
     if (feature('ULTRAPLAN') && ultraplanTriggers.length) {
       addNotification({
         key: 'ultraplan-active',
-        text: 'This prompt will launch an ultraplan session in Claude Code on the web',
+        text: t('promptInput.ultraplan'),
         priority: 'immediate',
         timeoutMs: 5000,
       })
@@ -1053,7 +1054,7 @@ function PromptInput({
     if (isUltrareviewEnabled() && ultrareviewTriggers.length) {
       addNotification({
         key: 'ultrareview-active',
-        text: 'Run /ultrareview after Claude finishes to review these changes in the cloud',
+        text: t('promptInput.ultrareview'),
         priority: 'immediate',
         timeoutMs: 5000,
       })
@@ -1393,7 +1394,7 @@ function PromptInput({
           if (result.success) {
             addNotification({
               key: 'direct-message-sent',
-              text: `Sent to @${result.recipientName}`,
+              text: t('promptInput.sentTo', { name: result.recipientName }),
               priority: 'immediate',
               timeoutMs: 3000,
             })
@@ -2253,11 +2254,10 @@ function PromptInput({
       const terminalName = getNativeCSIuTerminalDisplayName()
       const jsx = terminalName ? (
         <Text dimColor>
-          To enable {shortcut}, set <Text bold>Option as Meta</Text> in{' '}
-          {terminalName} preferences (⌘,)
+          {t('promptInput.optionMetaTerminal', { shortcut, terminalName })}
         </Text>
       ) : (
-        <Text dimColor>To enable {shortcut}, run /terminal-setup</Text>
+        <Text dimColor>{t('promptInput.optionMetaSetup', { shortcut })}</Text>
       )
       addNotification({
         key: 'option-meta-hint',
@@ -2461,14 +2461,14 @@ function PromptInput({
       })
       setShowModelPicker(false)
       const effectiveFastMode = (isFastMode ?? false) && !wasFastModeDisabled
-      let message = `Model set to ${modelDisplayString(model)}`
+      let message = t('promptInput.modelSet', { model: modelDisplayString(model) })
       if (
         isBilledAsExtraUsage(model, effectiveFastMode, isOpus1mMergeEnabled())
       ) {
-        message += ' · Billed as extra usage'
+        message += t('promptInput.billedExtraUsage')
       }
       if (wasFastModeDisabled) {
-        message += ' · Fast mode OFF'
+        message += t('promptInput.fastModeOff')
       }
       addNotification({
         key: 'model-switched',
@@ -2558,7 +2558,7 @@ function PromptInput({
         key: 'thinking-toggled-hotkey',
         jsx: (
           <Text color={enabled ? 'suggestion' : undefined} dimColor={!enabled}>
-            Thinking {enabled ? 'on' : 'off'}
+            {enabled ? t('promptInput.thinkingOn') : t('promptInput.thinkingOff')}
           </Text>
         ),
         priority: 'immediate',
@@ -2782,7 +2782,7 @@ function PromptInput({
         width="100%"
       >
         <Text dimColor italic>
-          Save and close editor to continue...
+          {t('promptInput.saveEditor')}
         </Text>
       </Box>
     )
@@ -2803,7 +2803,7 @@ function PromptInput({
       {!isFullscreenEnvEnabled() && <PromptInputQueuedCommands />}
       {hasSuppressedDialogs && (
         <Box marginTop={1} marginLeft={2}>
-          <Text dimColor>Waiting for permission…</Text>
+          <Text dimColor>{t('promptInput.waitingPermission')}</Text>
         </Box>
       )}
       <PromptInputStashNotice hasStash={stashedPrompt !== undefined} />

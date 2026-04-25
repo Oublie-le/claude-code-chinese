@@ -18,6 +18,7 @@ import {
   PromptInputFooterSuggestions,
   type SuggestionItem,
 } from '../../PromptInput/PromptInputFooterSuggestions.js'
+import { t } from '../../../utils/language.js'
 
 type Props = {
   onAddDirectory: (path: string, remember?: boolean) => void
@@ -34,23 +35,22 @@ const REMEMBER_DIRECTORY_OPTIONS: Array<{
 }> = [
   {
     value: 'yes-session',
-    label: 'Yes, for this session',
+    label: t('addDir.yesSession'),
   },
   {
     value: 'yes-remember',
-    label: 'Yes, and remember this directory',
+    label: t('addDir.yesRemember'),
   },
   {
     value: 'no',
-    label: 'No',
+    label: t('addDir.no'),
   },
 ]
 
 function PermissionDescription(): React.ReactNode {
   return (
     <Text dimColor>
-      Claude Code will be able to read files in this directory and make edits
-      when auto-accept edits is on.
+      {t('addDir.permission')}
     </Text>
   )
 }
@@ -81,7 +81,7 @@ function DirectoryInput({
 }): React.ReactNode {
   return (
     <Box flexDirection="column">
-      <Text>Enter the path to the directory:</Text>
+      <Text>{t('addDir.enterPath')}</Text>
       <Box borderDimColor borderStyle="round" marginY={1} paddingLeft={1}>
         <TextInput
           showCursor
@@ -237,7 +237,7 @@ export function AddWorkspaceDirectory({
       onKeyDown={handleKeyDown}
     >
       <Dialog
-        title="Add directory to workspace"
+        title={t('addDir.title')}
         onCancel={onCancel}
         color="permission"
         isCancelActive={false}

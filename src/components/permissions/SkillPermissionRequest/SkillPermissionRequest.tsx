@@ -17,6 +17,7 @@ import {
 } from '../PermissionPrompt.js'
 import type { PermissionRequestProps } from '../PermissionRequest.js'
 import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js'
+import { t } from '../../../utils/language.js'
 
 type SkillOptionValue = 'yes' | 'yes-exact' | 'yes-prefix' | 'no'
 
@@ -230,8 +231,8 @@ export function SkillPermissionRequest(
   }, [toolUseConfirm, onDone, onReject])
 
   return (
-    <PermissionDialog title={`Use skill "${skill}"?`} workerBadge={workerBadge}>
-      <Text>Claude may use instructions, code, or files from this Skill.</Text>
+    <PermissionDialog title={t('skill.title', { skill })} workerBadge={workerBadge}>
+      <Text>{t('skill.body')}</Text>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Text dimColor>{commandObj?.description}</Text>
       </Box>

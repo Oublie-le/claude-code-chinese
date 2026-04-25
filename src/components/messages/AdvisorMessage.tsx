@@ -4,6 +4,7 @@ import { Box, Text } from '@anthropic/ink'
 import type { AdvisorBlock } from '../../utils/advisor.js'
 import { renderModelName } from '../../utils/model/model.js'
 import { jsonStringify } from '../../utils/slowOperations.js'
+import { t } from '../../utils/language.js'
 import { CtrlOToExpand } from '../CtrlOToExpand.js'
 import { MessageResponse } from '../MessageResponse.js'
 import { ToolUseLoader } from '../ToolUseLoader.js'
@@ -39,9 +40,9 @@ export function AdvisorMessage({
           isUnresolved={!resolvedToolUseIDs.has(block.id)}
           isError={erroredToolUseIDs.has(block.id)}
         />
-        <Text bold>Advising</Text>
+        <Text bold>{t('advisor.advising')}</Text>
         {advisorModel ? (
-          <Text dimColor> using {renderModelName(advisorModel)}</Text>
+          <Text dimColor>{t('advisor.using', { model: renderModelName(advisorModel) })}</Text>
         ) : null}
         {input ? <Text dimColor> · {input}</Text> : null}
       </Box>
@@ -53,7 +54,7 @@ export function AdvisorMessage({
     case 'advisor_tool_result_error':
       body = (
         <Text color="error">
-          Advisor unavailable ({block.content.error_code})
+          {t('advisor.unavailable', { code: block.content.error_code })}
         </Text>
       )
       break
@@ -62,16 +63,14 @@ export function AdvisorMessage({
         <Text dimColor>{block.content.text}</Text>
       ) : (
         <Text dimColor>
-          {figures.tick} Advisor has reviewed the conversation and will apply
-          the feedback <CtrlOToExpand />
+          {figures.tick} {t('advisor.reviewed')} <CtrlOToExpand />
         </Text>
       )
       break
     case 'advisor_redacted_result':
       body = (
         <Text dimColor>
-          {figures.tick} Advisor has reviewed the conversation and will apply
-          the feedback
+          {figures.tick} {t('advisor.reviewed')}
         </Text>
       )
       break

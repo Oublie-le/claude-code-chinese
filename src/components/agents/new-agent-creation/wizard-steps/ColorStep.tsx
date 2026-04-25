@@ -3,6 +3,7 @@ import { Box, Byline, KeyboardShortcutHint } from '@anthropic/ink'
 import { useKeybinding } from '../../../../keybindings/useKeybinding.js'
 import type { AgentColorName } from '@claude-code-best/builtin-tools/tools/AgentTool/agentColorManager.js'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
+import { t } from '../../../../utils/language.js'
 import { useWizard } from '../../../wizard/index.js'
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js'
 import { ColorPicker } from '../../ColorPicker.js'
@@ -36,7 +37,7 @@ export function ColorStep(): ReactNode {
 
   return (
     <WizardDialogLayout
-      subtitle="Choose background color"
+      subtitle={t('wizard.colorStep.subtitle')}
       footerText={
         <Byline>
           <KeyboardShortcutHint shortcut="↑↓" action="navigate" />

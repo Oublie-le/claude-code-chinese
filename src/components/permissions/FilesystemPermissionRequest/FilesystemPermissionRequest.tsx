@@ -3,6 +3,7 @@ import { Box, Text, useTheme } from '@anthropic/ink'
 import { FallbackPermissionRequest } from '../FallbackPermissionRequest.js'
 import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js'
 import type { ToolInput } from '../FilePermissionDialog/useFilePermissionDialog.js'
+import { t } from '../../../utils/language.js'
 import type {
   PermissionRequestProps,
   ToolUseConfirm,
@@ -35,7 +36,7 @@ export function FilesystemPermissionRequest({
   )
 
   const isReadOnly = toolUseConfirm.tool.isReadOnly(toolUseConfirm.input)
-  const userFacingReadOrEdit = isReadOnly ? 'Read' : 'Edit'
+  const userFacingReadOrEdit = isReadOnly ? t('filesystem.read') : t('filesystem.edit')
 
   // Use simple singular form - the actual operation details are shown in content
   const title = `${userFacingReadOrEdit} file`

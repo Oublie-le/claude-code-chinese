@@ -7,6 +7,7 @@ import type { MonitorMcpTaskState } from '../../tasks/MonitorMcpTask/MonitorMcpT
 import { Byline } from '../design-system/Byline.js'
 import { Dialog } from '../design-system/Dialog.js'
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   task: DeepImmutable<MonitorMcpTaskState>
@@ -49,7 +50,7 @@ export function MonitorMcpDetailDialog({
   return (
     <Box flexDirection="column" tabIndex={0} borderStyle="round" onKeyDown={handleKeyDown}>
       <Dialog
-        title="MCP Monitor"
+        title={t('monitorMcp.title')}
         subtitle={
           <Text dimColor>
             {elapsedTime} · {task.serverName}:{task.resourceUri}
@@ -70,9 +71,9 @@ export function MonitorMcpDetailDialog({
       >
         <Box flexDirection="column" gap={1}>
           <Text>
-            <Text bold>Status:</Text>{' '}
+            <Text bold>{t('monitorMcp.status')}</Text>{' '}
             {task.status === 'running' ? (
-              <Text color="ansi:green">running</Text>
+              <Text color="ansi:green">{t('monitorMcp.running')}</Text>
             ) : task.status === 'completed' ? (
               <Text color="ansi:green">{task.status}</Text>
             ) : (
@@ -80,17 +81,17 @@ export function MonitorMcpDetailDialog({
             )}
           </Text>
           <Text>
-            <Text bold>Description:</Text> {task.description}
+            <Text bold>{t('monitorMcp.desc')}</Text> {task.description}
           </Text>
           <Text>
-            <Text bold>Server:</Text> {task.serverName}
+            <Text bold>{t('monitorMcp.server')}</Text> {task.serverName}
           </Text>
           <Text>
-            <Text bold>Resource:</Text> {task.resourceUri}
+            <Text bold>{t('monitorMcp.resource')}</Text> {task.resourceUri}
           </Text>
           {task.command && (
             <Text>
-              <Text bold>Command:</Text> {task.command}
+              <Text bold>{t('monitorMcp.command')}</Text> {task.command}
             </Text>
           )}
         </Box>

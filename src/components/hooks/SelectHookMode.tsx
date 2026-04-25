@@ -14,6 +14,7 @@ import {
   hookSourceHeaderDisplayString,
   type IndividualHookConfig,
 } from '../../utils/hooks/hooksSettings.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/select.js'
 import { Dialog } from '@anthropic/ink'
 
@@ -45,12 +46,12 @@ export function SelectHookMode({
         title={title}
         subtitle={hookEventMetadata.description}
         onCancel={onCancel}
-        inputGuide={() => <Text>Esc to go back</Text>}
+        inputGuide={() => <Text>{t('hooks.escToGoBack')}</Text>}
       >
         <Box flexDirection="column" gap={1}>
-          <Text dimColor>No hooks configured for this event.</Text>
+          <Text dimColor>{t('hooks.noHooksConfigured')}</Text>
           <Text dimColor>
-            To add hooks, edit settings.json directly or ask Claude.
+            {t('hooks.addHooksHint')}
           </Text>
         </Box>
       </Dialog>

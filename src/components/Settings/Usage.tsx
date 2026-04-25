@@ -13,6 +13,7 @@ import {
   type Utilization,
 } from '../../services/api/usage.js'
 import { formatResetText } from '../../utils/format.js'
+import { t } from '../../utils/language.js'
 import { logError } from '../../utils/log.js'
 import { jsonStringify } from '../../utils/slowOperations.js'
 import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js'
@@ -170,7 +171,7 @@ export function Usage(): React.ReactNode {
   if (!utilization) {
     return (
       <Box flexDirection="column" gap={1}>
-        <Text dimColor>Loading usage data…</Text>
+        <Text dimColor>{t('usage.loading')}</Text>
         <Text dimColor>
           <ConfigurableShortcutHint
             action="confirm:no"
@@ -195,17 +196,17 @@ export function Usage(): React.ReactNode {
 
   const limits = [
     {
-      title: 'Current session',
+      title: t('usage.currentSession'),
       limit: utilization.five_hour,
     },
     {
-      title: 'Current week (all models)',
+      title: t('usage.currentWeek'),
       limit: utilization.seven_day,
     },
     ...(showSonnetBar
       ? [
           {
-            title: 'Current week (Sonnet only)',
+            title: t('usage.currentWeekSonnet'),
             limit: utilization.seven_day_sonnet,
           },
         ]
@@ -215,7 +216,7 @@ export function Usage(): React.ReactNode {
   return (
     <Box flexDirection="column" gap={1} width="100%">
       {limits.some(({ limit }) => limit) || (
-        <Text dimColor>/usage is only available for subscription plans.</Text>
+        <Text dimColor>{t('usage.subscriptionOnly')}</Text>
       )}
 
       {limits.map(
@@ -275,8 +276,8 @@ function ExtraUsageSection({
     if (extraUsageCommand.isEnabled()) {
       return (
         <Box flexDirection="column">
-          <Text bold>{EXTRA_USAGE_SECTION_TITLE}</Text>
-          <Text dimColor>Extra usage not enabled · /extra-usage to enable</Text>
+          <Text bold>{t('usage.extraUsage')}</Text>
+          <Text dimColor>{t('usage.notEnabled')}</Text>
         </Box>
       )
     }
@@ -287,8 +288,8 @@ function ExtraUsageSection({
   if (extraUsage.monthly_limit === null) {
     return (
       <Box flexDirection="column">
-        <Text bold>{EXTRA_USAGE_SECTION_TITLE}</Text>
-        <Text dimColor>Unlimited</Text>
+        <Text bold>{t('usage.extraUsage')}</Text>
+        <Text dimColor>{t('usage.unlimited')}</Text>
       </Box>
     )
   }
@@ -307,7 +308,7 @@ function ExtraUsageSection({
 
   return (
     <LimitBar
-      title={EXTRA_USAGE_SECTION_TITLE}
+      title={t('usage.extraUsage')}
       limit={{
         utilization: extraUsage.utilization,
         // Not applicable for enterprises, but for now we don't render this for them

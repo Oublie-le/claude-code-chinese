@@ -5,6 +5,7 @@ import { Box, Text } from '@anthropic/ink'
 import type { ToolPermissionContext } from '../../../Tool.js'
 import { applyPermissionUpdate } from '../../../utils/permissions/PermissionUpdate.js'
 import { Dialog } from '@anthropic/ink'
+import { t } from '../../../utils/language.js'
 
 type Props = {
   directoryPath: string
@@ -45,7 +46,7 @@ export function RemoveWorkspaceDirectory({
 
   return (
     <Dialog
-      title="Remove directory from workspace?"
+      title={t('removeDir.title')}
       onCancel={onCancel}
       color="error"
     >
@@ -53,14 +54,14 @@ export function RemoveWorkspaceDirectory({
         <Text bold>{directoryPath}</Text>
       </Box>
       <Text>
-        Claude Code will no longer have access to files in this directory.
+        {t('removeDir.warning')}
       </Text>
       <Select
         onChange={handleSelect}
         onCancel={onCancel}
         options={[
-          { label: 'Yes', value: 'yes' },
-          { label: 'No', value: 'no' },
+          { label: t('common.yes'), value: 'yes' },
+          { label: t('common.no'), value: 'no' },
         ]}
       />
     </Dialog>

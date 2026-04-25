@@ -7,6 +7,7 @@ import {
 } from 'src/services/mcp/utils.js'
 import type { ValidationError } from 'src/utils/settings/validation.js'
 import { Box, Link, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 
 function McpConfigErrorSection({
   scope,
@@ -29,13 +30,13 @@ function McpConfigErrorSection({
       <Box>
         {(hasErrors || hasWarnings) && (
           <Text color={hasErrors ? 'error' : 'warning'}>
-            [{hasErrors ? 'Failed to parse' : 'Contains warnings'}]{' '}
+            [{hasErrors ? t('mcpWarn.failedToParse') : t('mcpWarn.containsWarnings')}]{' '}
           </Text>
         )}
         <Text>{getScopeLabel(scope)}</Text>
       </Box>
       <Box>
-        <Text dimColor>Location: </Text>
+        <Text dimColor>{t('mcpWarn.locationLabel')}</Text>
         <Text dimColor>{describeMcpConfigFilePath(scope)}</Text>
       </Box>
       <Box marginLeft={1} flexDirection="column">
@@ -111,10 +112,10 @@ export function McpParsingWarnings(): React.ReactNode {
 
   return (
     <Box flexDirection="column" marginTop={1} marginBottom={1}>
-      <Text bold>MCP Config Diagnostics</Text>
+      <Text bold>{t('mcpWarn.diagnosticsTitle')}</Text>
       <Box marginTop={1}>
         <Text dimColor>
-          For help configuring MCP servers, see:{' '}
+          {t('mcpWarn.helpLink')}{' '}
           <Link url="https://code.claude.com/docs/en/mcp">
             https://code.claude.com/docs/en/mcp
           </Link>

@@ -5,6 +5,7 @@ import type { CommandResultDisplay } from '../../types/command.js'
 import type { SandboxDependencyCheck } from '../../utils/sandbox/sandbox-adapter.js'
 import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js'
 import { getSettings_DEPRECATED } from '../../utils/settings/settings.js'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/select.js'
 import { SandboxConfigTab } from './SandboxConfigTab.js'
 import { SandboxDependenciesTab } from './SandboxDependenciesTab.js'
@@ -47,22 +48,22 @@ export function SandboxSettings({
     {
       label:
         currentMode === 'auto-allow'
-          ? `Sandbox BashTool, with auto-allow ${currentIndicator}`
-          : 'Sandbox BashTool, with auto-allow',
+          ? `${t('sandboxSettings.autoAllow')} ${currentIndicator}`
+          : t('sandboxSettings.autoAllow'),
       value: 'auto-allow',
     },
     {
       label:
         currentMode === 'regular'
-          ? `Sandbox BashTool, with regular permissions ${currentIndicator}`
-          : 'Sandbox BashTool, with regular permissions',
+          ? `${t('sandboxSettings.regular')} ${currentIndicator}`
+          : t('sandboxSettings.regular'),
       value: 'regular',
     },
     {
       label:
         currentMode === 'disabled'
-          ? `No Sandbox ${currentIndicator}`
-          : 'No Sandbox',
+          ? `${t('sandboxSettings.noSandbox')} ${currentIndicator}`
+          : t('sandboxSettings.noSandbox'),
       value: 'disabled',
     },
   ]
@@ -174,12 +175,12 @@ function SandboxModeTab({
       {showSocketWarning && (
         <Box marginBottom={1}>
           <Text color="warning">
-            Cannot block unix domain sockets (see Dependencies tab)
+            {t('sandboxSettings.socketWarn')}
           </Text>
         </Box>
       )}
       <Box marginBottom={1}>
-        <Text bold>Configure Mode:</Text>
+        <Text bold>{t('sandboxSettings.configure')}</Text>
       </Box>
       <Select
         options={options}
@@ -191,14 +192,12 @@ function SandboxModeTab({
       <Box flexDirection="column" marginTop={1} gap={1}>
         <Text dimColor>
           <Text bold dimColor>
-            Auto-allow mode:
+            {t('sandboxSettings.autoAllowDesc')}
           </Text>{' '}
-          Commands will try to run in the sandbox automatically, and attempts to
-          run outside of the sandbox fallback to regular permissions. Explicit
-          ask/deny rules are always respected.
+          {t('sandboxSettings.autoAllow.desc')}
         </Text>
         <Text dimColor>
-          Learn more:{' '}
+          {t('sandboxSettings.learnMore')}{' '}
           <Link url="https://code.claude.com/docs/en/sandboxing">
             code.claude.com/docs/en/sandboxing
           </Link>

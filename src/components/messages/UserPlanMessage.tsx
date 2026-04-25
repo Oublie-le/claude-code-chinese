@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import { Markdown } from '../Markdown.js'
 
 type Props = {
@@ -21,7 +22,7 @@ export function UserPlanMessage({
     >
       <Box marginBottom={1}>
         <Text bold color="planMode">
-          Plan to implement
+          {t('userPlan.title')}
         </Text>
       </Box>
       <Markdown>{planContent}</Markdown>

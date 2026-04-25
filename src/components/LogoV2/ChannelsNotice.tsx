@@ -15,6 +15,7 @@ import { getBuiltinPlugins } from '../../plugins/builtinPlugins.js'
 import { Box, Text } from '@anthropic/ink'
 import { getMcpConfigsByScope } from '../../services/mcp/config.js'
 import { loadInstalledPluginsV2 } from '../../utils/plugins/installedPluginsManager.js'
+import { t } from '../../utils/language.js'
 
 export function ChannelsNotice(): React.ReactNode {
   // Snapshot all reads at mount. This notice enters scrollback immediately
@@ -53,11 +54,9 @@ export function ChannelsNotice(): React.ReactNode {
   // even matches a configured MCP server are all still unknown.
   return (
     <Box paddingLeft={2} flexDirection="column">
-      <Text color="error">Listening for channel messages from: {list}</Text>
+      <Text color="error">{t('channels.listening', { list })}</Text>
       <Text dimColor>
-        Experimental · inbound messages will be pushed into this session, this
-        carries prompt injection risks. Restart Claude Code without {flag} to
-        disable.
+        {t('channels.experimental', { flag })}
       </Text>
       {unmatched.map(u => (
         <Text key={`${formatEntry(u.entry)}:${u.why}`} color="warning">

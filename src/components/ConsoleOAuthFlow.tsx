@@ -13,6 +13,7 @@ import { OAuthService } from '../services/oauth/index.js'
 import { getOauthAccountInfo, validateForceLoginOrg } from '../utils/auth.js'
 import { logError } from '../utils/log.js'
 import { getSettings_DEPRECATED, updateSettingsForSource } from '../utils/settings/settings.js'
+import { t } from '../utils/language.js'
 import { Select } from './CustomSelect/select.js'
 import { Spinner } from './Spinner.js'
 import TextInput from './TextInput.js'
@@ -66,7 +67,6 @@ type OAuthStatus =
       toRetry?: OAuthStatus
     }
 
-const PASTE_HERE_MSG = 'Paste code here if prompted > '
 export function ConsoleOAuthFlow({
   onDone,
   startingMessage,
@@ -78,9 +78,9 @@ export function ConsoleOAuthFlow({
   const orgUUID = settings.forceLoginOrgUUID
   const forcedMethodMessage =
     forceLoginMethod === 'claudeai'
-      ? 'Login method pre-selected: Subscription Plan (Claude Pro/Max)'
+      ? t('oauth.login.forcedMethod.claudeai')
       : forceLoginMethod === 'console'
-        ? 'Login method pre-selected: API Usage Billing (Anthropic Console)'
+        ? t('oauth.login.forcedMethod.console')
         : null
 
   const terminal = useTerminalNotification()
@@ -108,7 +108,7 @@ export function ConsoleOAuthFlow({
   const [showPastePrompt, setShowPastePrompt] = useState(false)
   const [urlCopied, setUrlCopied] = useState(false)
 
-  const textInputColumns = useTerminalSize().columns - PASTE_HERE_MSG.length - 1
+  const textInputColumns = useTerminalSize().columns - t('oauth.paste.prompt').length - 1
 
   // Log forced login method on mount
   useEffect(() => {
@@ -347,10 +347,10 @@ export function ConsoleOAuthFlow({
         <Box flexDirection="column" key="urlToCopy" gap={1} paddingBottom={1}>
           <Box paddingX={1}>
             <Text dimColor>
-              Browser didn&apos;t open? Use the url below to sign in{' '}
+              {t('oauth.login.browserNotOpen')}{' '}
             </Text>
             {urlCopied ? (
-              <Text color="success">(Copied!)</Text>
+              <Text color="success">{t('oauth.login.urlCopied')}</Text>
             ) : (
               <Text dimColor>
                 <KeyboardShortcutHint shortcut="c" action="copy" parens />
@@ -367,18 +367,16 @@ export function ConsoleOAuthFlow({
         oauthStatus.token && (
           <Box key="tokenOutput" flexDirection="column" gap={1} paddingTop={1}>
             <Text color="success">
-              ✓ Long-lived authentication token created successfully!
+              {t('oauth.token.success')}
             </Text>
             <Box flexDirection="column" gap={1}>
-              <Text>Your OAuth token (valid for 1 year):</Text>
+              <Text>{t('oauth.token.label')}</Text>
               <Text color="warning">{oauthStatus.token}</Text>
               <Text dimColor>
-                Store this token securely. You won&apos;t be able to see it
-                again.
+                {t('oauth.token.store')}
               </Text>
               <Text dimColor>
-                Use this token by setting: export
-                CLAUDE_CODE_OAUTH_TOKEN=&lt;token&gt;
+                {t('oauth.token.envHint')}
               </Text>
             </Box>
           </Box>
@@ -445,10 +443,10 @@ function OAuthStatusMessage({
           <Text bold>
             {startingMessage
               ? startingMessage
-              : `Claude Code can be used with your Claude subscription or billed based on API usage through your Console account.`}
+              : t('oauth.login.intro')}
           </Text>
 
-          <Text>Select login method:</Text>
+          <Text>{t('oauth.login.selectMethod')}</Text>
 
           <Box>
             <Select
@@ -457,7 +455,7 @@ function OAuthStatusMessage({
                   label: (
                     <Text>
                       Anthropic Compatible ·{' '}
-                      <Text dimColor>Configure your own API endpoint</Text>
+                      <Text dimColor>配置您自己的 API 端点</Text>
                       {'\n'}
                     </Text>
                   ),
@@ -468,7 +466,7 @@ function OAuthStatusMessage({
                     <Text>
                       OpenAI Compatible ·{' '}
                       <Text dimColor>
-                        Ollama, DeepSeek, vLLM, One API, etc.
+                        Ollama, DeepSeek, vLLM, One API 等
                       </Text>
                       {'\n'}
                     </Text>
@@ -479,7 +477,7 @@ function OAuthStatusMessage({
                   label: (
                     <Text>
                       Gemini API ·{' '}
-                      <Text dimColor>Google Gemini native REST/SSE</Text>
+                      <Text dimColor>Google Gemini 原生 REST/SSE</Text>
                       {'\n'}
                     </Text>
                   ),
@@ -488,8 +486,8 @@ function OAuthStatusMessage({
                 {
                   label: (
                     <Text>
-                      Claude account with subscription ·{' '}
-                      <Text dimColor>Pro, Max, Team, or Enterprise</Text>
+                      Claude 订阅账户 ·{' '}
+                      <Text dimColor>Pro、Max、Team 或 Enterprise</Text>
                       {process.env.USER_TYPE === 'ant' && (
                         <Text>
                           {'\n'}
@@ -509,8 +507,8 @@ function OAuthStatusMessage({
                 {
                   label: (
                     <Text>
-                      Anthropic Console account ·{' '}
-                      <Text dimColor>API usage billing</Text>
+                      Anthropic Console 账户 ·{' '}
+                      <Text dimColor>API 用量计费</Text>
                       {'\n'}
                     </Text>
                   ),
@@ -519,9 +517,9 @@ function OAuthStatusMessage({
                 {
                   label: (
                     <Text>
-                      3rd-party platform ·{' '}
+                      第三方平台 ·{' '}
                       <Text dimColor>
-                        Amazon Bedrock, Microsoft Foundry, or Vertex AI
+                        Amazon Bedrock、Microsoft Foundry 或 Vertex AI
                       </Text>
                       {'\n'}
                     </Text>
@@ -788,7 +786,7 @@ function OAuthStatusMessage({
 
         return (
           <Box flexDirection="column" gap={1}>
-            <Text bold>Anthropic Compatible Setup</Text>
+            <Text bold>{t('oauth.setup.custom.title')}</Text>
             <Box flexDirection="column" gap={1}>
               {renderRow('base_url', 'Base URL ')}
               {renderRow('api_key', 'API Key  ', { mask: true })}
@@ -797,7 +795,7 @@ function OAuthStatusMessage({
               {renderRow('opus_model', 'Opus     ')}
             </Box>
             <Text dimColor>
-              ↑↓/Tab to switch · Enter on last field to save · Esc to go back
+              {t('oauth.setup.fields.hint')}
             </Text>
           </Box>
         )
@@ -1023,10 +1021,9 @@ function OAuthStatusMessage({
 
         return (
           <Box flexDirection="column" gap={1}>
-            <Text bold>OpenAI Compatible API Setup</Text>
+            <Text bold>{t('oauth.setup.openai.title')}</Text>
             <Text dimColor>
-              Configure an OpenAI Chat Completions compatible endpoint (e.g.
-              Ollama, DeepSeek, vLLM).
+              {t('oauth.setup.openai.desc')}
             </Text>
             <Box flexDirection="column" gap={1}>
               {renderOpenAIRow('base_url', 'Base URL ')}
@@ -1036,7 +1033,7 @@ function OAuthStatusMessage({
               {renderOpenAIRow('opus_model', 'Opus     ')}
             </Box>
             <Text dimColor>
-              ↑↓/Tab to switch · Enter on last field to save · Esc to go back
+              {t('oauth.setup.fields.hint')}
             </Text>
           </Box>
         )
@@ -1256,10 +1253,9 @@ function OAuthStatusMessage({
 
         return (
           <Box flexDirection="column" gap={1}>
-            <Text bold>Gemini API Setup</Text>
+            <Text bold>{t('oauth.setup.gemini.title')}</Text>
             <Text dimColor>
-              Configure a Gemini Generate Content compatible endpoint. Base URL is
-              optional and defaults to Google&apos;s v1beta API.
+              {t('oauth.setup.gemini.desc')}
             </Text>
             <Box flexDirection="column" gap={1}>
               {renderGeminiRow('base_url', 'Base URL ')}
@@ -1269,7 +1265,7 @@ function OAuthStatusMessage({
               {renderGeminiRow('opus_model', 'Opus     ')}
             </Box>
             <Text dimColor>
-              ↑↓/Tab to switch · Enter on last field to save · Esc to go back
+              {t('oauth.setup.fields.hint')}
             </Text>
           </Box>
         )
@@ -1278,22 +1274,19 @@ function OAuthStatusMessage({
     case 'platform_setup':
       return (
         <Box flexDirection="column" gap={1} marginTop={1}>
-          <Text bold>Using 3rd-party platforms</Text>
+          <Text bold>{t('oauth.platform.title')}</Text>
 
           <Box flexDirection="column" gap={1}>
             <Text>
-              Claude Code supports Amazon Bedrock, Microsoft Foundry, and Vertex
-              AI. Set the required environment variables, then restart Claude
-              Code.
+              {t('oauth.platform.body1')}
             </Text>
 
             <Text>
-              If you are part of an enterprise organization, contact your
-              administrator for setup instructions.
+              {t('oauth.platform.body2')}
             </Text>
 
             <Box flexDirection="column" marginTop={1}>
-              <Text bold>Documentation:</Text>
+              <Text bold>{t('oauth.platform.docs')}</Text>
               <Text>
                 · Amazon Bedrock:{' '}
                 <Link url="https://code.claude.com/docs/en/amazon-bedrock">
@@ -1316,7 +1309,7 @@ function OAuthStatusMessage({
 
             <Box marginTop={1}>
               <Text dimColor>
-                Press <Text bold>Enter</Text> to go back to login options.
+                {t('oauth.platform.back', { key: 'Enter' })}
               </Text>
             </Box>
           </Box>
@@ -1335,13 +1328,13 @@ function OAuthStatusMessage({
           {!showPastePrompt && (
             <Box>
               <Spinner />
-              <Text>Opening browser to sign in…</Text>
+              <Text>{t('oauth.waiting.opening')}</Text>
             </Box>
           )}
 
           {showPastePrompt && (
             <Box>
-              <Text>{PASTE_HERE_MSG}</Text>
+              <Text>{t('oauth.paste.prompt')}</Text>
               <TextInput
                 value={pastedCode}
                 onChange={setPastedCode}
@@ -1363,7 +1356,7 @@ function OAuthStatusMessage({
         <Box flexDirection="column" gap={1}>
           <Box>
             <Spinner />
-            <Text>Creating API key for Claude Code…</Text>
+            <Text>{t('oauth.creating.apikey')}</Text>
           </Box>
         </Box>
       )
@@ -1371,7 +1364,7 @@ function OAuthStatusMessage({
     case 'about_to_retry':
       return (
         <Box flexDirection="column" gap={1}>
-          <Text color="permission">Retrying…</Text>
+          <Text color="permission">{t('oauth.retrying')}</Text>
         </Box>
       )
 
@@ -1382,12 +1375,12 @@ function OAuthStatusMessage({
             <>
               {getOauthAccountInfo()?.emailAddress ? (
                 <Text dimColor>
-                  Logged in as{' '}
+                  {t('oauth.success.loggedAs')}{' '}
                   <Text>{getOauthAccountInfo()?.emailAddress}</Text>
                 </Text>
               ) : null}
               <Text color="success">
-                Login successful. Press <Text bold>Enter</Text> to continue…
+                {t('oauth.success.continue', { key: 'Enter' })}
               </Text>
             </>
           )}
@@ -1397,12 +1390,12 @@ function OAuthStatusMessage({
     case 'error':
       return (
         <Box flexDirection="column" gap={1}>
-          <Text color="error">OAuth error: {oauthStatus.message}</Text>
+          <Text color="error">{t('oauth.error.prefix', { message: oauthStatus.message })}</Text>
 
           {oauthStatus.toRetry && (
             <Box marginTop={1}>
               <Text color="permission">
-                Press <Text bold>Enter</Text> to retry.
+                {t('oauth.error.retry', { key: 'Enter' })}
               </Text>
             </Box>
           )}

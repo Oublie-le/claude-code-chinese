@@ -4,6 +4,7 @@ import { useTerminalSize } from '../../../hooks/useTerminalSize.js'
 import { Box, Text, stringWidth } from '@anthropic/ink'
 import type { Question } from '@claude-code-best/builtin-tools/tools/AskUserQuestionTool/AskUserQuestionTool.js'
 import { truncateToWidth } from '../../../utils/format.js'
+import { t } from '../../../utils/language.js'
 
 type Props = {
   questions: Question[]
@@ -25,7 +26,7 @@ export function QuestionNavigationBar({
     // Calculate fixed width elements
     const leftArrow = '← '
     const rightArrow = ' →'
-    const submitText = hideSubmitTab ? '' : ` ${figures.tick} Submit `
+    const submitText = hideSubmitTab ? '' : ` ${figures.tick} ${t('questionNav.submit')} `
     const checkboxWidth = 2 // checkbox + space
     const paddingPerTab = 2 // space before and after each tab text
 
@@ -128,10 +129,10 @@ export function QuestionNavigationBar({
           {currentQuestionIndex === questions.length ? (
             <Text backgroundColor="permission" color="inverseText">
               {' '}
-              {figures.tick} Submit{' '}
+              {figures.tick} {t('questionNav.submit')}{' '}
             </Text>
           ) : (
-            <Text> {figures.tick} Submit </Text>
+            <Text> {figures.tick} {t('questionNav.submit')} </Text>
           )}
         </Box>
       )}

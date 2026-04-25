@@ -11,6 +11,7 @@ import {
   toIDEDisplayName,
 } from '../utils/ide.js'
 import { Dialog } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 
 interface Props {
   onDone: () => void
@@ -47,12 +48,12 @@ export function IdeOnboardingDialog({
         title={
           <>
             <Text color="claude">✻ </Text>
-            <Text>Welcome to Claude Code for {ideName}</Text>
+            <Text>{t('ide.onboarding.title', { ideName })}</Text>
           </>
         }
         subtitle={
           installedVersion
-            ? `installed ${pluginOrExtension} v${installedVersion}`
+            ? t('ide.onboarding.installed', { pluginOrExtension, version: installedVersion })
             : undefined
         }
         color="ide"
@@ -61,26 +62,26 @@ export function IdeOnboardingDialog({
       >
         <Box flexDirection="column" gap={1}>
           <Text>
-            • Claude has context of <Text color="suggestion">⧉ open files</Text>{' '}
-            and <Text color="suggestion">⧉ selected lines</Text>
+            {t('ide.onboarding.context')} <Text color="suggestion">{t('ide.onboarding.openFiles')}</Text>{' '}
+            and <Text color="suggestion">{t('ide.onboarding.selectedLines')}</Text>
           </Text>
           <Text>
-            • Review Claude Code&apos;s changes{' '}
+            {t('ide.onboarding.reviewChanges')}{' '}
             <Text color="diffAddedWord">+11</Text>{' '}
-            <Text color="diffRemovedWord">-22</Text> in the comfort of your IDE
+            <Text color="diffRemovedWord">-22</Text> {t('ide.onboarding.reviewChanges.suffix')}
           </Text>
           <Text>
-            • Cmd+Esc<Text dimColor> for Quick Launch</Text>
+            • {t('ide.onboarding.quickLaunch')}<Text dimColor>{t('ide.onboarding.quickLaunch.hint')}</Text>
           </Text>
           <Text>
             • {mentionShortcut}
-            <Text dimColor> to reference files or lines in your input</Text>
+            <Text dimColor>{t('ide.onboarding.mention.hint')}</Text>
           </Text>
         </Box>
       </Dialog>
       <Box paddingX={1}>
         <Text dimColor italic>
-          Press Enter to continue
+          {t('ide.onboarding.pressEnter')}
         </Text>
       </Box>
     </>

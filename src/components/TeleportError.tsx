@@ -5,6 +5,7 @@ import {
 } from 'src/utils/background/remote/preconditions.js'
 import { gracefulShutdownSync } from 'src/utils/gracefulShutdown.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { ConsoleOAuthFlow } from './ConsoleOAuthFlow.js'
 import { Select } from './CustomSelect/index.js'
 import { Dialog } from '@anthropic/ink'
@@ -114,17 +115,17 @@ export function TeleportError({
       }
 
       return (
-        <Dialog title="Log in to Claude" onCancel={onCancel}>
+        <Dialog title={t('teleport.login.title')} onCancel={onCancel}>
           <Box flexDirection="column">
-            <Text dimColor>Teleport requires a Claude.ai account.</Text>
+            <Text dimColor>{t('teleport.login.requiresAccount')}</Text>
             <Text dimColor>
-              Your Claude Pro/Max subscription will be used by Claude Code.
+              {t('teleport.login.subscription')}
             </Text>
           </Box>
           <Select
             options={[
-              { label: 'Login with Claude account', value: 'login' },
-              { label: 'Exit', value: 'exit' },
+              { label: t('teleport.login.loginWith'), value: 'login' },
+              { label: t('teleport.exit'), value: 'exit' },
             ]}
             onChange={handleLoginDialogSelect}
           />

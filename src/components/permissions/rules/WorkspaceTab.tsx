@@ -6,6 +6,7 @@ import type { CommandResultDisplay } from '../../../commands.js'
 import { Select } from '../../../components/CustomSelect/select.js'
 import { Box, Text, useTabHeaderFocus } from '@anthropic/ink'
 import type { ToolPermissionContext } from '../../../Tool.js'
+import { t } from '../../../utils/language.js'
 
 type Props = {
   onExit: (
@@ -89,7 +90,7 @@ export function WorkspaceTab({
       {/* Current working directory section */}
       <Box flexDirection="row" marginTop={1} marginLeft={2} gap={1}>
         <Text>{`-  ${getOriginalCwd()}`}</Text>
-        <Text dimColor>(Original working directory)</Text>
+        <Text dimColor>{t('ruleList.originalCwd')}</Text>
       </Box>
       <Select
         options={options}

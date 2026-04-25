@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FLAG_ICON } from '../../constants/figures.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 
 /**
  * ANT-ONLY: Banner shown in the transcript that prompts users to report
@@ -19,9 +20,9 @@ export function IssueFlagBanner(): React.ReactNode {
       <Text>
         <Text dimColor>[ANT-ONLY] </Text>
         <Text color="warning" bold>
-          Something off with Claude?
+          {t('issue.flagBanner.title')}
         </Text>
-        <Text dimColor> /issue to report it</Text>
+        <Text dimColor> {t('issue.flagBanner.action')}</Text>
       </Text>
     </Box>
   )

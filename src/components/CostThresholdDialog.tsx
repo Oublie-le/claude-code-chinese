@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Dialog, Link, Text } from '@anthropic/ink'
 import { Select } from './CustomSelect/index.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   onDone: () => void
@@ -9,18 +10,18 @@ type Props = {
 export function CostThresholdDialog({ onDone }: Props): React.ReactNode {
   return (
     <Dialog
-      title="You've spent $5 on the Anthropic API this session."
+      title={t('cost.threshold.title')}
       onCancel={onDone}
     >
       <Box flexDirection="column">
-        <Text>Learn more about how to monitor your spending:</Text>
+        <Text>{t('cost.threshold.learn')}</Text>
         <Link url="https://code.claude.com/docs/en/costs" />
       </Box>
       <Select
         options={[
           {
             value: 'ok',
-            label: 'Got it, thanks!',
+            label: t('cost.threshold.ok'),
           },
         ]}
         onChange={onDone}

@@ -21,6 +21,7 @@ import type { UUID } from 'crypto';
 import type { FileStateCache } from '../../utils/fileStateCache.js';
 import { getTranscriptPath } from 'src/utils/sessionStorage.js';
 import { useRegisterOverlay } from 'src/context/overlayContext.js';
+import { t } from '../../utils/language.js';
 
 /** Maximum visible lines for the plan preview. */
 const MAX_VISIBLE_LINES = 24;
@@ -223,7 +224,7 @@ export function UltraplanChoiceDialog({
               {Math.min(scrollOffset + visibleHeight, wrappedLines.length)}
               {' of '}
               {wrappedLines.length}
-              {' · ctrl+u/ctrl+d to scroll'}
+              {t('ultraplanChoice.scroll')}
             </Text>
           )}
         </Box>

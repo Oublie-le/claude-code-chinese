@@ -6,6 +6,7 @@ import { useKeybindings } from '../../keybindings/useKeybinding.js'
 import type { ConfigScope } from '../../services/mcp/types.js'
 import { describeMcpConfigFilePath } from '../../services/mcp/utils.js'
 import { isDebugMode } from '../../utils/debug.js'
+import { t } from '../../utils/language.js'
 import { plural } from '../../utils/stringUtils.js'
 import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js'
 import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
@@ -36,15 +37,15 @@ const SCOPE_ORDER: ConfigScope[] = ['project', 'local', 'user', 'enterprise']
 function getScopeHeading(scope: ConfigScope): { label: string; path?: string } {
   switch (scope) {
     case 'project':
-      return { label: 'Project MCPs', path: describeMcpConfigFilePath(scope) }
+      return { label: t('mcpList.projectMCPs'), path: describeMcpConfigFilePath(scope) }
     case 'user':
-      return { label: 'User MCPs', path: describeMcpConfigFilePath(scope) }
+      return { label: t('mcpList.userMCPs'), path: describeMcpConfigFilePath(scope) }
     case 'local':
-      return { label: 'Local MCPs', path: describeMcpConfigFilePath(scope) }
+      return { label: t('mcpList.localMCPs'), path: describeMcpConfigFilePath(scope) }
     case 'enterprise':
-      return { label: 'Enterprise MCPs' }
+      return { label: t('mcpList.enterpriseMCPs') }
     case 'dynamic':
-      return { label: 'Built-in MCPs', path: 'always available' }
+      return { label: t('mcpList.builtinMCPs'), path: t('mcpList.alwaysAvailable') }
     default:
       return { label: scope }
   }
@@ -190,24 +191,24 @@ export function MCPListPanel({
 
     if (server.client.type === 'disabled') {
       statusIcon = color('inactive', theme)(figures.radioOff)
-      statusText = 'disabled'
+      statusText = t('mcpList.statusDisabled')
     } else if (server.client.type === 'connected') {
       statusIcon = color('success', theme)(figures.tick)
-      statusText = 'connected'
+      statusText = t('mcpList.statusConnected')
     } else if (server.client.type === 'pending') {
       statusIcon = color('inactive', theme)(figures.radioOff)
       const { reconnectAttempt, maxReconnectAttempts } = server.client
       if (reconnectAttempt && maxReconnectAttempts) {
-        statusText = `reconnecting (${reconnectAttempt}/${maxReconnectAttempts})…`
+        statusText = t('mcpList.statusReconnecting', { attempt: String(reconnectAttempt), max: String(maxReconnectAttempts) })
       } else {
-        statusText = 'connecting…'
+        statusText = t('mcpList.statusConnecting')
       }
     } else if (server.client.type === 'needs-auth') {
       statusIcon = color('warning', theme)(figures.triangleUpOutline)
-      statusText = 'needs authentication'
+      statusText = t('mcpList.statusNeedsAuth')
     } else {
       statusIcon = color('error', theme)(figures.cross)
-      statusText = 'failed'
+      statusText = t('mcpList.statusFailed')
     }
 
     return (
@@ -230,7 +231,7 @@ export function MCPListPanel({
     const statusIcon = agentServer.needsAuth
       ? color('warning', theme)(figures.triangleUpOutline)
       : color('inactive', theme)(figures.radioOff)
-    const statusText = agentServer.needsAuth ? 'may need auth' : 'agent-only'
+    const statusText = agentServer.needsAuth ? t('mcpList.statusMayNeedAuth') : t('mcpAgent.agentOnly')
 
     return (
       <Box key={`agent-${agentServer.name}-${index}`}>
@@ -253,7 +254,7 @@ export function MCPListPanel({
       <McpParsingWarnings />
 
       <Dialog
-        title="Manage MCP servers"
+        title={t('mcpList.title')}
         subtitle={`${totalServers} ${plural(totalServers, 'server')}`}
         onCancel={handleCancel}
         hideInputGuide
@@ -289,7 +290,7 @@ export function MCPListPanel({
           {agentServers.length > 0 && (
             <Box flexDirection="column" marginBottom={1}>
               <Box paddingLeft={2}>
-                <Text bold>Agent MCPs</Text>
+                <Text bold>{t('mcpList.agentMCPs')}</Text>
               </Box>
               {/* Group servers by source agent */}
               {[...new Set(agentServers.flatMap(s => s.sourceAgents))].map(
@@ -325,8 +326,8 @@ export function MCPListPanel({
             {hasFailedClients && (
               <Text dimColor>
                 {debugMode
-                  ? '※ Error logs shown inline with --debug'
-                  : '※ Run claude --debug to see error logs'}
+                  ? t('mcpList.debugHint')
+                  : t('mcpList.debugHintNoDebug')}
               </Text>
             )}
             <Text dimColor>

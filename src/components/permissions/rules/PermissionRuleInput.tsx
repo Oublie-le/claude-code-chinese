@@ -16,6 +16,7 @@ import {
   permissionRuleValueFromString,
   permissionRuleValueToString,
 } from '../../../utils/permissions/permissionRuleParser.js'
+import { t } from '../../../utils/language.js'
 
 export type PermissionRuleInputProps = {
   onCancel: () => void
@@ -62,12 +63,11 @@ export function PermissionRuleInput({
         borderColor="permission"
       >
         <Text bold color="permission">
-          Add {ruleBehavior} permission rule
+          {t('ruleInput.title', { behavior: ruleBehavior })}
         </Text>
         <Box flexDirection="column">
           <Text>
-            Permission rules are a tool name, optionally followed by a specifier
-            in parentheses.
+            {t('ruleInput.desc')}
             <Newline />
             e.g.,{' '}
             <Text bold>
@@ -87,7 +87,7 @@ export function PermissionRuleInput({
               value={inputValue}
               onChange={setInputValue}
               onSubmit={handleSubmit}
-              placeholder={`Enter permission rule${figures.ellipsis}`}
+              placeholder={t('ruleInput.placeholder') + figures.ellipsis}
               columns={textInputColumns}
               cursorOffset={cursorOffset}
               onChangeCursorOffset={setCursorOffset}
@@ -97,9 +97,9 @@ export function PermissionRuleInput({
       </Box>
       <Box marginLeft={3}>
         {exitState.pending ? (
-          <Text dimColor>Press {exitState.keyName} again to exit</Text>
+          <Text dimColor>{t('help.exitAgain', { key: exitState.keyName ?? '' })}</Text>
         ) : (
-          <Text dimColor>Enter to submit · Esc to cancel</Text>
+          <Text dimColor>{t('ruleInput.footer')}</Text>
         )}
       </Box>
     </>

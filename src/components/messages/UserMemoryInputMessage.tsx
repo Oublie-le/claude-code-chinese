@@ -3,10 +3,11 @@ import * as React from 'react'
 import { useMemo } from 'react'
 import { Box, Text } from '@anthropic/ink'
 import { extractTag } from '../../utils/messages.js'
+import { t } from '../../utils/language.js'
 import { MessageResponse } from '../MessageResponse.js'
 
 function getSavingMessage(): string {
-  return sample(['Got it.', 'Good to know.', 'Noted.'])
+  return sample([t('userMemory.got_it'), t('userMemory.good_to_know'), t('userMemory.noted')])
 }
 
 type Props = {

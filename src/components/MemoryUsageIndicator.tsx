@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useMemoryUsage } from '../hooks/useMemoryUsage.js'
 import { Box, Text } from '@anthropic/ink'
 import { formatFileSize } from '../utils/format.js'
+import { t } from '../utils/language.js'
 
 export function MemoryUsageIndicator(): React.ReactNode {
   // Ant-only: the /heapdump link is an internal debugging aid. Gating before
@@ -33,7 +34,7 @@ export function MemoryUsageIndicator(): React.ReactNode {
   return (
     <Box>
       <Text color={color} wrap="truncate">
-        High memory usage ({formattedSize}) · /heapdump
+        {t('memory.high', { size: formattedSize })}
       </Text>
     </Box>
   )

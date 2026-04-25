@@ -11,6 +11,7 @@ import { useIsInsideModal } from '../../context/modalContext.js'
 import { useTerminalSize } from '../../hooks/useTerminalSize.js'
 import { Box, Link, Text, Tab, Tabs, Pane } from '@anthropic/ink'
 import { useKeybinding } from '../../keybindings/useKeybinding.js'
+import { t } from '../../utils/language.js'
 import { Commands } from './Commands.js'
 import { General } from './General.js'
 
@@ -68,7 +69,7 @@ export function HelpV2({ onClose, commands }: Props): React.ReactNode {
         commands={builtinCommands}
         maxHeight={maxHeight}
         columns={columns}
-        title="Browse default commands:"
+        title={t('help.commands.browse')}
         onCancel={close}
       />
     </Tab>,
@@ -80,8 +81,8 @@ export function HelpV2({ onClose, commands }: Props): React.ReactNode {
         commands={customCommands}
         maxHeight={maxHeight}
         columns={columns}
-        title="Browse custom commands:"
-        emptyMessage="No custom commands found"
+        title={t('help.custom.browse')}
+        emptyMessage={t('help.custom.empty')}
         onCancel={close}
       />
     </Tab>,
@@ -94,7 +95,7 @@ export function HelpV2({ onClose, commands }: Props): React.ReactNode {
           commands={antOnlyCommands}
           maxHeight={maxHeight}
           columns={columns}
-          title="Browse ant-only commands:"
+          title={t('help.antonly.browse')}
           onCancel={close}
         />
       </Tab>,
@@ -117,16 +118,16 @@ export function HelpV2({ onClose, commands }: Props): React.ReactNode {
         </Tabs>
         <Box marginTop={1}>
           <Text>
-            For more help:{' '}
+            {t('help.morehelp')}
             <Link url="https://code.claude.com/docs/en/overview" />
           </Text>
         </Box>
         <Box marginTop={1}>
           <Text dimColor>
             {exitState.pending ? (
-              <>Press {exitState.keyName} again to exit</>
+              <>{t('help.exitAgain', { key: exitState.keyName ?? '' })}</>
             ) : (
-              <Text italic>{dismissShortcut} to cancel</Text>
+              <Text italic>{t('help.dismiss', { shortcut: dismissShortcut })}</Text>
             )}
           </Text>
         </Box>

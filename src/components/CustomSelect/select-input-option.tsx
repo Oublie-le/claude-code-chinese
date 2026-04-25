@@ -14,6 +14,7 @@ import { Byline } from '@anthropic/ink'
 import TextInput from '../TextInput.js'
 import type { OptionWithDescription } from './select.js'
 import { SelectOption } from './select-option.js'
+import { t } from '../../utils/language.js'
 
 type Props<T> = {
   option: Extract<OptionWithDescription<T>, { type: 'input' }>
@@ -400,7 +401,7 @@ export function SelectInputOption<T>({
                   />
                 </Byline>
               ) : isFocused ? (
-                '(↓ to select)'
+                t('select.downToSelect')
               ) : null}
             </Text>
           </Box>

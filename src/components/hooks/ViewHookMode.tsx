@@ -10,6 +10,7 @@ import {
   hookSourceDescriptionDisplayString,
   type IndividualHookConfig,
 } from '../../utils/hooks/hooksSettings.js'
+import { t } from '../../utils/language.js'
 import { Dialog } from '@anthropic/ink'
 
 type Props = {
@@ -25,32 +26,32 @@ export function ViewHookMode({
 }: Props): React.ReactNode {
   return (
     <Dialog
-      title="Hook details"
+      title={t('hooks.hookDetails')}
       onCancel={onCancel}
-      inputGuide={() => <Text>Esc to go back</Text>}
+      inputGuide={() => <Text>{t('hooks.escToGoBack')}</Text>}
     >
       <Box flexDirection="column" gap={1}>
         <Box flexDirection="column">
           <Text>
-            Event: <Text bold>{selectedHook.event}</Text>
+            {t('hooks.eventLabel')}<Text bold>{selectedHook.event}</Text>
           </Text>
           {eventSupportsMatcher && (
             <Text>
-              Matcher: <Text bold>{selectedHook.matcher || '(all)'}</Text>
+              {t('hooks.matcherLabel')}<Text bold>{selectedHook.matcher || t('hooks.all')}</Text>
             </Text>
           )}
           <Text>
-            Type: <Text bold>{selectedHook.config.type}</Text>
+            {t('hooks.typeLabel')}<Text bold>{selectedHook.config.type}</Text>
           </Text>
           <Text>
-            Source:{' '}
+            {t('hooks.sourceLabel')}
             <Text dimColor>
               {hookSourceDescriptionDisplayString(selectedHook.source)}
             </Text>
           </Text>
           {selectedHook.pluginName && (
             <Text>
-              Plugin: <Text dimColor>{selectedHook.pluginName}</Text>
+              {t('hooks.pluginLabel')}<Text dimColor>{selectedHook.pluginName}</Text>
             </Text>
           )}
         </Box>
@@ -68,13 +69,12 @@ export function ViewHookMode({
         {'statusMessage' in selectedHook.config &&
           selectedHook.config.statusMessage && (
             <Text>
-              Status message:{' '}
+              {t('hooks.statusMessageLabel')}
               <Text dimColor>{selectedHook.config.statusMessage}</Text>
             </Text>
           )}
         <Text dimColor>
-          To modify or remove this hook, edit settings.json directly or ask
-          Claude to help.
+          {t('hooks.modifyHint')}
         </Text>
       </Box>
     </Dialog>

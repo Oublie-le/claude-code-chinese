@@ -25,6 +25,7 @@ import {
 import { removeInstalledSymlink } from '../utils/nativeInstaller/index.js'
 import { gt, gte } from '../utils/semver.js'
 import { getInitialSettings } from '../utils/settings/settings.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   isUpdating: boolean
@@ -235,7 +236,7 @@ export function AutoUpdater({
         <>
           <Box>
             <Text color="text" dimColor wrap="truncate">
-              Auto-updating…
+              {t('autoupdater.updating')}
             </Text>
           </Box>
         </>
@@ -244,14 +245,14 @@ export function AutoUpdater({
         showSuccessMessage &&
         updateSemver && (
           <Text color="success" wrap="truncate">
-            ✓ Update installed · Restart to apply
+            {t('autoupdater.success')}
           </Text>
         )
       )}
       {(autoUpdaterResult?.status === 'install_failed' ||
         autoUpdaterResult?.status === 'no_permissions') && (
         <Text color="error" wrap="truncate">
-          ✗ Auto-update failed &middot; Try <Text bold>claude doctor</Text> or{' '}
+          ✗ 自动更新失败 · 请尝试 <Text bold>claude doctor</Text> 或{' '}
           <Text bold>
             {hasLocalInstall
               ? `cd ~/.claude/local && npm update ${MACRO.PACKAGE_URL}`

@@ -28,6 +28,7 @@ import {
 import { extractRules } from '../../../utils/permissions/PermissionUpdate.js'
 import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpdateSchema.js'
 import { SandboxManager } from '../../../utils/sandbox/sandbox-adapter.js'
+import { t } from '../../../utils/language.js'
 import { Select } from '../../CustomSelect/select.js'
 import { ShimmerChar } from '../../Spinner/ShimmerChar.js'
 import { useShimmerAnimation } from '../../Spinner/useShimmerAnimation.js'
@@ -45,7 +46,7 @@ import { useShellPermissionFeedback } from '../useShellPermissionFeedback.js'
 import { logUnaryPermissionEvent } from '../utils.js'
 import { bashToolUseOptions } from './bashToolUseOptions.js'
 
-const CHECKING_TEXT = 'Attempting to auto-approve\u2026'
+const CHECKING_TEXT = t('bash.checkingText')
 
 // Isolates the 20fps shimmer clock from BashPermissionRequestInner. Before this
 // extraction, useShimmerAnimation lived inside the 535-line Inner body, so every
@@ -501,7 +502,7 @@ function BashPermissionRequestInner({
     ) : toolUseConfirm.classifierCheckInProgress ? (
       <ClassifierCheckingSubtitle />
     ) : classifierWasChecking ? (
-      <Text dimColor>Requires manual approval</Text>
+      <Text dimColor>{t('bash.requiresManualApproval')}</Text>
     ) : undefined
   ) : undefined
 
@@ -510,8 +511,8 @@ function BashPermissionRequestInner({
       workerBadge={workerBadge}
       title={
         sandboxingEnabled && !isSandboxed
-          ? 'Bash command (unsandboxed)'
-          : 'Bash command'
+          ? t('bash.commandUnsandboxed')
+          : t('bash.command')
       }
       subtitle={classifierSubtitle}
     >
@@ -538,7 +539,7 @@ function BashPermissionRequestInner({
           />
           {toolUseContext.options.debug && (
             <Box justifyContent="flex-end" marginTop={1}>
-              <Text dimColor>Ctrl-D to hide debug info</Text>
+              <Text dimColor>{t('bash.ctrlDHide')}</Text>
             </Box>
           )}
         </>
@@ -570,7 +571,7 @@ function BashPermissionRequestInner({
                   : false
               }
             >
-              Do you want to proceed?
+              {t('bash.doYouWantToProceed')}
             </Text>
             <Select
               options={
@@ -602,7 +603,7 @@ function BashPermissionRequestInner({
                 ` · ctrl+e to ${explainerState.visible ? 'hide' : 'explain'}`}
             </Text>
             {toolUseContext.options.debug && (
-              <Text dimColor>Ctrl+d to show debug info</Text>
+              <Text dimColor>{t('bash.ctrlDShow')}</Text>
             )}
           </Box>
         </>

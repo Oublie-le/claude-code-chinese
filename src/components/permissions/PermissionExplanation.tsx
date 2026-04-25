@@ -9,10 +9,11 @@ import {
   type PermissionExplanation as PermissionExplanationType,
   type RiskLevel,
 } from '../../utils/permissions/permissionExplainer.js'
+import { t } from '../../utils/language.js'
 import { ShimmerChar } from '../Spinner/ShimmerChar.js'
 import { useShimmerAnimation } from '../Spinner/useShimmerAnimation.js'
 
-const LOADING_MESSAGE = 'Loading explanation…'
+const LOADING_MESSAGE = t('permExplain.loading')
 
 function ShimmerLoadingText(): React.ReactNode {
   const [ref, glimmerIndex] = useShimmerAnimation(
@@ -53,11 +54,11 @@ function getRiskColor(riskLevel: RiskLevel): 'success' | 'warning' | 'error' {
 function getRiskLabel(riskLevel: RiskLevel): string {
   switch (riskLevel) {
     case 'LOW':
-      return 'Low risk'
+      return t('permExplain.lowRisk')
     case 'MEDIUM':
-      return 'Med risk'
+      return t('permExplain.medRisk')
     case 'HIGH':
-      return 'High risk'
+      return t('permExplain.highRisk')
   }
 }
 
@@ -136,7 +137,7 @@ function ExplanationResult({
   if (!explanation) {
     return (
       <Box marginTop={1}>
-        <Text dimColor>Explanation unavailable</Text>
+        <Text dimColor>{t('permExplain.unavailable')}</Text>
       </Box>
     )
   }

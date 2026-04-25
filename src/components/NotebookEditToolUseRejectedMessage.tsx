@@ -2,6 +2,7 @@ import { relative } from 'path'
 import * as React from 'react'
 import { getCwd } from 'src/utils/cwd.js'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { HighlightedCode } from './HighlightedCode.js'
 import { MessageResponse } from './MessageResponse.js'
 
@@ -22,17 +23,22 @@ export function NotebookEditToolUseRejectedMessage({
   edit_mode = 'replace',
   verbose,
 }: Props): React.ReactNode {
-  const operation = edit_mode === 'delete' ? 'delete' : `${edit_mode} cell in`
+  const operationKey = edit_mode === 'delete'
+    ? 'notebook.op.delete'
+    : edit_mode === 'replace'
+      ? 'notebook.op.replaceCell'
+      : 'notebook.op.insertCell'
+  const operation = t(operationKey as 'notebook.op.delete' | 'notebook.op.replaceCell' | 'notebook.op.insertCell')
 
   return (
     <MessageResponse>
       <Box flexDirection="column">
         <Box flexDirection="row">
-          <Text color="subtle">User rejected {operation} </Text>
+          <Text color="subtle">{t('notebook.rejected', { operation })} </Text>
           <Text bold color="subtle">
             {verbose ? notebook_path : relative(getCwd(), notebook_path)}
           </Text>
-          <Text color="subtle"> at cell {cell_id}</Text>
+          <Text color="subtle">{t('notebook.rejected.at', { cellId: cell_id ?? '' })}</Text>
         </Box>
         {edit_mode !== 'delete' && (
           <Box marginTop={1} flexDirection="column">

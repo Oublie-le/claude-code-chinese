@@ -6,6 +6,7 @@ import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js'
 import type { OptionWithDescription } from './CustomSelect/select.js'
 import { Select } from './CustomSelect/select.js'
 import { PermissionDialog } from './permissions/PermissionDialog.js'
+import { t } from '../utils/language.js'
 
 type RemoteCalloutSelection = 'enable' | 'dismiss'
 
@@ -35,30 +36,27 @@ export function RemoteCallout({ onDone }: Props): React.ReactNode {
 
   const options: OptionWithDescription<RemoteCalloutSelection>[] = [
     {
-      label: 'Enable Remote Control for this session',
-      description: 'Opens a secure connection to claude.ai.',
+      label: t('remoteCallout.enable.label'),
+      description: t('remoteCallout.enable.desc'),
       value: 'enable',
     },
     {
-      label: 'Never mind',
-      description: 'You can always enable it later with /remote-control.',
+      label: t('remoteCallout.dismiss.label'),
+      description: t('remoteCallout.dismiss.desc'),
       value: 'dismiss',
     },
   ]
 
   return (
-    <PermissionDialog title="Remote Control">
+    <PermissionDialog title={t('bridge.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1} flexDirection="column">
           <Text>
-            Remote Control lets you access this CLI session from the web
-            (claude.ai/code) or the Claude app, so you can pick up where you
-            left off on any device.
+            {t('remoteCallout.body1')}
           </Text>
           <Text> </Text>
           <Text>
-            You can disconnect remote access anytime by running /remote-control
-            again.
+            {t('remoteCallout.body2')}
           </Text>
         </Box>
         <Box>

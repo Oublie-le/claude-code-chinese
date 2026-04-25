@@ -1,6 +1,7 @@
 import { POWERSHELL_TOOL_NAME } from '@claude-code-best/builtin-tools/tools/PowerShellTool/toolName.js'
 import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpdateSchema.js'
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js'
+import { t } from '../../../utils/language.js'
 import type { OptionWithDescription } from '../../CustomSelect/select.js'
 import { generateShellSuggestionsLabel } from '../shellPermissionHelpers.js'
 
@@ -32,15 +33,15 @@ export function powershellToolUseOptions({
   if (yesInputMode) {
     options.push({
       type: 'input',
-      label: 'Yes',
+      label: t('psOptions.yes'),
       value: 'yes',
-      placeholder: 'and tell Claude what to do next',
+      placeholder: t('psOptions.placeholder.next'),
       onChange: onAcceptFeedbackChange,
       allowEmptySubmitToCancel: true,
     })
   } else {
     options.push({
-      label: 'Yes',
+      label: t('psOptions.yes'),
       value: 'yes',
     })
   }
@@ -67,7 +68,7 @@ export function powershellToolUseOptions({
     ) {
       options.push({
         type: 'input',
-        label: 'Yes, and don\u2019t ask again for',
+        label: t('psOptions.dontAskAgainFor'),
         value: 'yes-prefix-edited',
         placeholder: 'command prefix (e.g., Get-Process:*)',
         initialValue: editablePrefix,
@@ -94,15 +95,15 @@ export function powershellToolUseOptions({
   if (noInputMode) {
     options.push({
       type: 'input',
-      label: 'No',
+      label: t('psOptions.no'),
       value: 'no',
-      placeholder: 'and tell Claude what to do differently',
+      placeholder: t('psOptions.placeholder.differently'),
       onChange: onRejectFeedbackChange,
       allowEmptySubmitToCancel: true,
     })
   } else {
     options.push({
-      label: 'No',
+      label: t('psOptions.no'),
       value: 'no',
     })
   }

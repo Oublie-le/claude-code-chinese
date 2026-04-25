@@ -11,6 +11,7 @@ import type { Question } from '@claude-code-best/builtin-tools/tools/AskUserQues
 import { getExternalEditor } from '../../../utils/editor.js'
 import { toIDEDisplayName } from '../../../utils/ide.js'
 import { editPromptInEditor } from '../../../utils/promptEditor.js'
+import { t } from '../../../utils/language.js'
 import { Divider } from '@anthropic/ink'
 import TextInput from '../../TextInput.js'
 import { PermissionRequestTitle } from '../PermissionRequestTitle.js'
@@ -373,7 +374,7 @@ export function PreviewQuestionView({
             {/* Right panel: preview + notes */}
             <Box flexDirection="column" flexGrow={1}>
               <PreviewBox
-                content={previewContent || 'No preview available'}
+                content={previewContent || t('previewQuestion.noPreview')}
                 maxLines={previewMaxLines}
                 minWidth={minContentWidth}
                 maxWidth={previewMaxWidth}
@@ -383,7 +384,7 @@ export function PreviewQuestionView({
                 {isInNotesInput ? (
                   <TextInput
                     value={notesValue}
-                    placeholder="Add notes on this design…"
+                    placeholder={t('previewQuestion.addNotes')}
                     onChange={value => {
                       onUpdateQuestionState(
                         questionText,

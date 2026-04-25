@@ -7,6 +7,7 @@ import { getMemoryScopeDisplay } from '@claude-code-best/builtin-tools/tools/Age
 import type { AgentDefinition } from '@claude-code-best/builtin-tools/tools/AgentTool/loadAgentsDir.js'
 import { truncateToWidth } from '../../../../utils/format.js'
 import { getAgentModelDisplay } from '../../../../utils/model/agent.js'
+import { t } from '../../../../utils/language.js'
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js'
 import { useWizard } from '../../../wizard/index.js'
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js'
@@ -51,9 +52,9 @@ export function ConfirmStep({
 
   const getToolsDisplay = (toolNames: string[] | undefined): string => {
     // undefined means "all tools" per PR semantic
-    if (toolNames === undefined) return 'All tools'
-    if (toolNames.length === 0) return 'None'
-    if (toolNames.length === 1) return toolNames[0] || 'None'
+    if (toolNames === undefined) return t('wizard.confirm.allTools')
+    if (toolNames.length === 0) return t('wizard.confirm.none')
+    if (toolNames.length === 1) return toolNames[0] || t('wizard.confirm.none')
     if (toolNames.length === 2) return toolNames.join(' and ')
     return `${toolNames.slice(0, -1).join(', ')}, and ${toolNames[toolNames.length - 1]}`
   }
@@ -67,7 +68,7 @@ export function ConfirmStep({
 
   return (
     <WizardDialogLayout
-      subtitle="Confirm and save"
+      subtitle={t('wizard.confirm.subtitle')}
       footerText={
         <Byline>
           <KeyboardShortcutHint shortcut="s/Enter" action="save" />
@@ -88,26 +89,26 @@ export function ConfirmStep({
         onKeyDown={handleKeyDown}
       >
         <Text>
-          <Text bold>Name</Text>: {agent.agentType}
+          <Text bold>{t('wizard.confirm.name')}</Text>: {agent.agentType}
         </Text>
         <Text>
-          <Text bold>Location</Text>:{' '}
+          <Text bold>{t('wizard.confirm.location')}</Text>:{' '}
           {getNewRelativeAgentFilePath({
             source: wizardData.location!,
             agentType: agent.agentType,
           })}
         </Text>
         <Text>
-          <Text bold>Tools</Text>: {getToolsDisplay(agent.tools)}
+          <Text bold>{t('wizard.confirm.tools')}</Text>: {getToolsDisplay(agent.tools)}
         </Text>
         <Text>
-          <Text bold>Model</Text>: {getAgentModelDisplay(agent.model)}
+          <Text bold>{t('wizard.confirm.model')}</Text>: {getAgentModelDisplay(agent.model)}
         </Text>
         {memoryDisplayElement}
 
         <Box marginTop={1}>
           <Text>
-            <Text bold>Description</Text> (tells Claude when to use this agent):
+            <Text bold>{t('wizard.confirm.description')}</Text> {t('wizard.confirm.descriptionTip')}
           </Text>
         </Box>
         <Box marginLeft={2} marginTop={1}>
@@ -116,7 +117,7 @@ export function ConfirmStep({
 
         <Box marginTop={1}>
           <Text>
-            <Text bold>System prompt</Text>:
+            <Text bold>{t('wizard.confirm.systemPrompt')}</Text>:
           </Text>
         </Box>
         <Box marginLeft={2} marginTop={1}>
@@ -125,7 +126,7 @@ export function ConfirmStep({
 
         {validation.warnings.length > 0 && (
           <Box marginTop={1} flexDirection="column">
-            <Text color="warning">Warnings:</Text>
+            <Text color="warning">{t('wizard.confirm.warnings')}</Text>
             {validation.warnings.map((warning, i) => (
               <Text key={i} dimColor>
                 {' '}
@@ -137,7 +138,7 @@ export function ConfirmStep({
 
         {validation.errors.length > 0 && (
           <Box marginTop={1} flexDirection="column">
-            <Text color="error">Errors:</Text>
+            <Text color="error">{t('wizard.confirm.errors')}</Text>
             {validation.errors.map((err, i) => (
               <Text key={i} color="error">
                 {' '}

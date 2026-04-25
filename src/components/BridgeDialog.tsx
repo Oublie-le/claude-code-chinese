@@ -21,6 +21,7 @@ import { useAppState, useSetAppState } from '../state/AppState.js'
 import { saveGlobalConfig } from '../utils/config.js'
 import { getBranch } from '../utils/git.js'
 import { Dialog } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 
 type Props = {
   onDone: () => void
@@ -128,7 +129,7 @@ export function BridgeDialog({ onDone }: Props): React.ReactNode {
       : undefined
 
   return (
-    <Dialog title="Remote Control" onCancel={onDone} hideInputGuide>
+    <Dialog title={t('bridge.title')} onCancel={onDone} hideInputGuide>
       <Box flexDirection="column" gap={1}>
         <Box flexDirection="column">
           <Text>
@@ -139,9 +140,9 @@ export function BridgeDialog({ onDone }: Props): React.ReactNode {
           </Text>
           {error && <Text color="error">{error}</Text>}
           {verbose && environmentId && (
-            <Text dimColor>Environment: {environmentId}</Text>
+            <Text dimColor>{t('bridge.env', { id: environmentId })}</Text>
           )}
-          {verbose && sessionId && <Text dimColor>Session: {sessionId}</Text>}
+          {verbose && sessionId && <Text dimColor>{t('bridge.session', { id: sessionId })}</Text>}
         </Box>
         {showQR && qrLines.length > 0 && (
           <Box flexDirection="column">
@@ -151,9 +152,7 @@ export function BridgeDialog({ onDone }: Props): React.ReactNode {
           </Box>
         )}
         {footerText && <Text dimColor>{footerText}</Text>}
-        <Text dimColor>
-          d to disconnect · space for QR code · Enter/Esc to close
-        </Text>
+        <Text dimColor>{t('bridge.footer')}</Text>
       </Box>
     </Dialog>
   )

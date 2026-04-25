@@ -4,6 +4,7 @@ import type {
 } from '@anthropic-ai/sdk/resources/index.mjs'
 import React from 'react'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import { CtrlOToExpand } from '../CtrlOToExpand.js'
 import { Markdown } from '../Markdown.js'
 
@@ -36,7 +37,7 @@ export function AssistantThinkingMessage({
   }
 
   const shouldShowFullThinking = isTranscriptMode || verbose
-  const label = '∴ Thinking'
+  const label = t('thinking.label')
 
   if (!shouldShowFullThinking) {
     return (

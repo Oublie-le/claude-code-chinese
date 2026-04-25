@@ -20,6 +20,7 @@ import {
 import { logError } from 'src/utils/log.js'
 import { useExitOnCtrlCDWithKeybindings } from '../hooks/useExitOnCtrlCDWithKeybindings.js'
 import { Box, Text, Divider } from '@anthropic/ink'
+import { t } from '../utils/language.js'
 import { useKeybinding, useKeybindings } from '../keybindings/useKeybinding.js'
 import type {
   Message,
@@ -166,15 +167,15 @@ export function MessageSelector({
   ): OptionWithDescription<RestoreOption>[] {
     const baseOptions: OptionWithDescription<RestoreOption>[] = canRestoreCode
       ? [
-          { value: 'both', label: 'Restore code and conversation' },
-          { value: 'conversation', label: 'Restore conversation' },
-          { value: 'code', label: 'Restore code' },
+          { value: 'both', label: t('rewind.restoreCode') },
+          { value: 'conversation', label: t('rewind.restoreConversation') },
+          { value: 'code', label: t('rewind.restoreCodeOnly') },
         ]
-      : [{ value: 'conversation', label: 'Restore conversation' }]
+      : [{ value: 'conversation', label: t('rewind.restoreConversation') }]
 
     const summarizeInputProps = {
       type: 'input' as const,
-      placeholder: 'add context (optional)',
+      placeholder: t('rewind.addContext'),
       initialValue: '',
       allowEmptySubmitToCancel: true,
       showLabelWithValue: true,
@@ -182,20 +183,20 @@ export function MessageSelector({
     }
     baseOptions.push({
       value: 'summarize',
-      label: 'Summarize from here',
+      label: t('rewind.summarizeFrom'),
       ...summarizeInputProps,
       onChange: setSummarizeFromFeedback,
     })
     if (process.env.USER_TYPE === 'ant') {
       baseOptions.push({
         value: 'summarize_up_to',
-        label: 'Summarize up to here',
+        label: t('rewind.summarizeUpto'),
         ...summarizeInputProps,
         onChange: setSummarizeUpToFeedback,
       })
     }
 
-    baseOptions.push({ value: 'nevermind', label: 'Never mind' })
+    baseOptions.push({ value: 'nevermind', label: t('rewind.neverMind') })
     return baseOptions
   }
 
@@ -445,7 +446,7 @@ export function MessageSelector({
       <Divider color="suggestion" />
       <Box flexDirection="column" marginX={1} gap={1}>
         <Text bold color="suggestion">
-          Rewind
+          {t('rewind.title')}
         </Text>
 
         {error && (
@@ -455,7 +456,7 @@ export function MessageSelector({
         )}
         {!hasMessagesToSelect && (
           <>
-            <Text>Nothing to rewind to yet.</Text>
+            <Text>{t('rewind.nothing')}</Text>
           </>
         )}
         {!error && messageToRestore && hasMessagesToSelect && (
@@ -492,7 +493,7 @@ export function MessageSelector({
             {isRestoring && isSummarizeOption(restoringOption) ? (
               <Box flexDirection="row" gap={1}>
                 <Spinner />
-                <Text>Summarizing…</Text>
+                <Text>{t('rewind.summarizing')}</Text>
               </Box>
             ) : (
               <Select
@@ -526,11 +527,11 @@ export function MessageSelector({
           <>
             {isFileHistoryEnabled ? (
               <Text>
-                Restore the code and/or conversation to the point before…
+                {t('rewind.restore')}
               </Text>
             ) : (
               <Text>
-                Restore and fork the conversation to the point before…
+                {t('rewind.forkFrom')}
               </Text>
             )}
             <Box width="100%" flexDirection="column">
@@ -589,13 +590,13 @@ export function MessageSelector({
                                       <DiffStatsText diffStats={metadata} />
                                     </>
                                   ) : (
-                                    <>No code changes</>
+                                    <>{t('rewind.noCodeChanges')}</>
                                   )}
                                 </Text>
                               </>
                             ) : (
                               <Text dimColor color="warning">
-                                {figures.warning} No code restore
+                                {figures.warning} {t('rewind.noCodeRestore')}
                               </Text>
                             )}
                           </Box>
@@ -613,8 +614,7 @@ export function MessageSelector({
               <>Press {exitState.keyName} again to exit</>
             ) : (
               <>
-                {!error && hasMessagesToSelect && 'Enter to continue · '}Esc to
-                exit
+                {!error && hasMessagesToSelect && t('rewind.enterContinue')}{t('rewind.escExit')}
               </>
             )}
           </Text>
@@ -627,7 +627,7 @@ export function MessageSelector({
 function getRestoreOptionConversationText(option: RestoreOption): string {
   switch (option) {
     case 'summarize':
-      return 'Messages after this point will be summarized.'
+      return t('rewind.messagesAfter')
     case 'summarize_up_to':
       return 'Preceding messages will be summarized. This and subsequent messages will remain unchanged — you will stay at the end of the conversation.'
     case 'both':
@@ -742,7 +742,7 @@ function UserMessageOption({
     return (
       <Box width="100%">
         <Text italic color={color} dimColor={dimColor}>
-          (current)
+          {t('rewind.current')}
         </Text>
       </Box>
     )
@@ -765,7 +765,7 @@ function UserMessageOption({
     return (
       <Box flexDirection="row" width="100%">
         <Text italic color={color} dimColor={dimColor}>
-          ((empty message))
+          {t('rewind.emptyMessage')}
         </Text>
       </Box>
     )

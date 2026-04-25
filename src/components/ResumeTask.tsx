@@ -16,6 +16,7 @@ import { Select } from './CustomSelect/index.js'
 import { Byline, KeyboardShortcutHint } from '@anthropic/ink'
 import { Spinner } from './Spinner.js'
 import { TeleportError } from './TeleportError.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   onSelect: (session: CodeSession) => void
@@ -134,12 +135,12 @@ export function ResumeTask({
     return (
       <Box flexDirection="column" padding={1}>
         <Box flexDirection="row">
-          <Spinner />
-          <Text bold>Loading Claude Code sessions…</Text>
-        </Box>
-        <Text dimColor>
-          {retrying ? 'Retrying…' : 'Fetching your Claude Code sessions…'}
-        </Text>
+        <Spinner />
+        <Text bold>{t('resumeTask.loading')}</Text>
+      </Box>
+      <Text dimColor>
+        {retrying ? t('resumeTask.retrying') : t('resumeTask.fetching')}
+      </Text>
       </Box>
     )
   }
@@ -148,14 +149,13 @@ export function ResumeTask({
     return (
       <Box flexDirection="column" padding={1}>
         <Text bold color="error">
-          Error loading Claude Code sessions
+          {t('resumeTask.error.title')}
         </Text>
 
         {renderErrorSpecificGuidance(loadErrorType)}
 
         <Text dimColor>
-          Press <Text bold>Ctrl+R</Text> to retry · Press{' '}
-          <Text bold>{escKey}</Text> to cancel
+          {t('resumeTask.error.retryCancel', { escKey })}
         </Text>
       </Box>
     )
@@ -165,12 +165,12 @@ export function ResumeTask({
     return (
       <Box flexDirection="column" padding={1}>
         <Text bold>
-          No Claude Code sessions found
-          {currentRepo && <Text> for {currentRepo}</Text>}
+          {t('resumeTask.empty.title')}
+          {currentRepo && <Text>{t('resumeTask.empty.for', { repo: currentRepo })}</Text>}
         </Text>
         <Box marginTop={1}>
           <Text dimColor>
-            Press <Text bold>{escKey}</Text> to cancel
+            {t('resumeTask.empty.cancel', { escKey })}
           </Text>
         </Box>
       </Box>
@@ -213,11 +213,10 @@ export function ResumeTask({
   return (
     <Box flexDirection="column" padding={1} height={maxHeight}>
       <Text bold>
-        Select a session to resume
+        {t('resumeTask.select.title')}
         {showScrollPosition && (
           <Text dimColor>
-            {' '}
-            ({focusedIndex} of {sessions.length})
+            {t('resumeTask.select.count', { index: String(focusedIndex), total: String(sessions.length) })}
           </Text>
         )}
         {currentRepo && <Text dimColor> ({currentRepo})</Text>}:
@@ -227,7 +226,7 @@ export function ResumeTask({
           <Text bold>
             {UPDATED_STRING.padEnd(maxTimeStringLength, ' ')}
             {SPACE_BETWEEN_TABLE_COLUMNS}
-            {'Session Title'}
+            {t('resumeTask.table.title')}
           </Text>
         </Box>
         <Select
@@ -314,17 +313,16 @@ function renderErrorSpecificGuidance(
     case 'network':
       return (
         <Box marginY={1} flexDirection="column">
-          <Text dimColor>Check your internet connection</Text>
+          <Text dimColor>{t('resumeTask.error.network')}</Text>
         </Box>
       )
 
     case 'auth':
       return (
         <Box marginY={1} flexDirection="column">
-          <Text dimColor>Teleport requires a Claude account</Text>
+          <Text dimColor>{t('resumeTask.error.auth.requires')}</Text>
           <Text dimColor>
-            Run <Text bold>/login</Text> and select &quot;Claude account with
-            subscription&quot;
+            {t('resumeTask.error.auth.login')}
           </Text>
         </Box>
       )
@@ -332,14 +330,14 @@ function renderErrorSpecificGuidance(
     case 'api':
       return (
         <Box marginY={1} flexDirection="column">
-          <Text dimColor>Sorry, Claude encountered an error</Text>
+          <Text dimColor>{t('resumeTask.error.api')}</Text>
         </Box>
       )
 
     case 'other':
       return (
         <Box marginY={1} flexDirection="row">
-          <Text dimColor>Sorry, Claude Code encountered an error</Text>
+          <Text dimColor>{t('resumeTask.error.other')}</Text>
         </Box>
       )
   }

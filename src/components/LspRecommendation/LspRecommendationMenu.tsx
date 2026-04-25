@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Box, Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import { Select } from '../CustomSelect/select.js'
 import { PermissionDialog } from '../permissions/PermissionDialog.js'
 
@@ -53,40 +54,39 @@ export function LspRecommendationMenu({
     {
       label: (
         <Text>
-          Yes, install <Text bold>{pluginName}</Text>
+          {t('lsp.install.yes', { name: pluginName })}
         </Text>
       ),
       value: 'yes',
     },
     {
-      label: 'No, not now',
+      label: t('lsp.install.no'),
       value: 'no',
     },
     {
       label: (
         <Text>
-          Never for <Text bold>{pluginName}</Text>
+          {t('lsp.install.never', { name: pluginName })}
         </Text>
       ),
       value: 'never',
     },
     {
-      label: 'Disable all LSP recommendations',
+      label: t('lsp.install.disable'),
       value: 'disable',
     },
   ]
 
   return (
-    <PermissionDialog title="LSP Plugin Recommendation">
+    <PermissionDialog title={t('lsp.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1}>
           <Text dimColor>
-            LSP provides code intelligence like go-to-definition and error
-            checking
+            {t('lsp.description')}
           </Text>
         </Box>
         <Box>
-          <Text dimColor>Plugin:</Text>
+          <Text dimColor>{t('lsp.plugin.label')}</Text>
           <Text> {pluginName}</Text>
         </Box>
         {pluginDescription && (
@@ -95,11 +95,11 @@ export function LspRecommendationMenu({
           </Box>
         )}
         <Box>
-          <Text dimColor>Triggered by:</Text>
-          <Text> {fileExtension} files</Text>
+          <Text dimColor>{t('lsp.trigger.label')}</Text>
+          <Text> {t('lsp.trigger.files', { ext: fileExtension })}</Text>
         </Box>
         <Box marginTop={1}>
-          <Text>Would you like to install this LSP plugin?</Text>
+          <Text>{t('lsp.install.ask')}</Text>
         </Box>
         <Box>
           <Select

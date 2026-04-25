@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text } from '@anthropic/ink'
+import { t } from '../../utils/language.js'
 import type { CollapsedReadSearchGroup } from '../../types/message.js'
 
 /**
@@ -43,18 +44,18 @@ export function TeamMemCountParts({
   if (tmReadCount > 0) {
     const verb = isActiveGroup
       ? count === 0
-        ? 'Recalling'
-        : 'recalling'
+        ? t('teamMem.recalling')
+        : t('teamMem.recalling_lc')
       : count === 0
-        ? 'Recalled'
-        : 'recalled'
+        ? t('teamMem.recalled')
+        : t('teamMem.recalled_lc')
     if (count > 0) {
       nodes.push(<Text key="comma-tmr">, </Text>)
     }
     nodes.push(
       <Text key="team-mem-read">
-        {verb} <Text bold>{tmReadCount}</Text> team{' '}
-        {tmReadCount === 1 ? 'memory' : 'memories'}
+        {verb} <Text bold>{tmReadCount}</Text> {t('teamMem.team')}{' '}
+        {tmReadCount === 1 ? t('teamMem.memory') : t('teamMem.memories')}
       </Text>,
     )
     count++
@@ -63,33 +64,33 @@ export function TeamMemCountParts({
   if (tmSearchCount > 0) {
     const verb = isActiveGroup
       ? count === 0
-        ? 'Searching'
-        : 'searching'
+        ? t('teamMem.searching')
+        : t('teamMem.searching_lc')
       : count === 0
-        ? 'Searched'
-        : 'searched'
+        ? t('teamMem.searched')
+        : t('teamMem.searched_lc')
     if (count > 0) {
       nodes.push(<Text key="comma-tms">, </Text>)
     }
-    nodes.push(<Text key="team-mem-search">{`${verb} team memories`}</Text>)
+    nodes.push(<Text key="team-mem-search">{`${verb} ${t('teamMem.teamMemories')}`}</Text>)
     count++
   }
 
   if (tmWriteCount > 0) {
     const verb = isActiveGroup
       ? count === 0
-        ? 'Writing'
-        : 'writing'
+        ? t('teamMem.writing')
+        : t('teamMem.writing_lc')
       : count === 0
-        ? 'Wrote'
-        : 'wrote'
+        ? t('teamMem.wrote')
+        : t('teamMem.wrote_lc')
     if (count > 0) {
       nodes.push(<Text key="comma-tmw">, </Text>)
     }
     nodes.push(
       <Text key="team-mem-write">
-        {verb} <Text bold>{tmWriteCount}</Text> team{' '}
-        {tmWriteCount === 1 ? 'memory' : 'memories'}
+        {verb} <Text bold>{tmWriteCount}</Text> {t('teamMem.team')}{' '}
+        {tmWriteCount === 1 ? t('teamMem.memory') : t('teamMem.memories')}
       </Text>,
     )
   }

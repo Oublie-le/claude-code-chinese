@@ -14,6 +14,7 @@ import { Box, Text, useInput } from '@anthropic/ink'
 import { useKeybinding } from '../../keybindings/useKeybinding.js'
 import type { ElicitationRequestEvent } from '../../services/mcp/elicitationHandler.js'
 import { openBrowser } from '../../utils/browser.js'
+import { t } from '../../utils/language.js'
 import {
   getEnumLabel,
   getEnumValues,
@@ -945,7 +946,7 @@ function ElicitationFormDialog({
         {hasFieldsAbove && (
           <Box marginLeft={2}>
             <Text dimColor>
-              {figures.arrowUp} {scrollWindow.start} more above
+              {figures.arrowUp} {t('elicitation.moreAbove', { count: String(scrollWindow.start) })}
             </Text>
           </Box>
         )}
@@ -1053,7 +1054,7 @@ function ElicitationFormDialog({
                     <Text>
                       {arrow}
                       <Text dimColor italic>
-                        not set
+                        {t('elicitation.notSet')}
                       </Text>
                     </Text>
                   )
@@ -1109,7 +1110,7 @@ function ElicitationFormDialog({
                     <Text>
                       {arrow}
                       <Text dimColor italic>
-                        not set
+                        {t('elicitation.notSet')}
                       </Text>
                     </Text>
                   )
@@ -1131,7 +1132,7 @@ function ElicitationFormDialog({
                   </Text>
                 ) : (
                   <Text dimColor italic>
-                    not set
+                    {t('elicitation.notSet')}
                   </Text>
                 )
               }
@@ -1142,7 +1143,7 @@ function ElicitationFormDialog({
                     value={textInputValue}
                     onChange={handleTextInputChange}
                     onSubmit={handleTextInputSubmit}
-                    placeholder={`Type something\u{2026}`}
+                    placeholder={t('elicitation.typeSomething')}
                     columns={Math.min(columns - 20, 60)}
                     cursorOffset={textInputCursorOffset}
                     onChangeCursorOffset={setTextInputCursorOffset}
@@ -1159,7 +1160,7 @@ function ElicitationFormDialog({
                   <Text>{displayValue}</Text>
                 ) : (
                   <Text dimColor italic>
-                    not set
+                    {t('elicitation.notSet')}
                   </Text>
                 )
               }
@@ -1168,7 +1169,7 @@ function ElicitationFormDialog({
                 <Text>{String(value)}</Text>
               ) : (
                 <Text dimColor italic>
-                  not set
+                  {t('elicitation.notSet')}
                 </Text>
               )
             }
@@ -1207,8 +1208,7 @@ function ElicitationFormDialog({
         {hasFieldsBelow && (
           <Box marginLeft={2}>
             <Text dimColor>
-              {figures.arrowDown} {schemaFields.length - scrollWindow.end} more
-              below
+              {figures.arrowDown} {t('elicitation.moreBelow', { count: String(schemaFields.length - scrollWindow.end) })}
             </Text>
           </Box>
         )}
@@ -1218,7 +1218,7 @@ function ElicitationFormDialog({
 
   return (
     <Dialog
-      title={`MCP server \u201c${serverName}\u201d requests your input`}
+      title={t('elicitation.formTitle', { serverName })}
       subtitle={`\n${message}`}
       color="permission"
       onCancel={() => onResponse('cancel')}
@@ -1409,7 +1409,7 @@ function ElicitationURLDialog({
     const actionLabel = waitingState?.actionLabel ?? 'Continue without waiting'
     return (
       <Dialog
-        title={`MCP server \u201c${serverName}\u201d \u2014 waiting for completion`}
+        title={t('elicitation.waitingTitle', { serverName })}
         subtitle={`\n${message}`}
         color="permission"
         onCancel={() => onWaitingDismiss?.('cancel')}
@@ -1440,7 +1440,7 @@ function ElicitationURLDialog({
           </Box>
           <Box marginBottom={1}>
             <Text dimColor italic>
-              Waiting for the server to confirm completion…
+              {t('elicitation.waitingMessage')}
             </Text>
           </Box>
           <Box>
@@ -1487,7 +1487,7 @@ function ElicitationURLDialog({
 
   return (
     <Dialog
-      title={`MCP server \u201c${serverName}\u201d wants to open a URL`}
+      title={t('elicitation.urlTitle', { serverName })}
       subtitle={`\n${message}`}
       color="permission"
       onCancel={() => onResponse('cancel')}

@@ -12,6 +12,7 @@ import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
 import { toInkColor } from '../../utils/ink.js'
 import { renderToolActivity } from './renderToolActivity.js'
 import { describeTeammateActivity } from './taskStatusUtils.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   teammate: DeepImmutable<InProcessTeammateTaskState>
@@ -92,10 +93,10 @@ export function InProcessTeammateDetailDialog({
           }
         >
           {teammate.status === 'completed'
-            ? 'Completed'
+            ? t('dialog.completed')
             : teammate.status === 'failed'
-              ? 'Failed'
-              : 'Stopped'}
+              ? t('dialog.failed')
+              : t('dialog.stopped')}
           {' · '}
         </Text>
       )}
@@ -149,7 +150,7 @@ export function InProcessTeammateDetailDialog({
           teammate.progress.recentActivities.length > 0 && (
             <Box flexDirection="column">
               <Text bold dimColor>
-                Progress
+                {t('asyncAgent.progress')}
               </Text>
               {teammate.progress.recentActivities.map((activity, i) => (
                 <Text
@@ -169,7 +170,7 @@ export function InProcessTeammateDetailDialog({
         {/* Prompt section */}
         <Box flexDirection="column" marginTop={1}>
           <Text bold dimColor>
-            Prompt
+            {t('asyncAgent.prompt')}
           </Text>
           <Text wrap="wrap">{displayPrompt}</Text>
         </Box>
@@ -178,7 +179,7 @@ export function InProcessTeammateDetailDialog({
         {teammate.status === 'failed' && teammate.error && (
           <Box flexDirection="column" marginTop={1}>
             <Text bold color="error">
-              Error
+              {t('asyncAgent.error')}
             </Text>
             <Text color="error" wrap="wrap">
               {teammate.error}

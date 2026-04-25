@@ -48,6 +48,7 @@ import {
   shouldShowUserMessage,
 } from '../utils/messages.js'
 import { plural } from '../utils/stringUtils.js'
+import { t } from '../utils/language.js'
 import { renderableSearchText } from '../utils/transcriptSearch.js'
 import { Divider } from '@anthropic/ink'
 import type { UnseenDivider } from './FullscreenLayout.js'
@@ -856,7 +857,7 @@ const MessagesImpl = ({
       return [
         <Box key="unseen-divider" marginTop={1}>
           <Divider
-            title={`${unseenDivider.count} new ${plural(unseenDivider.count, 'message')}`}
+            title={t('messages.unseen', { count: String(unseenDivider.count), noun: plural(unseenDivider.count, 'message') })}
             width={columns}
             color="inactive"
           />
@@ -925,7 +926,7 @@ const MessagesImpl = ({
       {/* Truncation indicator */}
       {hasTruncatedMessages && (
         <Divider
-          title={`${toggleShowAllShortcut} to show ${chalk.bold(hiddenMessageCount)} previous messages`}
+          title={t('messages.showPrevious', { shortcut: toggleShowAllShortcut, count: chalk.bold(hiddenMessageCount) })}
           width={columns}
         />
       )}
@@ -939,7 +940,7 @@ const MessagesImpl = ({
         // nothing is actually "hidden" to restore.
         !disableRenderCap && (
           <Divider
-            title={`${toggleShowAllShortcut} to hide ${chalk.bold(hiddenMessageCount)} previous messages`}
+            title={t('messages.hidePrevious', { shortcut: toggleShowAllShortcut, count: chalk.bold(hiddenMessageCount) })}
             width={columns}
           />
         )}

@@ -12,6 +12,7 @@ import { highlightMatch } from '../utils/highlightMatch.js'
 import { relativePath } from '../utils/permissions/filesystem.js'
 import { readFileInRange } from '../utils/readFileInRange.js'
 import { ripGrepStream } from '../utils/ripgrep.js'
+import { t } from '../utils/language.js'
 import { FuzzyPicker, LoadingState } from '@anthropic/ink'
 
 type Props = {
@@ -97,7 +98,7 @@ export function GlobalSearchDialog({
         setPreview({
           file: focused.file,
           line: focused.line,
-          content: '(preview unavailable)',
+          content: t('globalsearch.previewUnavailable'),
         })
       })
     return () => controller.abort()
@@ -248,8 +249,8 @@ export function GlobalSearchDialog({
 
   return (
     <FuzzyPicker
-      title="Global Search"
-      placeholder="Type to search…"
+      title={t('globalsearch.title')}
+      placeholder={t('globalsearch.placeholder')}
       items={matches}
       getKey={matchKey}
       visibleCount={visibleResults}
@@ -265,10 +266,10 @@ export function GlobalSearchDialog({
       }}
       onCancel={onDone}
       emptyMessage={q =>
-        isSearching ? 'Searching…' : q ? 'No matches' : 'Type to search…'
+        isSearching ? t('globalsearch.searching') : q ? t('globalsearch.noMatches') : t('globalsearch.placeholder')
       }
       matchLabel={matchLabel}
-      selectAction="open in editor"
+      selectAction={t('globalsearch.selectAction')}
       renderItem={(m, isFocused) => (
         <Text color={isFocused ? 'suggestion' : undefined}>
           <Text dimColor>
@@ -293,7 +294,7 @@ export function GlobalSearchDialog({
             ))}
           </>
         ) : (
-          <LoadingState message="Loading…" dimColor />
+          <LoadingState message={t('globalsearch.previewLoading')} dimColor />
         )
       }
     />

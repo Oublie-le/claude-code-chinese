@@ -4,6 +4,7 @@ import type { z } from 'zod/v4'
 import { Text } from '@anthropic/ink'
 import { NotebookEditTool } from '@claude-code-best/builtin-tools/tools/NotebookEditTool/NotebookEditTool.js'
 import { logError } from '../../../utils/log.js'
+import { t } from '../../../utils/language.js'
 import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js'
 import type { PermissionRequestProps } from '../PermissionRequest.js'
 import { NotebookEditToolDiff } from './NotebookEditToolDiff.js'
@@ -38,10 +39,10 @@ export function NotebookEditPermissionRequest(
 
   const editTypeText =
     edit_mode === 'insert'
-      ? 'insert this cell into'
+      ? t('notebook.insertCell')
       : edit_mode === 'delete'
-        ? 'delete this cell from'
-        : 'make this edit to'
+        ? t('notebook.deleteCell')
+        : t('notebook.editCell')
 
   return (
     <FilePermissionDialog
@@ -50,7 +51,7 @@ export function NotebookEditPermissionRequest(
       onDone={props.onDone}
       onReject={props.onReject}
       workerBadge={props.workerBadge}
-      title="Edit notebook"
+      title={t('notebook.editTitle')}
       question={
         <Text>
           Do you want to {editTypeText}{' '}

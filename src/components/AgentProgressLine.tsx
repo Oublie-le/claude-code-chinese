@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Box, Text } from '@anthropic/ink'
 import { formatNumber } from '../utils/format.js'
 import type { Theme } from '../utils/theme.js'
+import { t } from '../utils/language.js'
 
 type Props = {
   agentType: string
@@ -44,12 +45,12 @@ export function AgentProgressLine({
   // Determine the status text
   const getStatusText = (): string => {
     if (!isResolved) {
-      return lastToolInfo || 'Initializing…'
+      return lastToolInfo || t('agent.initializing')
     }
     if (isBackgrounded) {
-      return taskDescription ?? 'Running in the background'
+      return taskDescription ?? t('agent.runningBackground')
     }
-    return 'Done'
+    return t('agent.done')
   }
 
   return (
@@ -88,7 +89,7 @@ export function AgentProgressLine({
           {!isBackgrounded && (
             <>
               {' · '}
-              {toolUseCount} tool {toolUseCount === 1 ? 'use' : 'uses'}
+              {toolUseCount} {toolUseCount === 1 ? t('agent.toolUse') : t('agent.toolUses')}
               {tokens !== null && <> · {formatNumber(tokens)} tokens</>}
             </>
           )}

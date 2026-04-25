@@ -6,6 +6,7 @@ import { useAppState, useSetAppState } from '../../state/AppState.js';
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
 import { CCR_TERMS_URL } from '../../commands/ultraplan.js';
 import { getPromptIdentifier, getDialogConfig, type PromptIdentifier } from 'src/utils/ultraplan/prompt.js';
+import { t } from '../../utils/language.js';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -86,21 +87,21 @@ export function UltraplanLaunchDialog({ onChoice }: UltraplanLaunchDialogProps):
   }, [handleChoice])
 
   const runDescription = isBridgeEnabled
-    ? 'Disable remote control and launch in Claude Code on the web'
-    : 'launch in Claude Code on the web';
+    ? t('ultraplan.runDescConnected')
+    : t('ultraplan.runDesc');
 
   const options = [
     {
-      label: 'Run ultraplan',
+      label: t('ultraplan.runLabel'),
       value: 'run' as const,
       description: runDescription,
     },
-    { label: 'Not now', value: 'cancel' as const },
+    { label: t('ultraplan.notNow'), value: 'cancel' as const },
   ];
 
   return (
     <Dialog
-      title="Run ultraplan in the cloud?"
+      title={t('ultraplan.title')}
       subtitle={dialogConfig.timeEstimate}
       onCancel={handleCancel}
     >
@@ -111,7 +112,7 @@ export function UltraplanLaunchDialog({ onChoice }: UltraplanLaunchDialogProps):
             showTermsLink
               ? (
                   <Text dimColor>
-                  For more information on Claude Code on the web:
+                  {t('ultraplan.termsLinkHint')}
                   <Link url={CCR_TERMS_URL}>{CCR_TERMS_URL}</Link>
                   </Text>
                 )
@@ -121,7 +122,7 @@ export function UltraplanLaunchDialog({ onChoice }: UltraplanLaunchDialogProps):
 
         {/* Pipeline description (hidden when bridge will be disconnected) */}
         <Text dimColor>
-          {isBridgeEnabled ? 'This will disable Remote Control for this session.' : dialogConfig.dialogPipeline}
+          {isBridgeEnabled ? t('ultraplan.disableRemoteControl') : dialogConfig.dialogPipeline}
         </Text>
 
         <Select

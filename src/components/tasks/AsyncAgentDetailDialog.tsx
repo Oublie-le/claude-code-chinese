@@ -12,6 +12,7 @@ import { Byline, Dialog, KeyboardShortcutHint } from '@anthropic/ink'
 import { UserPlanMessage } from '../messages/UserPlanMessage.js'
 import { renderToolActivity } from './renderToolActivity.js'
 import { getTaskStatusColor, getTaskStatusIcon } from './taskStatusUtils.js'
+import { t } from '../../utils/language.js'
 
 type Props = {
   agent: DeepImmutable<LocalAgentTaskState>
@@ -81,7 +82,7 @@ export function AsyncAgentDetailDialog({
   const title = (
     <Text>
       {agent.selectedAgent?.agentType ?? 'agent'} ›{' '}
-      {agent.description || 'Async agent'}
+      {agent.description || t('asyncAgent.description')}
     </Text>
   )
 
@@ -92,10 +93,10 @@ export function AsyncAgentDetailDialog({
         <Text color={getTaskStatusColor(agent.status)}>
           {getTaskStatusIcon(agent.status)}{' '}
           {agent.status === 'completed'
-            ? 'Completed'
+            ? t('dialog.completed')
             : agent.status === 'failed'
-              ? 'Failed'
-              : 'Stopped'}
+              ? t('dialog.failed')
+              : t('dialog.stopped')}
           {' · '}
         </Text>
       )}
@@ -147,7 +148,7 @@ export function AsyncAgentDetailDialog({
             agent.progress.recentActivities.length > 0 && (
               <Box flexDirection="column">
                 <Text bold dimColor>
-                  Progress
+                  {t('asyncAgent.progress')}
                 </Text>
                 {agent.progress.recentActivities.map((activity, i) => (
                   <Text
@@ -173,7 +174,7 @@ export function AsyncAgentDetailDialog({
             /* Prompt section - only shown when no plan */
             <Box flexDirection="column" marginTop={1}>
               <Text bold dimColor>
-                Prompt
+                {t('asyncAgent.prompt')}
               </Text>
               <Text wrap="wrap">{displayPrompt}</Text>
             </Box>
@@ -183,7 +184,7 @@ export function AsyncAgentDetailDialog({
           {agent.status === 'failed' && agent.error && (
             <Box flexDirection="column" marginTop={1}>
               <Text bold color="error">
-                Error
+                {t('asyncAgent.error')}
               </Text>
               <Text color="error" wrap="wrap">
                 {agent.error}

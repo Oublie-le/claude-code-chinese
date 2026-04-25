@@ -42,6 +42,7 @@ import {
 } from '../../utils/teammateMailbox.js';
 import { Dialog } from '@anthropic/ink';
 import ThemedText from '../design-system/ThemedText.js';
+import { t } from '../../utils/language.js';
 
 type Props = {
   initialTeams?: TeamSummary[];
@@ -318,7 +319,7 @@ function TeamDetailView({ teamName, teammates, selectedIndex, onCancel }: TeamDe
     <>
       <Dialog title={`Team ${teamName}`} subtitle={subtitle} onCancel={onCancel} color="background" hideInputGuide>
         {teammates.length === 0 ? (
-          <Text dimColor>No teammates</Text>
+          <Text dimColor>{t('teamsDialog.noTeammates')}</Text>
         ) : (
           <Box flexDirection="column">
             {teammates.map((teammate, index) => (
@@ -430,7 +431,7 @@ function TeammateDetailView({ teammate, teamName, onCancel }: TeammateDetailView
         {/* Tasks section */}
         {teammateTasks.length > 0 && (
           <Box flexDirection="column">
-            <Text bold>Tasks</Text>
+            <Text bold>{t('teamsDialog.tasks')}</Text>
             {teammateTasks.map(task => (
               <Text key={task.id} color={task.status === 'completed' ? 'success' : undefined}>
                 {task.status === 'completed' ? figures.tick : '◼'} {task.subject}
@@ -442,10 +443,10 @@ function TeammateDetailView({ teammate, teamName, onCancel }: TeammateDetailView
         {/* Prompt section */}
         {teammate.prompt && (
           <Box flexDirection="column">
-            <Text bold>Prompt</Text>
+            <Text bold>{t('teamsDialog.prompt')}</Text>
             <Text>
               {promptExpanded ? teammate.prompt : truncateToWidth(teammate.prompt, 80)}
-              {stringWidth(teammate.prompt) > 80 && !promptExpanded && <Text dimColor> (p to expand)</Text>}
+              {stringWidth(teammate.prompt) > 80 && !promptExpanded && <Text dimColor>{t('teamsDialog.expandHint')}</Text>}
             </Text>
           </Box>
         )}

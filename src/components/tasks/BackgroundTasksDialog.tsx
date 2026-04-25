@@ -57,6 +57,7 @@ import { DreamDetailDialog } from './DreamDetailDialog.js'
 import { InProcessTeammateDetailDialog } from './InProcessTeammateDetailDialog.js'
 import { RemoteSessionDetailDialog } from './RemoteSessionDetailDialog.js'
 import { ShellDetailDialog } from './ShellDetailDialog.js'
+import { t } from '../../utils/language.js'
 
 type ViewState = { mode: 'list' } | { mode: 'detail'; itemId: string }
 
@@ -673,14 +674,14 @@ export function BackgroundTasksDialog({
       onKeyDown={handleKeyDown}
     >
       <Dialog
-        title="Background tasks"
+        title={t('bgTasks.title')}
         subtitle={<>{subtitle}</>}
         onCancel={handleCancel}
         color="background"
         inputGuide={renderInputGuide}
       >
         {allSelectableItems.length === 0 ? (
-          <Text dimColor>No tasks currently running</Text>
+          <Text dimColor>{t('bgTasks.noTasks')}</Text>
         ) : (
           <Box flexDirection="column">
             {teammateTasks.length > 0 && (
@@ -689,7 +690,7 @@ export function BackgroundTasksDialog({
                   remoteSessions.length > 0 ||
                   agentTasks.length > 0) && (
                   <Text dimColor>
-                    <Text bold>{'  '}Agents</Text> (
+                    <Text bold>{t('bgTasks.agents.label')}</Text> (
                     {count(teammateTasks, i => i.type !== 'leader')})
                   </Text>
                 )}
@@ -711,7 +712,7 @@ export function BackgroundTasksDialog({
                   remoteSessions.length > 0 ||
                   agentTasks.length > 0) && (
                   <Text dimColor>
-                    <Text bold>{'  '}Shells</Text> ({bashTasks.length})
+                    <Text bold>{t('bgTasks.shells.label')}</Text> ({bashTasks.length})
                   </Text>
                 )}
                 <Box flexDirection="column">
@@ -734,7 +735,7 @@ export function BackgroundTasksDialog({
                 }
               >
                 <Text dimColor>
-                  <Text bold>{'  '}Monitors</Text> ({mcpMonitors.length})
+                  <Text bold>{t('bgTasks.monitors.label')}</Text> ({mcpMonitors.length})
                 </Text>
                 <Box flexDirection="column">
                   {mcpMonitors.map(item => (
@@ -760,7 +761,7 @@ export function BackgroundTasksDialog({
                 }
               >
                 <Text dimColor>
-                  <Text bold>{'  '}Remote agents</Text> ({remoteSessions.length}
+                  <Text bold>{t('bgTasks.remote.label')}</Text> ({remoteSessions.length}
                   )
                 </Text>
                 <Box flexDirection="column">
@@ -788,7 +789,7 @@ export function BackgroundTasksDialog({
                 }
               >
                 <Text dimColor>
-                  <Text bold>{'  '}Local agents</Text> ({agentTasks.length})
+                  <Text bold>{t('bgTasks.local.label')}</Text> ({agentTasks.length})
                 </Text>
                 <Box flexDirection="column">
                   {agentTasks.map(item => (
@@ -816,7 +817,7 @@ export function BackgroundTasksDialog({
                 }
               >
                 <Text dimColor>
-                  <Text bold>{'  '}Workflows</Text> ({workflowTasks.length})
+                  <Text bold>{t('bgTasks.workflows.label')}</Text> ({workflowTasks.length})
                 </Text>
                 <Box flexDirection="column">
                   {workflowTasks.map(item => (

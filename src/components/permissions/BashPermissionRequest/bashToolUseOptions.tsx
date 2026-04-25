@@ -4,6 +4,7 @@ import { isClassifierPermissionsEnabled } from '../../../utils/permissions/bashC
 import type { PermissionDecisionReason } from '../../../utils/permissions/PermissionResult.js'
 import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpdateSchema.js'
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js'
+import { t } from '../../../utils/language.js'
 import type { OptionWithDescription } from '../../CustomSelect/select.js'
 import { generateShellSuggestionsLabel } from '../shellPermissionHelpers.js'
 
@@ -73,15 +74,15 @@ export function bashToolUseOptions({
   if (yesInputMode) {
     options.push({
       type: 'input',
-      label: 'Yes',
+      label: t('bashOptions.yes'),
       value: 'yes',
-      placeholder: 'and tell Claude what to do next',
+      placeholder: t('bashOptions.placeholder.next'),
       onChange: onAcceptFeedbackChange,
       allowEmptySubmitToCancel: true,
     })
   } else {
     options.push({
-      label: 'Yes',
+      label: t('bashOptions.yes'),
       value: 'yes',
     })
   }
@@ -106,7 +107,7 @@ export function bashToolUseOptions({
     ) {
       options.push({
         type: 'input',
-        label: 'Yes, and don\u2019t ask again for',
+        label: t('bashOptions.dontAskAgainFor'),
         value: 'yes-prefix-edited',
         placeholder: 'command prefix (e.g., npm run:*)',
         initialValue: editablePrefix,
@@ -154,9 +155,9 @@ export function bashToolUseOptions({
     ) {
       options.push({
         type: 'input',
-        label: 'Yes, and don\u2019t ask again for',
+        label: t('bashOptions.dontAskAgainFor'),
         value: 'yes-classifier-reviewed',
-        placeholder: 'describe what to allow...',
+        placeholder: t('bashOptions.placeholder.allow'),
         initialValue: classifierDescription ?? '',
         onChange: onClassifierDescriptionChange,
         allowEmptySubmitToCancel: true,
@@ -170,15 +171,15 @@ export function bashToolUseOptions({
   if (noInputMode) {
     options.push({
       type: 'input',
-      label: 'No',
+      label: t('bashOptions.no'),
       value: 'no',
-      placeholder: 'and tell Claude what to do differently',
+      placeholder: t('bashOptions.placeholder.differently'),
       onChange: onRejectFeedbackChange,
       allowEmptySubmitToCancel: true,
     })
   } else {
     options.push({
-      label: 'No',
+      label: t('bashOptions.no'),
       value: 'no',
     })
   }

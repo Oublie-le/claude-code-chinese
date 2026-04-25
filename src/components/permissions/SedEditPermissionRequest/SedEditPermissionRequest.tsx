@@ -13,6 +13,7 @@ import {
 } from '@claude-code-best/builtin-tools/tools/BashTool/sedEditParser.js'
 import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js'
 import type { PermissionRequestProps } from '../PermissionRequest.js'
+import { t } from '../../../utils/language.js'
 
 type SedEditPermissionRequestProps = PermissionRequestProps & {
   sedInfo: SedEditInfo
@@ -91,9 +92,9 @@ function SedEditPermissionRequestInner({
   // Determine appropriate message when no changes
   const noChangesMessage = useMemo(() => {
     if (!fileExists) {
-      return 'File does not exist'
+      return t('sedEdit.noExist')
     }
-    return 'Pattern did not match any content'
+    return t('sedEdit.noMatch')
   }, [fileExists])
 
   // Parse input and add _simulatedSedEdit to ensure what user previewed
@@ -119,8 +120,7 @@ function SedEditPermissionRequestInner({
       subtitle={relative(getCwd(), filePath)}
       question={
         <Text>
-          Do you want to make this edit to{' '}
-          <Text bold>{basename(filePath)}</Text>?
+          {t('sedEdit.question', { filename: basename(filePath) })}
         </Text>
       }
       content={
