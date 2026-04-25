@@ -176,6 +176,19 @@ const UI_STRINGS = {
   'help.stashPrompt': { en: 'to stash prompt', zh: '暂存输入' },
   'help.editInEditor': { en: 'to edit in $EDITOR', zh: '在编辑器中编辑' },
   'help.customizeKeybindings': { en: '/keybindings to customize', zh: '/keybindings 自定义快捷键' },
+  // marketplace notifications
+  'marketplace.configSaveFailed': {
+    en: 'Failed to save marketplace retry info · Check ~/.claude.json permissions',
+    zh: '保存 marketplace 重试信息失败 · 请检查 ~/.claude.json 权限',
+  },
+  'marketplace.installed': {
+    en: '✓ Anthropic marketplace installed · /plugin to see available plugins',
+    zh: '✓ Anthropic marketplace 已安装 · 使用 /plugin 查看可用插件',
+  },
+  'marketplace.installFailed': {
+    en: 'Failed to install Anthropic marketplace · Will retry on next startup',
+    zh: 'Anthropic marketplace 安装失败 · 将在下次启动时重试',
+  },
 } as const satisfies Record<string, Record<ResolvedLanguage, string>>
 
 export type TranslationKey = keyof typeof UI_STRINGS

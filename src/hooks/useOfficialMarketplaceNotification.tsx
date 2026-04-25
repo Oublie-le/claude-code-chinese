@@ -3,6 +3,7 @@ import type { Notification } from '../context/notifications.js'
 import { Text } from '@anthropic/ink'
 import { logForDebugging } from '../utils/debug.js'
 import { checkAndInstallOfficialMarketplace } from '../utils/plugins/officialMarketplaceStartupCheck.js'
+import { t } from '../utils/language.js'
 import { useStartupNotification } from './notifs/useStartupNotification.js'
 
 /**
@@ -21,8 +22,7 @@ export function useOfficialMarketplaceNotification(): void {
         key: 'marketplace-config-save-failed',
         jsx: (
           <Text color="error">
-            Failed to save marketplace retry info · Check ~/.claude.json
-            permissions
+            {t('marketplace.configSaveFailed')}
           </Text>
         ),
         priority: 'immediate',
@@ -36,7 +36,7 @@ export function useOfficialMarketplaceNotification(): void {
         key: 'marketplace-installed',
         jsx: (
           <Text color="success">
-            ✓ Anthropic marketplace installed · /plugin to see available plugins
+            {t('marketplace.installed')}
           </Text>
         ),
         priority: 'immediate',
@@ -48,7 +48,7 @@ export function useOfficialMarketplaceNotification(): void {
         key: 'marketplace-install-failed',
         jsx: (
           <Text color="warning">
-            Failed to install Anthropic marketplace · Will retry on next startup
+            {t('marketplace.installFailed')}
           </Text>
         ),
         priority: 'immediate',
