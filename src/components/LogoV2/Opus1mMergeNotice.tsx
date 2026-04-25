@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { UP_ARROW } from '../../constants/figures.js'
 import { Box, Text } from '@anthropic/ink'
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js'
-import { getResolvedLanguage } from '../../utils/language.js'
+import { t } from '../../utils/language.js'
 import { isOpus1mMergeEnabled } from '../../utils/model/model.js'
 import { AnimatedAsterisk } from './AnimatedAsterisk.js'
 
@@ -33,12 +33,7 @@ export function Opus1mMergeNotice(): React.ReactNode {
   return (
     <Box paddingLeft={2}>
       <AnimatedAsterisk char={UP_ARROW} />
-      <Text dimColor>
-        {' '}
-        {getResolvedLanguage() === 'zh'
-          ? 'Opus 现在默认使用 1M 上下文 · 空间扩大 5 倍，价格不变'
-          : 'Opus now defaults to 1M context · 5x more room, same pricing'}
-      </Text>
+      <Text dimColor> {t('opus1m.notice')}</Text>
     </Box>
   )
 }

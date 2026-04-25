@@ -17,7 +17,7 @@ import { env } from '../utils/env.js'
 import { isRunningOnHomespace } from '../utils/envUtils.js'
 import { PreflightStep } from '../utils/preflightChecks.js'
 import type { ThemeSetting } from '../utils/theme.js'
-import { getResolvedLanguage } from '../utils/language.js'
+import { t } from '../utils/language.js'
 import { ApproveApiKey } from './ApproveApiKey.js'
 import { ConsoleOAuthFlow } from './ConsoleOAuthFlow.js'
 import { Select } from './CustomSelect/select.js'
@@ -48,7 +48,6 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
   const [skipOAuth, setSkipOAuth] = useState(false)
   const [oauthEnabled] = useState(() => isAnthropicAuthEnabled())
   const [theme, setTheme] = useTheme()
-  const lang = getResolvedLanguage()
 
   useEffect(() => {
     logEvent('tengu_began_setup', {
@@ -78,13 +77,12 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
 
   const exitState = useExitOnCtrlCDWithKeybindings()
 
-  // Define all onboarding steps
   const themeStep = (
     <Box marginX={1}>
       <ThemePicker
         onThemeSelect={handleThemeSelection}
         showIntroText={true}
-        helpText={lang === 'zh' ? '稍后可通过 /theme 更改' : 'To change this later, run /theme'}
+        helpText={t('onboarding.theme.help')}
         hideEscToCancel={true}
         skipExitHandling={true}
       />
@@ -93,32 +91,20 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
 
   const securityStep = (
     <Box flexDirection="column" gap={1} paddingLeft={1}>
-      <Text bold>{lang === 'zh' ? '安全提示：' : 'Security notes:'}</Text>
+      <Text bold>{t('onboarding.security.title')}</Text>
       <Box flexDirection="column" width={70}>
         <OrderedList>
           <OrderedList.Item>
-            <Text>{lang === 'zh' ? 'Claude 可能会犯错' : 'Claude can make mistakes'}</Text>
+            <Text>{t('onboarding.security.item1.title')}</Text>
             <Text dimColor wrap="wrap">
-              {lang === 'zh' ? (
-                <>请务必检查 Claude 的回复，尤其是在执行代码时。<Newline /></>
-              ) : (
-                <>
-                  You should always review Claude&apos;s responses, especially when
-                  <Newline />
-                  running code.
-                  <Newline />
-                </>
-              )}
+              {t('onboarding.security.item1.body')}
+              <Newline />
             </Text>
           </OrderedList.Item>
           <OrderedList.Item>
-            <Text>
-              {lang === 'zh'
-                ? '存在提示注入风险，请仅在信任的代码上使用'
-                : 'Due to prompt injection risks, only use it with code you trust'}
-            </Text>
+            <Text>{t('onboarding.security.item2.title')}</Text>
             <Text dimColor wrap="wrap">
-              {lang === 'zh' ? '详情请见：' : 'For more details see:'}
+              {t('onboarding.security.item2.body')}
               <Newline />
               <Link url="https://code.claude.com/docs/en/security" />
             </Text>
@@ -129,10 +115,13 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
     </Box>
   )
 
-  const preflightStep = <PreflightStep onSuccess={goToNextStep} />
-  // Create the steps array - determine which steps to include based on reAuth and oauthEnabled
+  // Preflight check disabled — users may use third-party API providers
+  // if (oauthEnabled) {
+  //   steps.push({ id: 'preflight', component: <PreflightStep onSuccess={goToNextStep} /> })
+  // }
+  void PreflightStep
+
   const apiKeyNeedingApproval = useMemo(() => {
-    // Add API key step if needed
     // On homespace, ANTHROPIC_API_KEY is preserved in process.env for child
     // processes but ignored by Claude Code itself (see auth.ts).
     if (!process.env.ANTHROPIC_API_KEY || isRunningOnHomespace()) {
@@ -154,10 +143,6 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
   }
 
   const steps: OnboardingStep[] = []
-  // Preflight check disabled — users may use third-party API providers
-  // if (oauthEnabled) {
-  //   steps.push({ id: 'preflight', component: preflightStep })
-  // }
   steps.push({ id: 'theme', component: themeStep })
 
   if (apiKeyNeedingApproval) {
@@ -186,42 +171,22 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
   steps.push({ id: 'security', component: securityStep })
 
   if (shouldOfferTerminalSetup()) {
+    const terminalBody =
+      env.terminal === 'Apple_Terminal'
+        ? t('onboarding.terminal.body.iterm')
+        : t('onboarding.terminal.body.other')
+
     steps.push({
       id: 'terminal-setup',
       component: (
         <Box flexDirection="column" gap={1} paddingLeft={1}>
-          <Text bold>{lang === 'zh' ? '使用 Claude Code 的终端设置？' : "Use Claude Code's terminal setup?"}</Text>
+          <Text bold>{t('onboarding.terminal.title')}</Text>
           <Box flexDirection="column" width={70} gap={1}>
-            <Text>
-              {lang === 'zh' ? (
-                <>
-                  为获得最佳编码体验，请为您的终端启用推荐设置：
-                  <Newline />
-                  {env.terminal === 'Apple_Terminal'
-                    ? 'Option+Enter 换行及视觉响铃'
-                    : 'Shift+Enter 换行'}
-                </>
-              ) : (
-                <>
-                  For the optimal coding experience, enable the recommended settings
-                  <Newline />
-                  for your terminal:{' '}
-                  {env.terminal === 'Apple_Terminal'
-                    ? 'Option+Enter for newlines and visual bell'
-                    : 'Shift+Enter for newlines'}
-                </>
-              )}
-            </Text>
+            <Text>{terminalBody}</Text>
             <Select
               options={[
-                {
-                  label: lang === 'zh' ? '是，使用推荐设置' : 'Yes, use recommended settings',
-                  value: 'install',
-                },
-                {
-                  label: lang === 'zh' ? '否，稍后通过 /terminal-setup 设置' : 'No, maybe later with /terminal-setup',
-                  value: 'no',
-                },
+                { label: t('onboarding.terminal.yes'), value: 'install' },
+                { label: t('onboarding.terminal.no'), value: 'no' },
               ]}
               onChange={value => {
                 if (value === 'install') {
@@ -235,11 +200,9 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
               onCancel={() => goToNextStep()}
             />
             <Text dimColor>
-              {exitState.pending ? (
-                <>{lang === 'zh' ? `再按 ${exitState.keyName} 退出` : `Press ${exitState.keyName} again to exit`}</>
-              ) : (
-                <>{lang === 'zh' ? 'Enter 确认 · Esc 跳过' : 'Enter to confirm · Esc to skip'}</>
-              )}
+              {exitState.pending
+                ? t('exit.pressAgain', { key: exitState.keyName ?? '' })
+                : t('onboarding.terminal.hint')}
             </Text>
           </Box>
         </Box>
@@ -249,8 +212,6 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
 
   const currentStep = steps[currentStepIndex]
 
-  // Handle Enter on security step and Escape on terminal-setup step
-  // Dependencies match what goToNextStep uses internally
   const handleSecurityContinue = useCallback(() => {
     if (currentStepIndex === steps.length - 1) {
       onDone()
@@ -264,23 +225,13 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
   }, [currentStepIndex, steps.length, oauthEnabled, onDone])
 
   useKeybindings(
-    {
-      'confirm:yes': handleSecurityContinue,
-    },
-    {
-      context: 'Confirmation',
-      isActive: currentStep?.id === 'security',
-    },
+    { 'confirm:yes': handleSecurityContinue },
+    { context: 'Confirmation', isActive: currentStep?.id === 'security' },
   )
 
   useKeybindings(
-    {
-      'confirm:no': handleTerminalSetupSkip,
-    },
-    {
-      context: 'Confirmation',
-      isActive: currentStep?.id === 'terminal-setup',
-    },
+    { 'confirm:no': handleTerminalSetupSkip },
+    { context: 'Confirmation', isActive: currentStep?.id === 'terminal-setup' },
   )
 
   return (
@@ -290,7 +241,9 @@ export function Onboarding({ onDone }: Props): React.ReactNode {
         {currentStep?.component}
         {exitState.pending && (
           <Box padding={1}>
-            <Text dimColor>{lang === 'zh' ? `再按 ${exitState.keyName} 退出` : `Press ${exitState.keyName} again to exit`}</Text>
+            <Text dimColor>
+              {t('exit.pressAgain', { key: exitState.keyName ?? '' })}
+            </Text>
           </Box>
         )}
       </Box>

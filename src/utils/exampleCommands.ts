@@ -5,7 +5,7 @@ import { getCurrentProjectConfig, saveCurrentProjectConfig } from './config.js'
 import { env } from './env.js'
 import { execFileNoThrowWithCwd } from './execFileNoThrow.js'
 import { getIsGit, gitExe } from './git.js'
-import { getResolvedLanguage } from './language.js'
+import { getResolvedLanguage, t } from './language.js'
 import { logError } from './log.js'
 import { getGitEmail } from './user.js'
 
@@ -170,7 +170,7 @@ export const getExampleCommandFromCache = memoize(() => {
 
   const lang = getResolvedLanguage()
   const chosen = sample(lang === 'zh' ? commandsZh : commands)
-  return lang === 'zh' ? `试试"${chosen}"` : `Try "${chosen}"`
+  return t('example.try', { cmd: chosen ?? '' })
 })
 
 export const refreshExampleCommands = memoize(async (): Promise<void> => {
