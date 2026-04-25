@@ -43,7 +43,13 @@ jobs:
         run: bun test
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: |
+          VERSION="${{ github.event.inputs.version || github.ref_name }}"
+          if echo "$VERSION" | grep -qE '(rc|beta|alpha)'; then
+            npm publish --provenance --access public --tag next
+          else
+            npm publish --provenance --access public
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
