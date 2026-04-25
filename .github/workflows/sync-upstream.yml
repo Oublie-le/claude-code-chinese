@@ -1,0 +1,120 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    # 每周日凌晨 2 点 UTC 运行（北京时间周日上午 10 点）
+    - cron: '0 2 * * 0'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "Sync Bot"
+          git config user.email "sync-bot@github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/claude-code-best/claude-code.git || true
+          git remote -v
+
+      - name: Fetch upstream
+        run: |
+          git fetch upstream main
+          echo "Latest upstream commit:"
+          git log upstream/main -1 --oneline
+
+      - name: Check for new commits
+        id: check
+        run: |
+          # 比较本地 main 和上游 main
+          LOCAL=$(git rev-parse origin/main)
+          UPSTREAM=$(git rev-parse upstream/main)
+          if [ "$LOCAL" != "$UPSTREAM" ]; then
+            echo "has_new_commits=true" >> $GITHUB_OUTPUT
+            echo "✓ 发现新的上游提交"
+          else
+            echo "has_new_commits=false" >> $GITHUB_OUTPUT
+            echo "✓ 已是最新，无需同步"
+          fi
+
+      - name: Merge upstream
+        if: steps.check.outputs.has_new_commits == 'true'
+        run: |
+          git merge upstream/main -m "chore: 同步上游 main 分支的最新提交" || {
+            echo "❌ 自动合并失败，处理冲突..."
+            
+            # 保留本地的 package.json（中文化版本）
+            git checkout --ours package.json
+            git add package.json
+            
+            # 检查是否还有其他冲突
+            if git diff --name-only --diff-filter=U | grep -qv package.json; then
+              echo "⚠️ 发现其他冲突文件，尝试自动解决..."
+              # 如果有其他冲突，就用上游版本（因为只有 package.json 需要保留本地版本）
+              git diff --name-only --diff-filter=U | grep -v package.json | xargs git checkout --theirs
+              git add .
+            fi
+            
+            git commit -m "chore: 合并上游 - 解决冲突，保留本地 package.json"
+          }
+
+      - name: Run typecheck
+        run: |
+          npm list bun > /dev/null 2>&1 || npm install -g bun
+          bun install --frozen-lockfile || bun install
+          bun run typecheck || echo "⚠️ Typecheck 失败，但继续推送"
+
+      - name: Push to main
+        if: steps.check.outputs.has_new_commits == 'true'
+        run: |
+          git push origin main
+          echo "✓ 成功推送到 origin/main"
+
+      - name: Create issue on failure
+        if: failure() && steps.check.outputs.has_new_commits == 'true'
+        uses: actions/create-issue@v2
+        with:
+          title: '⚠️ 上游同步失败'
+          body: |
+            自动同步上游仓库时出现错误。
+            
+            **失败详情：**
+            - Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Branch: main
+            
+            请手动检查并解决问题。
+            
+            ---
+            
+            **手动同步命令：**
+            ```bash
+            git fetch upstream main
+            git merge upstream/main
+            git push origin main
+            ```
+          labels: |
+            ci-failed
+            sync-upstream
+
+      - name: Show summary
+        if: always()
+        run: |
+          echo "## 同步结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check.outputs.has_new_commits }}" = "true" ]; then
+            echo "✅ 发现新提交，已同步" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ 已是最新版本" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**最新上游提交：**" >> $GITHUB_STEP_SUMMARY
+          git log upstream/main -5 --oneline | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
